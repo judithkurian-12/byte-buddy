@@ -4,7 +4,6 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import java.lang.instrument.ClassFileTransformer;
 import java.util.*;
-import java.lang.reflect.Method;
 
 import net.bytebuddy.agent.builder.LambdaFactory;
 
