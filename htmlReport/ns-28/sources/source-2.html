@@ -1,0 +1,436 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > ExceptionTableSensitiveMethodVisitor</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">net.bytebuddy.utility.visitor</a>
+</div>
+
+<h1>Coverage Summary for Class: ExceptionTableSensitiveMethodVisitor (net.bytebuddy.utility.visitor)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ExceptionTableSensitiveMethodVisitor</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    97.1%
+  </span>
+  <span class="absValue">
+    (33/34)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    98.1%
+  </span>
+  <span class="absValue">
+    (52/53)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Copyright 2014 - Present Rafael Winterhalter
+&nbsp; *
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;package net.bytebuddy.utility.visitor;
+&nbsp;
+&nbsp;import org.objectweb.asm.Handle;
+&nbsp;import org.objectweb.asm.Label;
+&nbsp;import org.objectweb.asm.MethodVisitor;
+&nbsp;
+&nbsp;/**
+&nbsp; * A {@link MethodVisitor} that adds a callback after visiting the exception table of a method.
+&nbsp; */
+&nbsp;public abstract class ExceptionTableSensitiveMethodVisitor extends MethodVisitor {
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@code true} if the exception table callback was already triggered.
+&nbsp;     */
+&nbsp;    private boolean trigger;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates an exception table sensitive method visitor.
+&nbsp;     *
+&nbsp;     * @param api           The ASM API version.
+&nbsp;     * @param methodVisitor The delegating method visitor.
+&nbsp;     */
+&nbsp;    protected ExceptionTableSensitiveMethodVisitor(int api, MethodVisitor methodVisitor) {
+<b class="fc">&nbsp;        super(api, methodVisitor);</b>
+<b class="fc">&nbsp;        trigger = true;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Considers if the end of the exception table was reached.
+&nbsp;     */
+&nbsp;    private void considerEndOfExceptionTable() {
+<b class="fc">&nbsp;        if (trigger) {</b>
+<b class="fc">&nbsp;            trigger = false;</b>
+<b class="fc">&nbsp;            onAfterExceptionTable();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Invoked after the exception table was visited. Typically, the exception table is visited by ASM at the beginning
+&nbsp;     * of a method. It is however possible that a user adds exception table entries at a later point. Normally, this is
+&nbsp;     * however not meaningful use of ASM.
+&nbsp;     */
+&nbsp;    protected abstract void onAfterExceptionTable();
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public final void visitFrame(int type, int localVariableLength, Object[] localVariable, int stackSize, Object[] stack) {
+<b class="fc">&nbsp;        considerEndOfExceptionTable();</b>
+<b class="fc">&nbsp;        onVisitFrame(type, localVariableLength, localVariable, stackSize, stack);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Visits a stack map frame.
+&nbsp;     *
+&nbsp;     * @param type                The type of stack map frame.
+&nbsp;     * @param localVariableLength The length of the local variable array.
+&nbsp;     * @param localVariable       An array containing type symbols for all values in the local variable array.
+&nbsp;     * @param stackSize           The size of the operand stack.
+&nbsp;     * @param stack               An array containing type symbols for all values on the operand stack.
+&nbsp;     */
+&nbsp;    protected void onVisitFrame(int type, int localVariableLength, Object[] localVariable, int stackSize, Object[] stack) {
+<b class="fc">&nbsp;        super.visitFrame(type, localVariableLength, localVariable, stackSize, stack);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public final void visitLabel(Label label) {
+<b class="fc">&nbsp;        considerEndOfExceptionTable();</b>
+<b class="fc">&nbsp;        onVisitLabel(label);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Visits a label.
+&nbsp;     *
+&nbsp;     * @param label The visited label.
+&nbsp;     * @see MethodVisitor#visitLabel(Label)
+&nbsp;     */
+&nbsp;    protected void onVisitLabel(Label label) {
+<b class="fc">&nbsp;        super.visitLabel(label);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public final void visitIntInsn(int opcode, int operand) {
+<b class="fc">&nbsp;        considerEndOfExceptionTable();</b>
+<b class="fc">&nbsp;        onVisitIntInsn(opcode, operand);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Visits an integer opcode.
+&nbsp;     *
+&nbsp;     * @param opcode  The visited opcode.
+&nbsp;     * @param operand The visited operand.
+&nbsp;     */
+&nbsp;    protected void onVisitIntInsn(int opcode, int operand) {
+<b class="fc">&nbsp;        super.visitIntInsn(opcode, operand);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public final void visitVarInsn(int opcode, int offset) {
+<b class="fc">&nbsp;        considerEndOfExceptionTable();</b>
+<b class="fc">&nbsp;        onVisitVarInsn(opcode, offset);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Visits an variable instruction.
+&nbsp;     *
+&nbsp;     * @param opcode The visited opcode.
+&nbsp;     * @param offset The visited offset.
+&nbsp;     */
+&nbsp;    protected void onVisitVarInsn(int opcode, int offset) {
+<b class="fc">&nbsp;        super.visitVarInsn(opcode, offset);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public final void visitTypeInsn(int opcode, String type) {
+<b class="fc">&nbsp;        considerEndOfExceptionTable();</b>
+<b class="fc">&nbsp;        onVisitTypeInsn(opcode, type);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Visits a type instruction.
+&nbsp;     *
+&nbsp;     * @param opcode The visited opcode.
+&nbsp;     * @param type   The type name.
+&nbsp;     */
+&nbsp;    protected void onVisitTypeInsn(int opcode, String type) {
+<b class="fc">&nbsp;        super.visitTypeInsn(opcode, type);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public final void visitFieldInsn(int opcode, String owner, String name, String descriptor) {
+<b class="fc">&nbsp;        considerEndOfExceptionTable();</b>
+<b class="fc">&nbsp;        onVisitFieldInsn(opcode, owner, name, descriptor);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Visits a field instruction.
+&nbsp;     *
+&nbsp;     * @param opcode     The visited opcode.
+&nbsp;     * @param owner      The field&#39;s owner.
+&nbsp;     * @param name       The field&#39;s name.
+&nbsp;     * @param descriptor The field&#39;s descriptor.
+&nbsp;     */
+&nbsp;    protected void onVisitFieldInsn(int opcode, String owner, String name, String descriptor) {
+<b class="fc">&nbsp;        super.visitFieldInsn(opcode, owner, name, descriptor);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    @SuppressWarnings(&quot;deprecation&quot;)
+&nbsp;    public final void visitMethodInsn(int opcode, String owner, String name, String descriptor) {
+<b class="fc">&nbsp;        considerEndOfExceptionTable();</b>
+<b class="fc">&nbsp;        onVisitMethodInsn(opcode, owner, name, descriptor);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Visits a method instruction.
+&nbsp;     *
+&nbsp;     * @param opcode     The visited opcode.
+&nbsp;     * @param owner      The method&#39;s owner.
+&nbsp;     * @param name       The method&#39;s internal name.
+&nbsp;     * @param descriptor The method&#39;s descriptor.
+&nbsp;     * @deprecated Use {@link ExceptionTableSensitiveMethodVisitor#onVisitMethodInsn(int, String, String, String, boolean)} instead.
+&nbsp;     */
+&nbsp;    @Deprecated
+&nbsp;    @SuppressWarnings(&quot;deprecation&quot;)
+&nbsp;    protected void onVisitMethodInsn(int opcode, String owner, String name, String descriptor) {
+<b class="nc">&nbsp;        super.visitMethodInsn(opcode, owner, name, descriptor);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public final void visitMethodInsn(int opcode, String owner, String name, String descriptor, boolean isInterface) {
+<b class="fc">&nbsp;        considerEndOfExceptionTable();</b>
+<b class="fc">&nbsp;        onVisitMethodInsn(opcode, owner, name, descriptor, isInterface);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Visits a method instruction.
+&nbsp;     *
+&nbsp;     * @param opcode      The visited opcode.
+&nbsp;     * @param owner       The method&#39;s owner.
+&nbsp;     * @param name        The method&#39;s internal name.
+&nbsp;     * @param descriptor  The method&#39;s descriptor.
+&nbsp;     * @param isInterface {@code true} if the method belongs to an interface.
+&nbsp;     */
+&nbsp;    protected void onVisitMethodInsn(int opcode, String owner, String name, String descriptor, boolean isInterface) {
+<b class="fc">&nbsp;        super.visitMethodInsn(opcode, owner, name, descriptor, isInterface);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public final void visitInvokeDynamicInsn(String name, String descriptor, Handle handle, Object... argument) {
+<b class="fc">&nbsp;        considerEndOfExceptionTable();</b>
+<b class="fc">&nbsp;        onVisitInvokeDynamicInsn(name, descriptor, handle, argument);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Visits an invoke dynamic instruction.
+&nbsp;     *
+&nbsp;     * @param name       The name of the method.
+&nbsp;     * @param descriptor The descriptor of the method.
+&nbsp;     * @param handle     The bootstrap method handle.
+&nbsp;     * @param argument   The bootstrap method arguments.
+&nbsp;     */
+&nbsp;    protected void onVisitInvokeDynamicInsn(String name, String descriptor, Handle handle, Object... argument) {
+<b class="fc">&nbsp;        super.visitInvokeDynamicInsn(name, descriptor, handle, argument);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public final void visitJumpInsn(int opcode, Label label) {
+<b class="fc">&nbsp;        considerEndOfExceptionTable();</b>
+<b class="fc">&nbsp;        onVisitJumpInsn(opcode, label);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Visits a jump instruction.
+&nbsp;     *
+&nbsp;     * @param opcode The visited opcode.
+&nbsp;     * @param label  The visited label.
+&nbsp;     */
+&nbsp;    protected void onVisitJumpInsn(int opcode, Label label) {
+<b class="fc">&nbsp;        super.visitJumpInsn(opcode, label);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public final void visitLdcInsn(Object constant) {
+<b class="fc">&nbsp;        considerEndOfExceptionTable();</b>
+<b class="fc">&nbsp;        onVisitLdcInsn(constant);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Visits a constant pool access instruction.
+&nbsp;     *
+&nbsp;     * @param constant The constant pool value.
+&nbsp;     */
+&nbsp;    protected void onVisitLdcInsn(Object constant) {
+<b class="fc">&nbsp;        super.visitLdcInsn(constant);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public final void visitIincInsn(int offset, int increment) {
+<b class="fc">&nbsp;        considerEndOfExceptionTable();</b>
+<b class="fc">&nbsp;        onVisitIincInsn(offset, increment);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Visits an increment instruction.
+&nbsp;     *
+&nbsp;     * @param offset    The offset of the accessed variable.
+&nbsp;     * @param increment The value with which to increment.
+&nbsp;     */
+&nbsp;    protected void onVisitIincInsn(int offset, int increment) {
+<b class="fc">&nbsp;        super.visitIincInsn(offset, increment);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public final void visitTableSwitchInsn(int minimum, int maximum, Label defaultTarget, Label... label) {
+<b class="fc">&nbsp;        considerEndOfExceptionTable();</b>
+<b class="fc">&nbsp;        onVisitTableSwitchInsn(minimum, maximum, defaultTarget, label);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Visits a table switch instruction.
+&nbsp;     *
+&nbsp;     * @param minimum       The minimum index.
+&nbsp;     * @param maximum       The maximum index.
+&nbsp;     * @param defaultTarget A label indicating the default value.
+&nbsp;     * @param label         Labels indicating the jump targets.
+&nbsp;     */
+&nbsp;    protected void onVisitTableSwitchInsn(int minimum, int maximum, Label defaultTarget, Label... label) {
+<b class="fc">&nbsp;        super.visitTableSwitchInsn(minimum, maximum, defaultTarget, label);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public final void visitLookupSwitchInsn(Label dflt, int[] key, Label[] label) {
+<b class="fc">&nbsp;        considerEndOfExceptionTable();</b>
+<b class="fc">&nbsp;        onVisitLookupSwitchInsn(dflt, key, label);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Visits a lookup switch instruction.
+&nbsp;     *
+&nbsp;     * @param defaultTarget The default option.
+&nbsp;     * @param key           The key values.
+&nbsp;     * @param label         The targets for each key.
+&nbsp;     */
+&nbsp;    protected void onVisitLookupSwitchInsn(Label defaultTarget, int[] key, Label[] label) {
+<b class="fc">&nbsp;        super.visitLookupSwitchInsn(defaultTarget, key, label);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public final void visitMultiANewArrayInsn(String descriptor, int dimensions) {
+<b class="fc">&nbsp;        considerEndOfExceptionTable();</b>
+<b class="fc">&nbsp;        onVisitMultiANewArrayInsn(descriptor, dimensions);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Visits an instruction for creating a multidimensional array.
+&nbsp;     *
+&nbsp;     * @param descriptor The type descriptor of the array&#39;s component type.
+&nbsp;     * @param dimensions The dimensions of the array.
+&nbsp;     */
+&nbsp;    protected void onVisitMultiANewArrayInsn(String descriptor, int dimensions) {
+<b class="fc">&nbsp;        super.visitMultiANewArrayInsn(descriptor, dimensions);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public final void visitInsn(int opcode) {
+<b class="fc">&nbsp;        considerEndOfExceptionTable();</b>
+<b class="fc">&nbsp;        onVisitInsn(opcode);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Visits a simple instruction.
+&nbsp;     *
+&nbsp;     * @param opcode The opcode of the instruction.
+&nbsp;     */
+&nbsp;    protected void onVisitInsn(int opcode) {
+<b class="fc">&nbsp;        super.visitInsn(opcode);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-03 11:00</div>
+</div>
+</body>
+</html>

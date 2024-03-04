@@ -1,0 +1,128 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > Invoker</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">net.bytebuddy.utility</a>
+</div>
+
+<h1>Coverage Summary for Class: Invoker (net.bytebuddy.utility)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+</tr>
+  <tr>
+    <td class="name">Invoker$Dispatcher</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Copyright 2014 - Present Rafael Winterhalter
+&nbsp; *
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;package net.bytebuddy.utility;
+&nbsp;
+&nbsp;import net.bytebuddy.utility.nullability.MaybeNull;
+&nbsp;
+&nbsp;import java.lang.reflect.Constructor;
+&nbsp;import java.lang.reflect.InvocationTargetException;
+&nbsp;import java.lang.reflect.Method;
+&nbsp;
+&nbsp;/**
+&nbsp; * An invoker is a deliberate indirection to wrap indirect calls. This way, reflective call are never dispatched from Byte Buddy&#39;s
+&nbsp; * context but always from a synthetic layer that does not own any privileges. This might not be the case if such security measures
+&nbsp; * are not supported on the current platform, for example on Android. To support the Java module system and other class loader with
+&nbsp; * explicit exports such as OSGi, this interface is placed in an exported package while intended for use with
+&nbsp; * {@link net.bytebuddy.utility.dispatcher.JavaDispatcher}.
+&nbsp; */
+&nbsp;public interface Invoker {
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a new instance via {@link Constructor#newInstance(Object...)}.
+&nbsp;     *
+&nbsp;     * @param constructor The constructor to invoke.
+&nbsp;     * @param argument    The constructor arguments.
+&nbsp;     * @return The constructed instance.
+&nbsp;     * @throws InstantiationException    If the instance cannot be constructed.
+&nbsp;     * @throws IllegalAccessException    If the constructor is accessed illegally.
+&nbsp;     * @throws InvocationTargetException If the invocation causes an error.
+&nbsp;     */
+&nbsp;    Object newInstance(Constructor&lt;?&gt; constructor, Object[] argument) throws InstantiationException, IllegalAccessException, InvocationTargetException;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Invokes a method via {@link Method#invoke(Object, Object...)}.
+&nbsp;     *
+&nbsp;     * @param method   The method to invoke.
+&nbsp;     * @param instance The instance upon which to invoke the method or {@code null} if the method is static.
+&nbsp;     * @param argument The method arguments.
+&nbsp;     * @return The return value of the method or {@code null} if the method is {@code void}.
+&nbsp;     * @throws IllegalAccessException    If the method is accessed illegally.
+&nbsp;     * @throws InvocationTargetException If the invocation causes an error.
+&nbsp;     */
+&nbsp;    @MaybeNull
+&nbsp;    Object invoke(Method method, @MaybeNull Object instance, @MaybeNull Object[] argument) throws IllegalAccessException, InvocationTargetException;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-03 10:47</div>
+</div>
+</body>
+</html>

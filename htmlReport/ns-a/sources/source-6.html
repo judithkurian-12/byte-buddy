@@ -1,0 +1,208 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > MavenCoordinate</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">net.bytebuddy.build.maven</a>
+</div>
+
+<h1>Coverage Summary for Class: MavenCoordinate (net.bytebuddy.build.maven)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">MavenCoordinate</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (5/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    90.5%
+  </span>
+  <span class="absValue">
+    (19/21)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Copyright 2014 - Present Rafael Winterhalter
+&nbsp; *
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;package net.bytebuddy.build.maven;
+&nbsp;
+&nbsp;import net.bytebuddy.utility.nullability.MaybeNull;
+&nbsp;import org.eclipse.aether.artifact.Artifact;
+&nbsp;import org.eclipse.aether.artifact.DefaultArtifact;
+&nbsp;
+&nbsp;/**
+&nbsp; * A Maven coordinate.
+&nbsp; */
+&nbsp;public class MavenCoordinate {
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The project&#39;s group id.
+&nbsp;     */
+&nbsp;    private final String groupId;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The project&#39;s artifact id.
+&nbsp;     */
+&nbsp;    private final String artifactId;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The project&#39;s version.
+&nbsp;     */
+&nbsp;    private final String version;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The projects packaging.
+&nbsp;     */
+&nbsp;    private final String packaging;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a new Maven coordinate.
+&nbsp;     *
+&nbsp;     * @param groupId    The project&#39;s group id.
+&nbsp;     * @param artifactId The project&#39;s artifact id.
+&nbsp;     * @param version    The project&#39;s version.
+&nbsp;     * @param packaging  The project&#39;s packaging
+&nbsp;     */
+<b class="fc">&nbsp;    protected MavenCoordinate(String groupId, String artifactId, String version, String packaging) {</b>
+<b class="fc">&nbsp;        this.groupId = groupId;</b>
+<b class="fc">&nbsp;        this.artifactId = artifactId;</b>
+<b class="fc">&nbsp;        this.version = version;</b>
+<b class="fc">&nbsp;        this.packaging = packaging;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns this coordinate as a jar-file {@link Artifact}.
+&nbsp;     *
+&nbsp;     * @return An artifact representation of this coordinate.
+&nbsp;     */
+&nbsp;    public Artifact asArtifact() {
+<b class="fc">&nbsp;        return new DefaultArtifact(groupId, artifactId, packaging, version);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public boolean equals(@MaybeNull Object object) {
+<b class="fc">&nbsp;        if (this == object) {</b>
+<b class="nc">&nbsp;            return true;</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if (!(object instanceof MavenCoordinate)) {</b>
+<b class="nc">&nbsp;            return false;</b>
+&nbsp;        }
+<b class="fc">&nbsp;        MavenCoordinate that = (MavenCoordinate) object;</b>
+<b class="fc">&nbsp;        return groupId.equals(that.groupId)</b>
+<b class="fc">&nbsp;                &amp;&amp; artifactId.equals(that.artifactId)</b>
+<b class="fc">&nbsp;                &amp;&amp; version.equals(that.version)</b>
+<b class="fc">&nbsp;                &amp;&amp; packaging.equals(that.packaging);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public int hashCode() {
+<b class="fc">&nbsp;        int result = groupId.hashCode();</b>
+<b class="fc">&nbsp;        result = 31 * result + artifactId.hashCode();</b>
+<b class="fc">&nbsp;        result = 31 * result + version.hashCode();</b>
+<b class="fc">&nbsp;        result = 31 * result + packaging.hashCode();</b>
+<b class="fc">&nbsp;        return result;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public String toString() {
+<b class="fc">&nbsp;        return &quot;MavenCoordinate{&quot; +</b>
+&nbsp;                &quot;groupId=&#39;&quot; + groupId + &#39;\&#39;&#39; +
+&nbsp;                &quot;, artifactId=&#39;&quot; + artifactId + &#39;\&#39;&#39; +
+&nbsp;                &quot;, version=&#39;&quot; + version + &#39;\&#39;&#39; +
+&nbsp;                &quot;, packaging=&#39;&quot; + packaging + &#39;\&#39;&#39; +
+&nbsp;                &#39;}&#39;;
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-03 11:00</div>
+</div>
+</body>
+</html>

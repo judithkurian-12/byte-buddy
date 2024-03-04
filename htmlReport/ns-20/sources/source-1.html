@@ -1,0 +1,348 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > ArrayAccess</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">net.bytebuddy.implementation.bytecode.collection</a>
+</div>
+
+<h1>Coverage Summary for Class: ArrayAccess (net.bytebuddy.implementation.bytecode.collection)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ArrayAccess</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (39/39)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">ArrayAccess$Loader</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/3)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">ArrayAccess$Putter</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/3)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (11/11)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (45/45)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Copyright 2014 - Present Rafael Winterhalter
+&nbsp; *
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;package net.bytebuddy.implementation.bytecode.collection;
+&nbsp;
+&nbsp;import net.bytebuddy.build.HashCodeAndEqualsPlugin;
+&nbsp;import net.bytebuddy.description.type.TypeDefinition;
+&nbsp;import net.bytebuddy.implementation.Implementation;
+&nbsp;import net.bytebuddy.implementation.bytecode.Duplication;
+&nbsp;import net.bytebuddy.implementation.bytecode.StackManipulation;
+&nbsp;import net.bytebuddy.implementation.bytecode.StackSize;
+&nbsp;import net.bytebuddy.implementation.bytecode.constant.IntegerConstant;
+&nbsp;import org.objectweb.asm.MethodVisitor;
+&nbsp;import org.objectweb.asm.Opcodes;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;/**
+&nbsp; * Allows accessing array values.
+&nbsp; */
+<b class="fc">&nbsp;public enum ArrayAccess {</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Access for a {@code byte}- or {@code boolean}-typed array.
+&nbsp;     */
+<b class="fc">&nbsp;    BYTE(Opcodes.BALOAD, Opcodes.BASTORE, StackSize.SINGLE),</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Access for a {@code short}-typed array.
+&nbsp;     */
+<b class="fc">&nbsp;    SHORT(Opcodes.SALOAD, Opcodes.SASTORE, StackSize.SINGLE),</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Access for a {@code char}-typed array.
+&nbsp;     */
+<b class="fc">&nbsp;    CHARACTER(Opcodes.CALOAD, Opcodes.CASTORE, StackSize.SINGLE),</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Access for a {@code int}-typed array.
+&nbsp;     */
+<b class="fc">&nbsp;    INTEGER(Opcodes.IALOAD, Opcodes.IASTORE, StackSize.SINGLE),</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Access for a {@code long}-typed array.
+&nbsp;     */
+<b class="fc">&nbsp;    LONG(Opcodes.LALOAD, Opcodes.LASTORE, StackSize.DOUBLE),</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Access for a {@code float}-typed array.
+&nbsp;     */
+<b class="fc">&nbsp;    FLOAT(Opcodes.FALOAD, Opcodes.FASTORE, StackSize.SINGLE),</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Access for a {@code double}-typed array.
+&nbsp;     */
+<b class="fc">&nbsp;    DOUBLE(Opcodes.DALOAD, Opcodes.DASTORE, StackSize.DOUBLE),</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Access for a reference-typed array.
+&nbsp;     */
+<b class="fc">&nbsp;    REFERENCE(Opcodes.AALOAD, Opcodes.AASTORE, StackSize.SINGLE);</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The opcode used for loading a value.
+&nbsp;     */
+&nbsp;    private final int loadOpcode;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The opcode used for storing a value.
+&nbsp;     */
+&nbsp;    private final int storeOpcode;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The size of the array&#39;s component value.
+&nbsp;     */
+&nbsp;    private final StackSize stackSize;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a new array access.
+&nbsp;     *
+&nbsp;     * @param loadOpcode  The opcode used for loading a value.
+&nbsp;     * @param storeOpcode The opcode used for storing a value.
+&nbsp;     * @param stackSize   The size of the array&#39;s component value.
+&nbsp;     */
+<b class="fc">&nbsp;    ArrayAccess(int loadOpcode, int storeOpcode, StackSize stackSize) {</b>
+<b class="fc">&nbsp;        this.loadOpcode = loadOpcode;</b>
+<b class="fc">&nbsp;        this.storeOpcode = storeOpcode;</b>
+<b class="fc">&nbsp;        this.stackSize = stackSize;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Locates an array accessor by the array&#39;s component type.
+&nbsp;     *
+&nbsp;     * @param componentType The array&#39;s component type.
+&nbsp;     * @return An array accessor for the given type.
+&nbsp;     */
+&nbsp;    public static ArrayAccess of(TypeDefinition componentType) {
+<b class="fc">&nbsp;        if (!componentType.isPrimitive()) {</b>
+<b class="fc">&nbsp;            return REFERENCE;</b>
+<b class="fc">&nbsp;        } else if (componentType.represents(boolean.class) || componentType.represents(byte.class)) {</b>
+<b class="fc">&nbsp;            return BYTE;</b>
+<b class="fc">&nbsp;        } else if (componentType.represents(short.class)) {</b>
+<b class="fc">&nbsp;            return SHORT;</b>
+<b class="fc">&nbsp;        } else if (componentType.represents(char.class)) {</b>
+<b class="fc">&nbsp;            return CHARACTER;</b>
+<b class="fc">&nbsp;        } else if (componentType.represents(int.class)) {</b>
+<b class="fc">&nbsp;            return INTEGER;</b>
+<b class="fc">&nbsp;        } else if (componentType.represents(long.class)) {</b>
+<b class="fc">&nbsp;            return LONG;</b>
+<b class="fc">&nbsp;        } else if (componentType.represents(float.class)) {</b>
+<b class="fc">&nbsp;            return FLOAT;</b>
+<b class="fc">&nbsp;        } else if (componentType.represents(double.class)) {</b>
+<b class="fc">&nbsp;            return DOUBLE;</b>
+&nbsp;        } else {
+<b class="fc">&nbsp;            throw new IllegalArgumentException(&quot;Not a legal array type: &quot; + componentType);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a value-loading stack manipulation.
+&nbsp;     *
+&nbsp;     * @return A value-loading stack manipulation.
+&nbsp;     */
+&nbsp;    public StackManipulation load() {
+<b class="fc">&nbsp;        return new Loader();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a value-storing stack manipulation.
+&nbsp;     *
+&nbsp;     * @return A value-storing stack manipulation.
+&nbsp;     */
+&nbsp;    public StackManipulation store() {
+<b class="fc">&nbsp;        return new Putter();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Applies a stack manipulation to the values of an array. The array must have at least as many values as the list has elements.
+&nbsp;     *
+&nbsp;     * @param processInstructions The elements to apply.
+&nbsp;     * @return A stack manipulation that applies the supplied instructions.
+&nbsp;     */
+&nbsp;    public StackManipulation forEach(List&lt;? extends StackManipulation&gt; processInstructions) {
+<b class="fc">&nbsp;        List&lt;StackManipulation&gt; stackManipulations = new ArrayList&lt;StackManipulation&gt;(processInstructions.size());</b>
+<b class="fc">&nbsp;        int index = 0;</b>
+<b class="fc">&nbsp;        for (StackManipulation processInstruction : processInstructions) {</b>
+<b class="fc">&nbsp;            stackManipulations.add(new StackManipulation.Compound(</b>
+&nbsp;                    Duplication.SINGLE,
+<b class="fc">&nbsp;                    IntegerConstant.forValue(index++),</b>
+&nbsp;                    new Loader(),
+&nbsp;                    processInstruction
+&nbsp;            ));
+<b class="fc">&nbsp;        }</b>
+<b class="fc">&nbsp;        return new StackManipulation.Compound(stackManipulations);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A stack manipulation for loading an array&#39;s value.
+&nbsp;     */
+&nbsp;    @HashCodeAndEqualsPlugin.Enhance(includeSyntheticFields = true)
+<b class="fc">&nbsp;    protected class Loader extends StackManipulation.AbstractBase {</b>
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public Size apply(MethodVisitor methodVisitor, Implementation.Context implementationContext) {
+<b class="fc">&nbsp;            methodVisitor.visitInsn(loadOpcode);</b>
+<b class="fc">&nbsp;            return stackSize.toIncreasingSize().aggregate(new Size(-2, 0));</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A stack manipulation for storing an array&#39;s value.
+&nbsp;     */
+&nbsp;    @HashCodeAndEqualsPlugin.Enhance(includeSyntheticFields = true)
+<b class="fc">&nbsp;    protected class Putter extends StackManipulation.AbstractBase {</b>
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public Size apply(MethodVisitor methodVisitor, Implementation.Context implementationContext) {
+<b class="fc">&nbsp;            methodVisitor.visitInsn(storeOpcode);</b>
+<b class="fc">&nbsp;            return stackSize.toDecreasingSize().aggregate(new Size(-2, 0));</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-03 11:00</div>
+</div>
+</body>
+</html>

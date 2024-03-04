@@ -1,0 +1,413 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > RebaseImplementationTarget</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">net.bytebuddy.dynamic.scaffold.inline</a>
+</div>
+
+<h1>Coverage Summary for Class: RebaseImplementationTarget (net.bytebuddy.dynamic.scaffold.inline)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">RebaseImplementationTarget</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (15/15)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">RebaseImplementationTarget$Factory</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/3)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">RebaseImplementationTarget$RebasedMethodInvocation</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    88.5%
+  </span>
+  <span class="absValue">
+    (23/26)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (15/15)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    93.2%
+  </span>
+  <span class="absValue">
+    (41/44)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Copyright 2014 - Present Rafael Winterhalter
+&nbsp; *
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;package net.bytebuddy.dynamic.scaffold.inline;
+&nbsp;
+&nbsp;import net.bytebuddy.ClassFileVersion;
+&nbsp;import net.bytebuddy.build.HashCodeAndEqualsPlugin;
+&nbsp;import net.bytebuddy.description.method.MethodDescription;
+&nbsp;import net.bytebuddy.description.type.TypeDescription;
+&nbsp;import net.bytebuddy.description.type.TypeList;
+&nbsp;import net.bytebuddy.dynamic.scaffold.MethodGraph;
+&nbsp;import net.bytebuddy.implementation.Implementation;
+&nbsp;import net.bytebuddy.implementation.bytecode.StackManipulation;
+&nbsp;import net.bytebuddy.implementation.bytecode.constant.DefaultValue;
+&nbsp;import net.bytebuddy.implementation.bytecode.member.MethodInvocation;
+&nbsp;import net.bytebuddy.utility.CompoundList;
+&nbsp;import net.bytebuddy.utility.JavaConstant;
+&nbsp;import org.objectweb.asm.MethodVisitor;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Map;
+&nbsp;
+&nbsp;/**
+&nbsp; * An implementation target for redefining a given type while preserving the original methods within the
+&nbsp; * instrumented type.
+&nbsp; * &lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&nbsp; * Super method calls are merely emulated by this {@link Implementation.Target} in order
+&nbsp; * to preserve Java&#39;s super call semantics a user would expect when invoking a {@code super}-prefixed method. This
+&nbsp; * means that original methods are either moved to renamed {@code private} methods which are never dispatched
+&nbsp; * virtually or they are invoked directly via the {@code INVOKESPECIAL} invocation to explicitly forbid a virtual
+&nbsp; * dispatch.
+&nbsp; */
+&nbsp;@HashCodeAndEqualsPlugin.Enhance
+&nbsp;public class RebaseImplementationTarget extends Implementation.Target.AbstractBase {
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A mapping of the instrumented type&#39;s declared methods by each method&#39;s token.
+&nbsp;     */
+&nbsp;    private final Map&lt;MethodDescription.SignatureToken, MethodRebaseResolver.Resolution&gt; rebaseableMethods;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a rebase implementation target.
+&nbsp;     *
+&nbsp;     * @param instrumentedType        The instrumented type.
+&nbsp;     * @param methodGraph             A method graph of the instrumented type.
+&nbsp;     * @param defaultMethodInvocation The default method invocation mode to apply.
+&nbsp;     * @param rebaseableMethods       A mapping of the instrumented type&#39;s declared methods by each method&#39;s token.
+&nbsp;     */
+&nbsp;    protected RebaseImplementationTarget(TypeDescription instrumentedType,
+&nbsp;                                         MethodGraph.Linked methodGraph,
+&nbsp;                                         DefaultMethodInvocation defaultMethodInvocation,
+&nbsp;                                         Map&lt;MethodDescription.SignatureToken, MethodRebaseResolver.Resolution&gt; rebaseableMethods) {
+<b class="fc">&nbsp;        super(instrumentedType, methodGraph, defaultMethodInvocation);</b>
+<b class="fc">&nbsp;        this.rebaseableMethods = rebaseableMethods;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a new rebase implementation target.
+&nbsp;     *
+&nbsp;     * @param instrumentedType     The instrumented type.
+&nbsp;     * @param methodGraph          A method graph of the instrumented type.
+&nbsp;     * @param classFileVersion     The type&#39;s class file version.
+&nbsp;     * @param methodRebaseResolver A method rebase resolver to be used when calling a rebased method.
+&nbsp;     * @return An implementation target for the given input.
+&nbsp;     */
+&nbsp;    protected static Implementation.Target of(TypeDescription instrumentedType,
+&nbsp;                                              MethodGraph.Linked methodGraph,
+&nbsp;                                              ClassFileVersion classFileVersion,
+&nbsp;                                              MethodRebaseResolver methodRebaseResolver) {
+<b class="fc">&nbsp;        return new RebaseImplementationTarget(instrumentedType, methodGraph, DefaultMethodInvocation.of(classFileVersion), methodRebaseResolver.asTokenMap());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public Implementation.SpecialMethodInvocation invokeSuper(MethodDescription.SignatureToken token) {
+<b class="fc">&nbsp;        MethodRebaseResolver.Resolution resolution = rebaseableMethods.get(token);</b>
+<b class="fc">&nbsp;        return resolution == null</b>
+<b class="fc">&nbsp;                ? invokeSuper(methodGraph.getSuperClassGraph().locate(token))</b>
+<b class="fc">&nbsp;                : invokeSuper(resolution);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a special method invocation for the given node.
+&nbsp;     *
+&nbsp;     * @param node The node for which a special method invocation is to be created.
+&nbsp;     * @return A special method invocation for the provided node.
+&nbsp;     */
+&nbsp;    private Implementation.SpecialMethodInvocation invokeSuper(MethodGraph.Node node) {
+<b class="fc">&nbsp;        TypeDescription.Generic superClass = instrumentedType.getSuperClass();</b>
+<b class="fc">&nbsp;        return node.getSort().isResolved() &amp;&amp; superClass != null</b>
+<b class="fc">&nbsp;                ? Implementation.SpecialMethodInvocation.Simple.of(node.getRepresentative(), superClass.asErasure())</b>
+<b class="fc">&nbsp;                : Implementation.SpecialMethodInvocation.Illegal.INSTANCE;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a special method invocation for the given rebase resolution.
+&nbsp;     *
+&nbsp;     * @param resolution The resolution for which a special method invocation is to be created.
+&nbsp;     * @return A special method invocation for the provided resolution.
+&nbsp;     */
+&nbsp;    private Implementation.SpecialMethodInvocation invokeSuper(MethodRebaseResolver.Resolution resolution) {
+<b class="fc">&nbsp;        return resolution.isRebased()</b>
+<b class="fc">&nbsp;                ? RebasedMethodInvocation.of(resolution.getResolvedMethod(), instrumentedType, resolution.getAppendedParameters())</b>
+<b class="fc">&nbsp;                : Implementation.SpecialMethodInvocation.Simple.of(resolution.getResolvedMethod(), instrumentedType);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public TypeDescription getOriginType() {
+<b class="fc">&nbsp;        return instrumentedType;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A {@link Implementation.SpecialMethodInvocation} which invokes a rebased method
+&nbsp;     * as given by a {@link MethodRebaseResolver}.
+&nbsp;     */
+&nbsp;    protected static class RebasedMethodInvocation extends Implementation.SpecialMethodInvocation.AbstractBase {
+&nbsp;
+&nbsp;        /**
+&nbsp;         * The method to invoke via a special method invocation.
+&nbsp;         */
+&nbsp;        private final MethodDescription.InDefinedShape methodDescription;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * The instrumented type on which the method should be invoked on.
+&nbsp;         */
+&nbsp;        private final TypeDescription instrumentedType;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * The stack manipulation to execute in order to invoke the rebased method.
+&nbsp;         */
+&nbsp;        private final StackManipulation stackManipulation;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Any additional arguments that are to be provided to the rebased method.
+&nbsp;         */
+&nbsp;        private final TypeList prependedParameters;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Creates a new rebased method invocation.
+&nbsp;         *
+&nbsp;         * @param methodDescription   The method to invoke via a special method invocation.
+&nbsp;         * @param instrumentedType    The instrumented type on which the method should be invoked on.
+&nbsp;         * @param stackManipulation   The stack manipulation to execute in order to invoke the rebased method.
+&nbsp;         * @param prependedParameters Any additional arguments that are to be provided to the rebased method.
+&nbsp;         */
+&nbsp;        protected RebasedMethodInvocation(MethodDescription.InDefinedShape methodDescription,
+&nbsp;                                          TypeDescription instrumentedType,
+&nbsp;                                          StackManipulation stackManipulation,
+<b class="fc">&nbsp;                                          TypeList prependedParameters) {</b>
+<b class="fc">&nbsp;            this.methodDescription = methodDescription;</b>
+<b class="fc">&nbsp;            this.instrumentedType = instrumentedType;</b>
+<b class="fc">&nbsp;            this.stackManipulation = stackManipulation;</b>
+<b class="fc">&nbsp;            this.prependedParameters = prependedParameters;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Creates a special method invocation for the given method.
+&nbsp;         *
+&nbsp;         * @param resolvedMethod      The rebased method to be invoked.
+&nbsp;         * @param instrumentedType    The instrumented type on which the method is to be invoked if it is non-static.
+&nbsp;         * @param prependedParameters Any additional arguments that are to be provided to the rebased method.
+&nbsp;         * @return A special method invocation of the rebased method.
+&nbsp;         */
+&nbsp;        protected static Implementation.SpecialMethodInvocation of(MethodDescription.InDefinedShape resolvedMethod, TypeDescription instrumentedType, TypeList prependedParameters) {
+<b class="fc">&nbsp;            StackManipulation stackManipulation = resolvedMethod.isStatic()</b>
+<b class="nc">&nbsp;                    ? MethodInvocation.invoke(resolvedMethod)</b>
+<b class="fc">&nbsp;                    : MethodInvocation.invoke(resolvedMethod).special(instrumentedType);</b>
+<b class="fc">&nbsp;            if (stackManipulation.isValid()) {</b>
+<b class="fc">&nbsp;                List&lt;StackManipulation&gt; stackManipulations = new ArrayList&lt;StackManipulation&gt;(prependedParameters.size() + 1);</b>
+<b class="fc">&nbsp;                for (TypeDescription prependedParameter : prependedParameters) {</b>
+<b class="fc">&nbsp;                    stackManipulations.add(DefaultValue.of(prependedParameter));</b>
+<b class="fc">&nbsp;                }</b>
+<b class="fc">&nbsp;                stackManipulations.add(stackManipulation);</b>
+<b class="fc">&nbsp;                return new RebasedMethodInvocation(resolvedMethod, instrumentedType, new Compound(stackManipulations), prependedParameters);</b>
+&nbsp;            } else {
+<b class="fc">&nbsp;                return Implementation.SpecialMethodInvocation.Illegal.INSTANCE;</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public MethodDescription getMethodDescription() {
+<b class="fc">&nbsp;            return methodDescription;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public TypeDescription getTypeDescription() {
+<b class="fc">&nbsp;            return instrumentedType;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public Size apply(MethodVisitor methodVisitor, Implementation.Context implementationContext) {
+<b class="fc">&nbsp;            return stackManipulation.apply(methodVisitor, implementationContext);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public Implementation.SpecialMethodInvocation withCheckedCompatibilityTo(MethodDescription.TypeToken token) {
+<b class="fc">&nbsp;            if (methodDescription.asTypeToken().equals(new MethodDescription.TypeToken(token.getReturnType(),</b>
+<b class="fc">&nbsp;                    CompoundList.of(token.getParameterTypes(), prependedParameters)))) {</b>
+<b class="fc">&nbsp;                return this;</b>
+&nbsp;            } else {
+<b class="nc">&nbsp;                return Implementation.SpecialMethodInvocation.Illegal.INSTANCE;</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public JavaConstant.MethodHandle toMethodHandle() {
+<b class="fc">&nbsp;            return  methodDescription.isStatic()</b>
+<b class="nc">&nbsp;                    ? JavaConstant.MethodHandle.of(methodDescription)</b>
+<b class="fc">&nbsp;                    : JavaConstant.MethodHandle.ofSpecial(methodDescription, instrumentedType);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A factory for creating a {@link RebaseImplementationTarget}.
+&nbsp;     */
+&nbsp;    @HashCodeAndEqualsPlugin.Enhance
+&nbsp;    public static class Factory implements Implementation.Target.Factory {
+&nbsp;
+&nbsp;        /**
+&nbsp;         * The method rebase resolver to use.
+&nbsp;         */
+&nbsp;        private final MethodRebaseResolver methodRebaseResolver;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Creates a new factory for a rebase implementation target.
+&nbsp;         *
+&nbsp;         * @param methodRebaseResolver The method rebase resolver to use.
+&nbsp;         */
+<b class="fc">&nbsp;        public Factory(MethodRebaseResolver methodRebaseResolver) {</b>
+<b class="fc">&nbsp;            this.methodRebaseResolver = methodRebaseResolver;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public Implementation.Target make(TypeDescription instrumentedType, MethodGraph.Linked methodGraph, ClassFileVersion classFileVersion) {
+<b class="fc">&nbsp;            return RebaseImplementationTarget.of(instrumentedType, methodGraph, classFileVersion, methodRebaseResolver);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-03 11:00</div>
+</div>
+</body>
+</html>

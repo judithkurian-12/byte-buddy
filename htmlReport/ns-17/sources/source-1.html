@@ -1,0 +1,388 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > DefaultMethodCall</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">net.bytebuddy.implementation</a>
+</div>
+
+<h1>Coverage Summary for Class: DefaultMethodCall (net.bytebuddy.implementation)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">DefaultMethodCall</td>
+<td class="coverageStat">
+  <span class="percent">
+    77.8%
+  </span>
+  <span class="absValue">
+    (7/9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    70%
+  </span>
+  <span class="absValue">
+    (14/20)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">DefaultMethodCall$Appender</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    96.9%
+  </span>
+  <span class="absValue">
+    (31/32)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    83.3%
+  </span>
+  <span class="absValue">
+    (10/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    86.5%
+  </span>
+  <span class="absValue">
+    (45/52)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Copyright 2014 - Present Rafael Winterhalter
+&nbsp; *
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;package net.bytebuddy.implementation;
+&nbsp;
+&nbsp;import net.bytebuddy.build.HashCodeAndEqualsPlugin;
+&nbsp;import net.bytebuddy.description.method.MethodDescription;
+&nbsp;import net.bytebuddy.description.type.TypeDescription;
+&nbsp;import net.bytebuddy.description.type.TypeList;
+&nbsp;import net.bytebuddy.dynamic.scaffold.InstrumentedType;
+&nbsp;import net.bytebuddy.implementation.bytecode.ByteCodeAppender;
+&nbsp;import net.bytebuddy.implementation.bytecode.StackManipulation;
+&nbsp;import net.bytebuddy.implementation.bytecode.member.MethodReturn;
+&nbsp;import net.bytebuddy.implementation.bytecode.member.MethodVariableAccess;
+&nbsp;import org.objectweb.asm.MethodVisitor;
+&nbsp;
+&nbsp;import java.util.*;
+&nbsp;
+&nbsp;/**
+&nbsp; * This {@link Implementation} invokes a default method for the methods it instruments.
+&nbsp; * A default method is potentially ambiguous if a method of identical signature is defined in several interfaces.
+&nbsp; * For this reason, this implementation allows for the specification of &lt;i&gt;prioritized interfaces&lt;/i&gt; whose default
+&nbsp; * methods, if a method of equivalent signature is defined for a specific interface. All prioritized interfaces are
+&nbsp; * searched for default methods in the order of their specification. If no prioritized interface defines a default method
+&nbsp; * of equivalent signature to the given instrumented method, any non-prioritized interface is searched for a suitable
+&nbsp; * default method. If exactly one of those interfaces defines a suitable default method, this method is invoked.
+&nbsp; * If no method or more than one method is identified as a suitable default method, an exception is thrown.
+&nbsp; * &lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&nbsp; * When it comes to default methods, the Java programming language specifies stronger requirements for the
+&nbsp; * legitimacy of invoking a default method than the Java runtime. The Java compiler requires a method to be
+&nbsp; * the most specific method in its defining type&#39;s type hierarchy, i.e. the method must not be overridden by another
+&nbsp; * interface or class type. Additionally, the method must be invokable from an interface type which is directly
+&nbsp; * implemented by the instrumented type. The Java runtime only requires the second condition to be fulfilled which
+&nbsp; * is why this implementation only checks the later condition, as well.
+&nbsp; */
+&nbsp;@HashCodeAndEqualsPlugin.Enhance
+&nbsp;public class DefaultMethodCall implements Implementation {
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A list of prioritized interfaces in the order in which a method should be attempted to be called.
+&nbsp;     */
+&nbsp;    private final List&lt;TypeDescription&gt; prioritizedInterfaces;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a new {@link net.bytebuddy.implementation.DefaultMethodCall} implementation for a given list of
+&nbsp;     * prioritized interfaces.
+&nbsp;     *
+&nbsp;     * @param prioritizedInterfaces A list of prioritized interfaces in the order in which a method should be attempted to
+&nbsp;     *                              be called.
+&nbsp;     */
+<b class="fc">&nbsp;    protected DefaultMethodCall(List&lt;TypeDescription&gt; prioritizedInterfaces) {</b>
+<b class="fc">&nbsp;        this.prioritizedInterfaces = prioritizedInterfaces;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a {@link net.bytebuddy.implementation.DefaultMethodCall} implementation which searches the given list
+&nbsp;     * of interface types for a suitable default method in their order. If no such prioritized interface is suitable,
+&nbsp;     * because it is either not defined on the instrumented type or because it does not define a suitable default method,
+&nbsp;     * any remaining interface is searched for a suitable default method. If no or more than one method defines a
+&nbsp;     * suitable default method, an exception is thrown.
+&nbsp;     *
+&nbsp;     * @param prioritizedInterface A list of prioritized default method interfaces in their prioritization order.
+&nbsp;     * @return An implementation which calls an instrumented method&#39;s compatible default method that considers the given
+&nbsp;     * interfaces to be prioritized in their order.
+&nbsp;     */
+&nbsp;    public static Implementation prioritize(Class&lt;?&gt;... prioritizedInterface) {
+<b class="fc">&nbsp;        return prioritize(new TypeList.ForLoadedTypes(prioritizedInterface));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a {@link net.bytebuddy.implementation.DefaultMethodCall} implementation which searches the given list
+&nbsp;     * of interface types for a suitable default method in their order. If no such prioritized interface is suitable,
+&nbsp;     * because it is either not defined on the instrumented type or because it does not define a suitable default method,
+&nbsp;     * any remaining interface is searched for a suitable default method. If no or more than one method defines a
+&nbsp;     * suitable default method, an exception is thrown.
+&nbsp;     *
+&nbsp;     * @param prioritizedInterfaces A list of prioritized default method interfaces in their prioritization order.
+&nbsp;     * @return An implementation which calls an instrumented method&#39;s compatible default method that considers the given
+&nbsp;     * interfaces to be prioritized in their order.
+&nbsp;     */
+&nbsp;    public static Implementation prioritize(Iterable&lt;? extends Class&lt;?&gt;&gt; prioritizedInterfaces) {
+<b class="nc">&nbsp;        List&lt;Class&lt;?&gt;&gt; list = new ArrayList&lt;Class&lt;?&gt;&gt;();</b>
+<b class="nc">&nbsp;        for (Class&lt;?&gt; prioritizedInterface : prioritizedInterfaces) {</b>
+<b class="nc">&nbsp;            list.add(prioritizedInterface);</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        return prioritize(new TypeList.ForLoadedTypes(list));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a {@link net.bytebuddy.implementation.DefaultMethodCall} implementation which searches the given list
+&nbsp;     * of interface types for a suitable default method in their order. If no such prioritized interface is suitable,
+&nbsp;     * because it is either not defined on the instrumented type or because it does not define a suitable default method,
+&nbsp;     * any remaining interface is searched for a suitable default method. If no or more than one method defines a
+&nbsp;     * suitable default method, an exception is thrown.
+&nbsp;     *
+&nbsp;     * @param prioritizedInterface A list of prioritized default method interfaces in their prioritization order.
+&nbsp;     * @return An implementation which calls an instrumented method&#39;s compatible default method that considers the given
+&nbsp;     * interfaces to be prioritized in their order.
+&nbsp;     */
+&nbsp;    public static Implementation prioritize(TypeDescription... prioritizedInterface) {
+<b class="nc">&nbsp;        return prioritize(Arrays.asList(prioritizedInterface));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a {@link net.bytebuddy.implementation.DefaultMethodCall} implementation which searches the given list
+&nbsp;     * of interface types for a suitable default method in their order. If no such prioritized interface is suitable,
+&nbsp;     * because it is either not defined on the instrumented type or because it does not define a suitable default method,
+&nbsp;     * any remaining interface is searched for a suitable default method. If no or more than one method defines a
+&nbsp;     * suitable default method, an exception is thrown.
+&nbsp;     *
+&nbsp;     * @param prioritizedInterfaces A collection of prioritized default method interfaces in their prioritization order.
+&nbsp;     * @return An implementation which calls an instrumented method&#39;s compatible default method that considers the given
+&nbsp;     * interfaces to be prioritized in their order.
+&nbsp;     */
+&nbsp;    public static Implementation prioritize(Collection&lt;? extends TypeDescription&gt; prioritizedInterfaces) {
+<b class="fc">&nbsp;        return new DefaultMethodCall(new ArrayList&lt;TypeDescription&gt;(prioritizedInterfaces));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a {@link net.bytebuddy.implementation.DefaultMethodCall} implementation without prioritizing any
+&nbsp;     * interface. Instead, any interface that is defined for a given type is searched for a suitable default method. If
+&nbsp;     * exactly one interface defines a suitable default method, this method is invoked from the instrumented method.
+&nbsp;     * Otherwise, an exception is thrown.
+&nbsp;     *
+&nbsp;     * @return An implementation which calls an instrumented method&#39;s compatible default method if such a method
+&nbsp;     * is unambiguous.
+&nbsp;     */
+&nbsp;    public static Implementation unambiguousOnly() {
+<b class="fc">&nbsp;        return new DefaultMethodCall(Collections.&lt;TypeDescription&gt;emptyList());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public InstrumentedType prepare(InstrumentedType instrumentedType) {
+<b class="fc">&nbsp;        return instrumentedType;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public ByteCodeAppender appender(Target implementationTarget) {
+<b class="fc">&nbsp;        return new Appender(implementationTarget, filterRelevant(implementationTarget.getInstrumentedType()));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Filters the relevant prioritized interfaces for a given type, i.e. finds the types that are
+&nbsp;     * directly declared on a given instrumented type.
+&nbsp;     *
+&nbsp;     * @param typeDescription The instrumented type for which the prioritized interfaces are to be filtered.
+&nbsp;     * @return A list of prioritized interfaces that are additionally implemented by the given type.
+&nbsp;     */
+&nbsp;    private List&lt;TypeDescription&gt; filterRelevant(TypeDescription typeDescription) {
+<b class="fc">&nbsp;        List&lt;TypeDescription&gt; filtered = new ArrayList&lt;TypeDescription&gt;(prioritizedInterfaces.size());</b>
+<b class="fc">&nbsp;        Set&lt;TypeDescription&gt; relevant = new HashSet&lt;TypeDescription&gt;(typeDescription.getInterfaces().asErasures());</b>
+<b class="fc">&nbsp;        for (TypeDescription prioritizedInterface : prioritizedInterfaces) {</b>
+<b class="fc">&nbsp;            if (relevant.remove(prioritizedInterface)) {</b>
+<b class="fc">&nbsp;                filtered.add(prioritizedInterface);</b>
+&nbsp;            }
+<b class="fc">&nbsp;        }</b>
+<b class="fc">&nbsp;        return filtered;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The appender for implementing a {@link net.bytebuddy.implementation.DefaultMethodCall}.
+&nbsp;     */
+&nbsp;    @HashCodeAndEqualsPlugin.Enhance
+&nbsp;    protected static class Appender implements ByteCodeAppender {
+&nbsp;
+&nbsp;        /**
+&nbsp;         * The implementation target of this appender.
+&nbsp;         */
+&nbsp;        private final Target implementationTarget;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * The relevant prioritized interfaces to be considered by this appender.
+&nbsp;         */
+&nbsp;        private final List&lt;TypeDescription&gt; prioritizedInterfaces;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * The relevant non-prioritized interfaces to be considered by this appender.
+&nbsp;         */
+&nbsp;        @HashCodeAndEqualsPlugin.ValueHandling(HashCodeAndEqualsPlugin.ValueHandling.Sort.IGNORE)
+&nbsp;        private final Set&lt;TypeDescription&gt; nonPrioritizedInterfaces;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Creates a new appender for implementing a {@link net.bytebuddy.implementation.DefaultMethodCall}.
+&nbsp;         *
+&nbsp;         * @param implementationTarget  The implementation target of this appender.
+&nbsp;         * @param prioritizedInterfaces The relevant prioritized interfaces to be considered by this appender.
+&nbsp;         */
+<b class="fc">&nbsp;        protected Appender(Target implementationTarget, List&lt;TypeDescription&gt; prioritizedInterfaces) {</b>
+<b class="fc">&nbsp;            this.implementationTarget = implementationTarget;</b>
+<b class="fc">&nbsp;            this.prioritizedInterfaces = prioritizedInterfaces;</b>
+<b class="fc">&nbsp;            this.nonPrioritizedInterfaces = new HashSet&lt;TypeDescription&gt;(implementationTarget.getInstrumentedType().getInterfaces().asErasures());</b>
+<b class="fc">&nbsp;            nonPrioritizedInterfaces.removeAll(prioritizedInterfaces);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public Size apply(MethodVisitor methodVisitor, Context implementationContext, MethodDescription instrumentedMethod) {
+<b class="fc">&nbsp;            StackManipulation defaultMethodInvocation = locateDefault(instrumentedMethod);</b>
+<b class="fc">&nbsp;            if (!defaultMethodInvocation.isValid()) {</b>
+<b class="fc">&nbsp;                throw new IllegalStateException(&quot;Cannot invoke default method on &quot; + instrumentedMethod);</b>
+&nbsp;            }
+<b class="fc">&nbsp;            StackManipulation.Size stackSize = new StackManipulation.Compound(</b>
+<b class="fc">&nbsp;                    MethodVariableAccess.allArgumentsOf(instrumentedMethod).prependThisReference(),</b>
+&nbsp;                    defaultMethodInvocation,
+<b class="fc">&nbsp;                    MethodReturn.of(instrumentedMethod.getReturnType())</b>
+<b class="fc">&nbsp;            ).apply(methodVisitor, implementationContext);</b>
+<b class="fc">&nbsp;            return new Size(stackSize.getMaximalSize(), instrumentedMethod.getStackSize());</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Locates a special method invocation to be invoked from a given method.
+&nbsp;         *
+&nbsp;         * @param methodDescription The method that is currently instrumented.
+&nbsp;         * @return A potentially illegal stack manipulation representing the default method invocation for the
+&nbsp;         * given method.
+&nbsp;         */
+&nbsp;        private StackManipulation locateDefault(MethodDescription methodDescription) {
+<b class="fc">&nbsp;            MethodDescription.SignatureToken methodToken = methodDescription.asSignatureToken();</b>
+<b class="fc">&nbsp;            SpecialMethodInvocation specialMethodInvocation = SpecialMethodInvocation.Illegal.INSTANCE;</b>
+<b class="fc">&nbsp;            for (TypeDescription typeDescription : prioritizedInterfaces) {</b>
+<b class="fc">&nbsp;                specialMethodInvocation = implementationTarget</b>
+<b class="fc">&nbsp;                        .invokeDefault(methodToken, typeDescription)</b>
+<b class="fc">&nbsp;                        .withCheckedCompatibilityTo(methodDescription.asTypeToken());</b>
+<b class="fc">&nbsp;                if (specialMethodInvocation.isValid()) {</b>
+<b class="fc">&nbsp;                    return specialMethodInvocation;</b>
+&nbsp;                }
+<b class="nc">&nbsp;            }</b>
+<b class="fc">&nbsp;            for (TypeDescription typeDescription : nonPrioritizedInterfaces) {</b>
+<b class="fc">&nbsp;                SpecialMethodInvocation other = implementationTarget</b>
+<b class="fc">&nbsp;                        .invokeDefault(methodToken, typeDescription)</b>
+<b class="fc">&nbsp;                        .withCheckedCompatibilityTo(methodDescription.asTypeToken());</b>
+<b class="fc">&nbsp;                if (specialMethodInvocation.isValid() &amp;&amp; other.isValid()) {</b>
+<b class="fc">&nbsp;                    throw new IllegalStateException(methodDescription + &quot; has an ambiguous default method with &quot;</b>
+<b class="fc">&nbsp;                            + other.getMethodDescription() + &quot; and &quot; + specialMethodInvocation.getMethodDescription());</b>
+&nbsp;                }
+<b class="fc">&nbsp;                specialMethodInvocation = other;</b>
+<b class="fc">&nbsp;            }</b>
+<b class="fc">&nbsp;            return specialMethodInvocation;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-03 11:00</div>
+</div>
+</body>
+</html>

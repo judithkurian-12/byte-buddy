@@ -1,0 +1,320 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > GraalImageCode</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">net.bytebuddy.utility</a>
+</div>
+
+<h1>Coverage Summary for Class: GraalImageCode (net.bytebuddy.utility)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">GraalImageCode</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (8/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    75%
+  </span>
+  <span class="absValue">
+    (24/32)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">GraalImageCode$ImageCodeContextAction</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/11)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    72.7%
+  </span>
+  <span class="absValue">
+    (8/11)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    55.8%
+  </span>
+  <span class="absValue">
+    (24/43)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Copyright 2014 - Present Rafael Winterhalter
+&nbsp; *
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;package net.bytebuddy.utility;
+&nbsp;
+&nbsp;import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+&nbsp;import net.bytebuddy.build.AccessControllerPlugin;
+&nbsp;import net.bytebuddy.utility.nullability.MaybeNull;
+&nbsp;import net.bytebuddy.utility.privilege.GetSystemPropertyAction;
+&nbsp;
+&nbsp;import java.lang.reflect.Method;
+&nbsp;import java.security.PrivilegedAction;
+&nbsp;import java.util.Arrays;
+&nbsp;import java.util.Comparator;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Locale;
+&nbsp;
+&nbsp;/**
+&nbsp; * A utility that resolves Graal VM native image properties.
+&nbsp; */
+<b class="fc">&nbsp;public enum GraalImageCode {</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Indicates that a Graal VM assisted configuration agent is running.
+&nbsp;     */
+<b class="fc">&nbsp;    AGENT(true, false),</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Indicates that a Graal VM native image build is executed.
+&nbsp;     */
+<b class="fc">&nbsp;    BUILD(true, false),</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Indicates that a Graal VM native image is being executed.
+&nbsp;     */
+<b class="fc">&nbsp;    RUNTIME(true, true),</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Indicates that a Graal VM property is set to an unknown value.
+&nbsp;     */
+<b class="fc">&nbsp;    UNKNOWN(false, false),</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Indicates that no Graal VM property is set.
+&nbsp;     */
+<b class="fc">&nbsp;    NONE(false, false);</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The current image code or {@code null} if the image code was not yet resolved. The image code must be
+&nbsp;     * initialized lazily to avoid that it&#39;s bound to a value during native compilation.
+&nbsp;     */
+&nbsp;    @MaybeNull
+&nbsp;    private static GraalImageCode current;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Resolves the status of the Graal image code.
+&nbsp;     *
+&nbsp;     * @return The status of the Graal image code.
+&nbsp;     */
+&nbsp;    @SuppressFBWarnings(value = {&quot;LI_LAZY_INIT_STATIC&quot;, &quot;NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE&quot;}, justification = &quot;This behaviour is intended to avoid early binding in native images.&quot;)
+&nbsp;    public static GraalImageCode getCurrent() {
+<b class="fc">&nbsp;        GraalImageCode current = GraalImageCode.current;</b>
+<b class="fc">&nbsp;        if (current == null) {</b>
+<b class="fc">&nbsp;            String value = doPrivileged(new GetSystemPropertyAction(&quot;org.graalvm.nativeimage.imagecode&quot;));</b>
+<b class="fc">&nbsp;            if (value == null) {</b>
+<b class="fc">&nbsp;                String vendor = doPrivileged(new GetSystemPropertyAction(&quot;java.vm.vendor&quot;));</b>
+<b class="fc">&nbsp;                current = vendor != null &amp;&amp; vendor.toLowerCase(Locale.US).contains(&quot;graalvm&quot;)</b>
+<b class="nc">&nbsp;                        ? doPrivileged(ImageCodeContextAction.INSTANCE)</b>
+<b class="fc">&nbsp;                        : GraalImageCode.NONE;</b>
+<b class="fc">&nbsp;            } else if (value.equalsIgnoreCase(&quot;agent&quot;)) {</b>
+<b class="nc">&nbsp;                current = GraalImageCode.AGENT;</b>
+<b class="nc">&nbsp;            } else if (value.equalsIgnoreCase(&quot;runtime&quot;)) {</b>
+<b class="nc">&nbsp;                current = GraalImageCode.RUNTIME;</b>
+<b class="nc">&nbsp;            } else if (value.equalsIgnoreCase(&quot;buildtime&quot;)) {</b>
+<b class="nc">&nbsp;                current = GraalImageCode.BUILD;</b>
+&nbsp;            } else {
+<b class="nc">&nbsp;                current = GraalImageCode.UNKNOWN;</b>
+&nbsp;            }
+<b class="fc">&nbsp;            GraalImageCode.current = current;</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return current;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Sorts the provided values only if an active Graal image code is set.
+&nbsp;     *
+&nbsp;     * @param value      The values to sort.
+&nbsp;     * @param comparator the comparator to use.
+&nbsp;     * @param &lt;T&gt;        The array component type.
+&nbsp;     * @return The supplied array, potentially sorted.
+&nbsp;     */
+&nbsp;    public &lt;T&gt; T[] sorted(T[] value, Comparator&lt;? super T&gt; comparator) {
+<b class="fc">&nbsp;        if (defined) {</b>
+<b class="nc">&nbsp;            Arrays.sort(value, comparator);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return value;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A proxy for {@code java.security.AccessController#doPrivileged} that is activated if available.
+&nbsp;     *
+&nbsp;     * @param action The action to execute from a privileged context.
+&nbsp;     * @param &lt;T&gt;    The type of the action&#39;s resolved value.
+&nbsp;     * @return The action&#39;s resolved value.
+&nbsp;     */
+&nbsp;    @MaybeNull
+&nbsp;    @AccessControllerPlugin.Enhance
+&nbsp;    private static &lt;T&gt; T doPrivileged(PrivilegedAction&lt;T&gt; action) {
+<b class="fc">&nbsp;        return action.run();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@code true} if this image code indicates that a valid Graal related property is set.
+&nbsp;     */
+&nbsp;    private final boolean defined;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@code true} if this image code indicates that a Graal native image build is executed.
+&nbsp;     */
+&nbsp;    private final boolean nativeImageExecution;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a new Graal image code.
+&nbsp;     *
+&nbsp;     * @param defined              {@code true} if this image code indicates that a valid Graal related property is set.
+&nbsp;     * @param nativeImageExecution {@code true} if this image code indicates that a Graal native image build is executed.
+&nbsp;     */
+<b class="fc">&nbsp;    GraalImageCode(boolean defined, boolean nativeImageExecution) {</b>
+<b class="fc">&nbsp;        this.defined = defined;</b>
+<b class="fc">&nbsp;        this.nativeImageExecution = nativeImageExecution;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns {@code true} if this image code indicates that a valid Graal related property is set.
+&nbsp;     *
+&nbsp;     * @return {@code true} if this image code indicates that a valid Graal related property is set.
+&nbsp;     */
+&nbsp;    public boolean isDefined() {
+<b class="fc">&nbsp;        return defined;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns {@code true} if this image code indicates that a Graal native image build is executed.
+&nbsp;     *
+&nbsp;     * @return {@code true} if this image code indicates that a Graal native image build is executed.
+&nbsp;     */
+&nbsp;    public boolean isNativeImageExecution() {
+<b class="fc">&nbsp;        return nativeImageExecution;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A privileged action to resolve the image code via the current JVM processes input arguments, if available.
+&nbsp;     */
+<b class="nc">&nbsp;    protected enum ImageCodeContextAction implements PrivilegedAction&lt;GraalImageCode&gt; {</b>
+&nbsp;
+&nbsp;        /**
+&nbsp;         * The singleton instance.
+&nbsp;         */
+<b class="nc">&nbsp;        INSTANCE;</b>
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public GraalImageCode run() {
+&nbsp;            try {
+<b class="nc">&nbsp;                Method method = Class.forName(&quot;java.lang.management.ManagementFactory&quot;).getMethod(&quot;getRuntimeMXBean&quot;);</b>
+&nbsp;                @SuppressWarnings(&quot;unchecked&quot;)
+<b class="nc">&nbsp;                List&lt;String&gt; arguments = (List&lt;String&gt;) method.getReturnType().getMethod(&quot;getInputArguments&quot;).invoke(method.invoke(null));</b>
+<b class="nc">&nbsp;                for (String argument : arguments) {</b>
+<b class="nc">&nbsp;                    if (argument.startsWith(&quot;-agentlib:native-image-agent&quot;)) {</b>
+<b class="nc">&nbsp;                        return GraalImageCode.AGENT;</b>
+&nbsp;                    }
+<b class="nc">&nbsp;                }</b>
+<b class="nc">&nbsp;            } catch (Throwable ignored) {</b>
+&nbsp;                /* do nothing */
+<b class="nc">&nbsp;            }</b>
+<b class="nc">&nbsp;            return GraalImageCode.NONE;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-03 10:47</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,308 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > TypeConstantAdjustment</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">net.bytebuddy.asm</a>
+</div>
+
+<h1>Coverage Summary for Class: TypeConstantAdjustment (net.bytebuddy.asm)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">TypeConstantAdjustment</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (5/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (5/5)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">TypeConstantAdjustment$TypeConstantDissolvingClassVisitor</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/7)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">TypeConstantAdjustment$TypeConstantDissolvingClassVisitor$TypeConstantDissolvingMethodVisitor</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/7)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (10/10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (19/19)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Copyright 2014 - Present Rafael Winterhalter
+&nbsp; *
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;package net.bytebuddy.asm;
+&nbsp;
+&nbsp;import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+&nbsp;import net.bytebuddy.ClassFileVersion;
+&nbsp;import net.bytebuddy.description.field.FieldDescription;
+&nbsp;import net.bytebuddy.description.field.FieldList;
+&nbsp;import net.bytebuddy.description.method.MethodList;
+&nbsp;import net.bytebuddy.description.type.TypeDescription;
+&nbsp;import net.bytebuddy.implementation.Implementation;
+&nbsp;import net.bytebuddy.pool.TypePool;
+&nbsp;import net.bytebuddy.utility.OpenedClassReader;
+&nbsp;import net.bytebuddy.utility.nullability.MaybeNull;
+&nbsp;import org.objectweb.asm.*;
+&nbsp;
+&nbsp;/**
+&nbsp; * &lt;p&gt;
+&nbsp; * This class visitor wrapper ensures that class files of a version previous to Java 5 do not store class entries in the generated class&#39;s constant pool.
+&nbsp; * All found class instances are instead mapped as {@link String} values where the class constant is retrieved by a call to {@link Class#forName(String)}.
+&nbsp; * &lt;/p&gt;
+&nbsp; * &lt;p&gt;
+&nbsp; * &lt;b&gt;Warning&lt;/b&gt;: This can lead to subtle bugs as classes that are not available yield a {@link ClassNotFoundException} instead of a
+&nbsp; * {@link NoClassDefFoundError}. The former, checked exception could therefore be thrown even if the method that unsuccessfully loads a class does
+&nbsp; * not declared the checked exception. Furthermore, {@link Class} constants are not cached as fields within the class as the Java compiler implemented
+&nbsp; * class constants before Java 5. As a benefit for this limitation, the registered wrapper does not require any additional work by a {@link ClassWriter}
+&nbsp; * or {@link ClassReader}, i.e. does not set any flags.
+&nbsp; * &lt;/p&gt;
+&nbsp; */
+<b class="fc">&nbsp;public enum TypeConstantAdjustment implements AsmVisitorWrapper {</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The singleton instance.
+&nbsp;     */
+<b class="fc">&nbsp;    INSTANCE;</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public int mergeWriter(int flags) {
+<b class="fc">&nbsp;        return flags;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public int mergeReader(int flags) {
+<b class="fc">&nbsp;        return flags;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public ClassVisitor wrap(TypeDescription instrumentedType,
+&nbsp;                             ClassVisitor classVisitor,
+&nbsp;                             Implementation.Context implementationContext,
+&nbsp;                             TypePool typePool,
+&nbsp;                             FieldList&lt;FieldDescription.InDefinedShape&gt; fields,
+&nbsp;                             MethodList&lt;?&gt; methods,
+&nbsp;                             int writerFlags,
+&nbsp;                             int readerFlags) {
+<b class="fc">&nbsp;        return new TypeConstantDissolvingClassVisitor(classVisitor);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A class visitor that checks a class file version for its support of storing class constants in the constant pool and remaps such constants
+&nbsp;     * on discovery if that is not the case.
+&nbsp;     */
+&nbsp;    protected static class TypeConstantDissolvingClassVisitor extends ClassVisitor {
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@code true} if the class file version supports class constants in a constant pool.
+&nbsp;         */
+&nbsp;        private boolean supportsTypeConstants;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Creates a new type constant dissolving class visitor.
+&nbsp;         *
+&nbsp;         * @param classVisitor The underlying class visitor.
+&nbsp;         */
+&nbsp;        protected TypeConstantDissolvingClassVisitor(ClassVisitor classVisitor) {
+<b class="fc">&nbsp;            super(OpenedClassReader.ASM_API, classVisitor);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public void visit(int version, int modifiers, String name, @MaybeNull String signature, @MaybeNull String superClassName, @MaybeNull String[] interfaceName) {
+<b class="fc">&nbsp;            supportsTypeConstants = ClassFileVersion.ofMinorMajor(version).isAtLeast(ClassFileVersion.JAVA_V5);</b>
+<b class="fc">&nbsp;            super.visit(version, modifiers, name, signature, superClassName, interfaceName);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        @Override
+&nbsp;        @MaybeNull
+&nbsp;        public MethodVisitor visitMethod(int modifiers, String name, String descriptor, @MaybeNull String signature, @MaybeNull String[] exception) {
+<b class="fc">&nbsp;            MethodVisitor methodVisitor = super.visitMethod(modifiers, name, descriptor, signature, exception);</b>
+<b class="fc">&nbsp;            return supportsTypeConstants || methodVisitor == null</b>
+<b class="fc">&nbsp;                    ? methodVisitor</b>
+<b class="fc">&nbsp;                    : new TypeConstantDissolvingMethodVisitor(methodVisitor);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * A method visitor that remaps class constants to invocations of {@link Class#forName(String)}.
+&nbsp;         */
+&nbsp;        protected static class TypeConstantDissolvingMethodVisitor extends MethodVisitor {
+&nbsp;
+&nbsp;            /**
+&nbsp;             * The internal name of the {@link Class} class.
+&nbsp;             */
+&nbsp;            private static final String JAVA_LANG_CLASS = &quot;java/lang/Class&quot;;
+&nbsp;
+&nbsp;            /**
+&nbsp;             * The {@code forName} method name.
+&nbsp;             */
+&nbsp;            private static final String FOR_NAME = &quot;forName&quot;;
+&nbsp;
+&nbsp;            /**
+&nbsp;             * The descriptor of the {@code forName} method.
+&nbsp;             */
+&nbsp;            private static final String DESCRIPTOR = &quot;(Ljava/lang/String;)Ljava/lang/Class;&quot;;
+&nbsp;
+&nbsp;            /**
+&nbsp;             * Creates a new type constant dissolving method visitor.
+&nbsp;             *
+&nbsp;             * @param methodVisitor The underlying method visitor.
+&nbsp;             */
+&nbsp;            protected TypeConstantDissolvingMethodVisitor(MethodVisitor methodVisitor) {
+<b class="fc">&nbsp;                super(OpenedClassReader.ASM_API, methodVisitor);</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            @Override
+&nbsp;            @SuppressFBWarnings(value = &quot;SF_SWITCH_NO_DEFAULT&quot;, justification = &quot;Fall through to default case is intentional.&quot;)
+&nbsp;            public void visitLdcInsn(Object value) {
+<b class="fc">&nbsp;                if (value instanceof Type) {</b>
+<b class="fc">&nbsp;                    Type type = (Type) value;</b>
+<b class="fc">&nbsp;                    switch (type.getSort()) {</b>
+&nbsp;                        case Type.OBJECT:
+&nbsp;                        case Type.ARRAY:
+<b class="fc">&nbsp;                            super.visitLdcInsn(type.getInternalName().replace(&#39;/&#39;, &#39;.&#39;));</b>
+<b class="fc">&nbsp;                            super.visitMethodInsn(Opcodes.INVOKESTATIC, JAVA_LANG_CLASS, FOR_NAME, DESCRIPTOR, false);</b>
+&nbsp;                            return;
+&nbsp;                    }
+&nbsp;                }
+<b class="fc">&nbsp;                super.visitLdcInsn(value);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-03 11:00</div>
+</div>
+</body>
+</html>

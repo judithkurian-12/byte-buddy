@@ -1,0 +1,812 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > TypeReferenceAdjustment</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">net.bytebuddy.asm</a>
+</div>
+
+<h1>Coverage Summary for Class: TypeReferenceAdjustment (net.bytebuddy.asm)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">TypeReferenceAdjustment</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (5/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/7)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">TypeReferenceAdjustment$TypeReferenceClassVisitor</td>
+<td class="coverageStat">
+  <span class="percent">
+    57.9%
+  </span>
+  <span class="absValue">
+    (11/19)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    58.3%
+  </span>
+  <span class="absValue">
+    (60/103)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">TypeReferenceAdjustment$TypeReferenceClassVisitor$TypeReferenceAnnotationVisitor</td>
+<td class="coverageStat">
+  <span class="percent">
+    20%
+  </span>
+  <span class="absValue">
+    (1/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    13.3%
+  </span>
+  <span class="absValue">
+    (2/15)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">TypeReferenceAdjustment$TypeReferenceClassVisitor$TypeReferenceFieldVisitor</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    85.7%
+  </span>
+  <span class="absValue">
+    (6/7)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">TypeReferenceAdjustment$TypeReferenceClassVisitor$TypeReferenceMethodVisitor</td>
+<td class="coverageStat">
+  <span class="percent">
+    33.3%
+  </span>
+  <span class="absValue">
+    (5/15)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    26.8%
+  </span>
+  <span class="absValue">
+    (15/56)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    52.2%
+  </span>
+  <span class="absValue">
+    (24/46)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    47.9%
+  </span>
+  <span class="absValue">
+    (90/188)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Copyright 2014 - Present Rafael Winterhalter
+&nbsp; *
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;package net.bytebuddy.asm;
+&nbsp;
+&nbsp;import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+&nbsp;import net.bytebuddy.build.HashCodeAndEqualsPlugin;
+&nbsp;import net.bytebuddy.description.field.FieldDescription;
+&nbsp;import net.bytebuddy.description.field.FieldList;
+&nbsp;import net.bytebuddy.description.method.MethodList;
+&nbsp;import net.bytebuddy.description.type.TypeDescription;
+&nbsp;import net.bytebuddy.implementation.Implementation;
+&nbsp;import net.bytebuddy.matcher.ElementMatcher;
+&nbsp;import net.bytebuddy.pool.TypePool;
+&nbsp;import net.bytebuddy.utility.OpenedClassReader;
+&nbsp;import net.bytebuddy.utility.nullability.AlwaysNull;
+&nbsp;import net.bytebuddy.utility.nullability.MaybeNull;
+&nbsp;import org.objectweb.asm.*;
+&nbsp;
+&nbsp;import java.util.Arrays;
+&nbsp;import java.util.HashSet;
+&nbsp;import java.util.Set;
+&nbsp;
+&nbsp;import static net.bytebuddy.matcher.ElementMatchers.none;
+&nbsp;
+&nbsp;/**
+&nbsp; * Adds an attribute value for all inner classes that are referenced by the instrumented type. Adding such attributes
+&nbsp; * is formally required by the Java virtual machine specification but it is not enforced by the verifier. As a result,
+&nbsp; * many alternative JVM languages do not correctly implement the attribute. By adding this visitor, a type&#39;s inner
+&nbsp; * class attribute can be repaired or created by registering this visitor wrapper.
+&nbsp; */
+&nbsp;@HashCodeAndEqualsPlugin.Enhance
+&nbsp;public class TypeReferenceAdjustment extends AsmVisitorWrapper.AbstractBase {
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@code true} if the visitor should throw an exception if a type reference cannot be located.
+&nbsp;     */
+&nbsp;    private final boolean strict;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A filter for excluding types from type reference analysis.
+&nbsp;     */
+&nbsp;    private final ElementMatcher.Junction&lt;? super TypeDescription&gt; filter;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a type reference adjustment.
+&nbsp;     *
+&nbsp;     * @param strict {@code true} if the visitor should throw an exception if a type reference cannot be located.
+&nbsp;     * @param filter A filter for excluding types from type reference analysis.
+&nbsp;     */
+<b class="fc">&nbsp;    protected TypeReferenceAdjustment(boolean strict, ElementMatcher.Junction&lt;? super TypeDescription&gt; filter) {</b>
+<b class="fc">&nbsp;        this.strict = strict;</b>
+<b class="fc">&nbsp;        this.filter = filter;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a strict type reference adjustment that throws an exception if a type reference cannot be resolved
+&nbsp;     * in the supplied type pool.
+&nbsp;     *
+&nbsp;     * @return A strict type reference adjustment.
+&nbsp;     */
+&nbsp;    public static TypeReferenceAdjustment strict() {
+<b class="fc">&nbsp;        return new TypeReferenceAdjustment(true, none());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a strict type reference adjustment that ignores type references that cannot be resolved
+&nbsp;     * in the supplied type pool.
+&nbsp;     *
+&nbsp;     * @return A relaxed type reference adjustment.
+&nbsp;     */
+&nbsp;    public static TypeReferenceAdjustment relaxed() {
+<b class="fc">&nbsp;        return new TypeReferenceAdjustment(false, none());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Excludes all matched types from being added as an attribute.
+&nbsp;     *
+&nbsp;     * @param filter A filter for excluding types from the attribute generation.
+&nbsp;     * @return A new type reference adjustment that uses the supplied filter for excluding types.
+&nbsp;     */
+&nbsp;    public TypeReferenceAdjustment filter(ElementMatcher&lt;? super TypeDescription&gt; filter) {
+<b class="fc">&nbsp;        return new TypeReferenceAdjustment(strict, this.filter.&lt;TypeDescription&gt;or(filter));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public ClassVisitor wrap(TypeDescription instrumentedType,
+&nbsp;                             ClassVisitor classVisitor,
+&nbsp;                             Implementation.Context implementationContext,
+&nbsp;                             TypePool typePool,
+&nbsp;                             FieldList&lt;FieldDescription.InDefinedShape&gt; fields,
+&nbsp;                             MethodList&lt;?&gt; methods,
+&nbsp;                             int writerFlags,
+&nbsp;                             int readerFlags) {
+<b class="fc">&nbsp;        return new TypeReferenceClassVisitor(classVisitor, strict, filter, typePool);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A class visitor that collects all type references and all inner class references.
+&nbsp;     */
+<b class="fc">&nbsp;    protected static class TypeReferenceClassVisitor extends ClassVisitor {</b>
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Indicates that an annotation is not of interest.
+&nbsp;         */
+&nbsp;        @AlwaysNull
+<b class="fc">&nbsp;        private static final AnnotationVisitor IGNORE_ANNOTATION = null;</b>
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Indicates that a field is not of interest.
+&nbsp;         */
+&nbsp;        @AlwaysNull
+<b class="fc">&nbsp;        private static final FieldVisitor IGNORE_FIELD = null;</b>
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Indicates that a method is not of interest.
+&nbsp;         */
+&nbsp;        @AlwaysNull
+<b class="fc">&nbsp;        private static final MethodVisitor IGNORE_METHOD = null;</b>
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@code true} if the visitor should throw an exception if a type reference cannot be located.
+&nbsp;         */
+&nbsp;        private final boolean strict;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * A filter for excluding types from type reference analysis.
+&nbsp;         */
+&nbsp;        private final ElementMatcher&lt;? super TypeDescription&gt; filter;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * The type pool to use for locating types.
+&nbsp;         */
+&nbsp;        private final TypePool typePool;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * A set of inner class names that have been observed within the processed class file.
+&nbsp;         */
+&nbsp;        private final Set&lt;String&gt; observedTypes;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * A set of inner class names that were added as inner class attribute values.
+&nbsp;         */
+&nbsp;        private final Set&lt;String&gt; visitedInnerTypes;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Creates a type reference class visitor.
+&nbsp;         *
+&nbsp;         * @param classVisitor {@code true} if the visitor should throw an exception if a type reference cannot be located.
+&nbsp;         * @param strict       {@code true} if the visitor should throw an exception if a type reference cannot be located.
+&nbsp;         * @param filter       A filter for excluding types from type reference analysis.
+&nbsp;         * @param typePool     The type pool to use for locating types.
+&nbsp;         */
+&nbsp;        protected TypeReferenceClassVisitor(ClassVisitor classVisitor, boolean strict, ElementMatcher&lt;? super TypeDescription&gt; filter, TypePool typePool) {
+<b class="fc">&nbsp;            super(OpenedClassReader.ASM_API, classVisitor);</b>
+<b class="fc">&nbsp;            this.typePool = typePool;</b>
+<b class="fc">&nbsp;            this.strict = strict;</b>
+<b class="fc">&nbsp;            this.filter = filter;</b>
+<b class="fc">&nbsp;            observedTypes = new HashSet&lt;String&gt;();</b>
+<b class="fc">&nbsp;            visitedInnerTypes = new HashSet&lt;String&gt;();</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public void visit(int version,
+&nbsp;                          int modifiers,
+&nbsp;                          String internalName,
+&nbsp;                          @MaybeNull String genericSignature,
+&nbsp;                          @MaybeNull String superClassInternalName,
+&nbsp;                          @MaybeNull String[] interfaceInternalName) {
+<b class="fc">&nbsp;            if (superClassInternalName != null) {</b>
+<b class="fc">&nbsp;                observedTypes.add(superClassInternalName);</b>
+&nbsp;            }
+<b class="fc">&nbsp;            if (interfaceInternalName != null) {</b>
+<b class="fc">&nbsp;                observedTypes.addAll(Arrays.asList(interfaceInternalName));</b>
+&nbsp;            }
+<b class="fc">&nbsp;            super.visit(version, modifiers, internalName, genericSignature, superClassInternalName, interfaceInternalName);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public void visitNestHost(String nestHost) {
+<b class="nc">&nbsp;            observedTypes.add(nestHost);</b>
+<b class="nc">&nbsp;            super.visitNestHost(nestHost);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public void visitOuterClass(String ownerTypeInternalName, String methodName, String methodDescriptor) {
+<b class="nc">&nbsp;            observedTypes.add(ownerTypeInternalName);</b>
+<b class="nc">&nbsp;            super.visitOuterClass(ownerTypeInternalName, methodName, methodDescriptor);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public void visitNestMember(String nestMember) {
+<b class="nc">&nbsp;            observedTypes.add(nestMember);</b>
+<b class="nc">&nbsp;            super.visitNestMember(nestMember);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public void visitInnerClass(String internalName, String outerName, String innerName, int modifiers) {
+<b class="nc">&nbsp;            visitedInnerTypes.add(internalName);</b>
+<b class="nc">&nbsp;            super.visitInnerClass(internalName, outerName, innerName, modifiers);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        @Override
+&nbsp;        @MaybeNull
+&nbsp;        public RecordComponentVisitor visitRecordComponent(String name, String descriptor, @MaybeNull String signature) {
+<b class="nc">&nbsp;            observedTypes.add(Type.getType(descriptor).getInternalName());</b>
+<b class="nc">&nbsp;            return super.visitRecordComponent(name, descriptor, signature);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        @Override
+&nbsp;        @MaybeNull
+&nbsp;        public AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
+<b class="fc">&nbsp;            observedTypes.add(Type.getType(descriptor).getInternalName());</b>
+<b class="fc">&nbsp;            AnnotationVisitor annotationVisitor = super.visitAnnotation(descriptor, visible);</b>
+<b class="fc">&nbsp;            if (annotationVisitor != null) {</b>
+<b class="fc">&nbsp;                return new TypeReferenceAnnotationVisitor(annotationVisitor);</b>
+&nbsp;            } else {
+<b class="nc">&nbsp;                return IGNORE_ANNOTATION;</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+&nbsp;        @Override
+&nbsp;        @MaybeNull
+&nbsp;        public AnnotationVisitor visitTypeAnnotation(int typeReference, @MaybeNull TypePath typePath, String descriptor, boolean visible) {
+<b class="nc">&nbsp;            observedTypes.add(Type.getType(descriptor).getInternalName());</b>
+<b class="nc">&nbsp;            AnnotationVisitor annotationVisitor = super.visitTypeAnnotation(typeReference, typePath, descriptor, visible);</b>
+<b class="nc">&nbsp;            if (annotationVisitor != null) {</b>
+<b class="nc">&nbsp;                return new TypeReferenceAnnotationVisitor(annotationVisitor);</b>
+&nbsp;            } else {
+<b class="nc">&nbsp;                return IGNORE_ANNOTATION;</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+&nbsp;        @Override
+&nbsp;        @MaybeNull
+&nbsp;        public FieldVisitor visitField(int modifiers, String name, String descriptor, @MaybeNull String signature, @MaybeNull Object value) {
+<b class="fc">&nbsp;            FieldVisitor fieldVisitor = super.visitField(modifiers, name, descriptor, signature, value);</b>
+<b class="fc">&nbsp;            if (fieldVisitor != null) {</b>
+<b class="fc">&nbsp;                resolve(Type.getType(descriptor));</b>
+<b class="fc">&nbsp;                return new TypeReferenceFieldVisitor(fieldVisitor);</b>
+&nbsp;            } else {
+<b class="nc">&nbsp;                return IGNORE_FIELD;</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+&nbsp;        @Override
+&nbsp;        @MaybeNull
+&nbsp;        public MethodVisitor visitMethod(int modifiers, String internalName, String descriptor, @MaybeNull String signature, @MaybeNull String[] exceptionInternalName) {
+<b class="fc">&nbsp;            MethodVisitor methodVisitor = super.visitMethod(modifiers, internalName, descriptor, signature, exceptionInternalName);</b>
+<b class="fc">&nbsp;            if (methodVisitor != null) {</b>
+<b class="fc">&nbsp;                resolve(Type.getType(descriptor));</b>
+<b class="fc">&nbsp;                if (exceptionInternalName != null) {</b>
+<b class="nc">&nbsp;                    observedTypes.addAll(Arrays.asList(exceptionInternalName));</b>
+&nbsp;                }
+<b class="fc">&nbsp;                return new TypeReferenceMethodVisitor(methodVisitor);</b>
+&nbsp;            } else {
+<b class="nc">&nbsp;                return IGNORE_METHOD;</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+&nbsp;        @Override
+&nbsp;        @SuppressFBWarnings(value = &quot;NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE&quot;, justification = &quot;Assuming declaring type for type member.&quot;)
+&nbsp;        public void visitEnd() {
+<b class="fc">&nbsp;            for (String observedType : observedTypes) {</b>
+<b class="fc">&nbsp;                if (visitedInnerTypes.add(observedType)) {</b>
+<b class="fc">&nbsp;                    TypePool.Resolution resolution = typePool.describe(observedType.replace(&#39;/&#39;, &#39;.&#39;));</b>
+<b class="fc">&nbsp;                    if (resolution.isResolved()) {</b>
+<b class="fc">&nbsp;                        TypeDescription typeDescription = resolution.resolve();</b>
+<b class="fc">&nbsp;                        if (!filter.matches(typeDescription)) {</b>
+<b class="fc">&nbsp;                            while (typeDescription != null &amp;&amp; typeDescription.isNestedClass()) {</b>
+<b class="fc">&nbsp;                                super.visitInnerClass(typeDescription.getInternalName(),</b>
+<b class="fc">&nbsp;                                        typeDescription.isMemberType()</b>
+<b class="fc">&nbsp;                                                ? typeDescription.getDeclaringType().getInternalName()</b>
+<b class="nc">&nbsp;                                                : null,</b>
+<b class="fc">&nbsp;                                        typeDescription.isAnonymousType()</b>
+<b class="nc">&nbsp;                                                ? null</b>
+<b class="fc">&nbsp;                                                : typeDescription.getSimpleName(),</b>
+<b class="fc">&nbsp;                                        typeDescription.getModifiers());</b>
+&nbsp;                                try {
+&nbsp;                                    do {
+<b class="fc">&nbsp;                                        typeDescription = typeDescription.getEnclosingType();</b>
+<b class="fc">&nbsp;                                    } while (typeDescription != null &amp;&amp; !visitedInnerTypes.add(typeDescription.getInternalName()));</b>
+<b class="nc">&nbsp;                                } catch (RuntimeException exception) {</b>
+<b class="nc">&nbsp;                                    if (strict) {</b>
+<b class="nc">&nbsp;                                        throw exception;</b>
+&nbsp;                                    } else {
+<b class="nc">&nbsp;                                        break;</b>
+&nbsp;                                    }
+<b class="fc">&nbsp;                                }</b>
+&nbsp;                            }
+&nbsp;                        }
+<b class="fc">&nbsp;                    } else if (strict) {</b>
+<b class="fc">&nbsp;                        throw new IllegalStateException(&quot;Could not locate type for: &quot; + observedType.replace(&#39;/&#39;, &#39;.&#39;));</b>
+&nbsp;                    }
+&nbsp;                }
+<b class="fc">&nbsp;            }</b>
+<b class="fc">&nbsp;            super.visitEnd();</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Resolves all type references that are referenced by a {@link Type} value.
+&nbsp;         *
+&nbsp;         * @param type The type to resolve.
+&nbsp;         */
+&nbsp;        protected void resolve(Type type) {
+<b class="fc">&nbsp;            if (type.getSort() == Type.METHOD) {</b>
+<b class="fc">&nbsp;                resolve(type.getReturnType());</b>
+<b class="fc">&nbsp;                for (Type argumentType : type.getArgumentTypes()) {</b>
+<b class="fc">&nbsp;                    resolve(argumentType);</b>
+&nbsp;                }
+&nbsp;            } else {
+<b class="fc">&nbsp;                while (type.getSort() == Type.ARRAY) {</b>
+<b class="nc">&nbsp;                    type = type.getElementType();</b>
+&nbsp;                }
+<b class="fc">&nbsp;                if (type.getSort() == Type.OBJECT) {</b>
+<b class="fc">&nbsp;                    observedTypes.add(type.getInternalName());</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Resolves all type references that are referenced by a {@link Handle} value.
+&nbsp;         *
+&nbsp;         * @param handle The handle to resolve.
+&nbsp;         */
+&nbsp;        protected void resolve(Handle handle) {
+<b class="nc">&nbsp;            observedTypes.add(handle.getOwner());</b>
+<b class="nc">&nbsp;            Type methodType = Type.getType(handle.getDesc());</b>
+<b class="nc">&nbsp;            resolve(methodType.getReturnType());</b>
+<b class="nc">&nbsp;            for (Type type : methodType.getArgumentTypes()) {</b>
+<b class="nc">&nbsp;                resolve(type);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Resolves all type references that are referenced by a {@link ConstantDynamic} value.
+&nbsp;         *
+&nbsp;         * @param constant The dynamic constant to resolve.
+&nbsp;         */
+&nbsp;        protected void resolve(ConstantDynamic constant) {
+<b class="nc">&nbsp;            Type methodType = Type.getType(constant.getDescriptor());</b>
+<b class="nc">&nbsp;            resolve(methodType.getReturnType());</b>
+<b class="nc">&nbsp;            for (Type type : methodType.getArgumentTypes()) {</b>
+<b class="nc">&nbsp;                resolve(type);</b>
+&nbsp;            }
+<b class="nc">&nbsp;            resolve(constant.getBootstrapMethod());</b>
+<b class="nc">&nbsp;            for (int index = 0; index &lt; constant.getBootstrapMethodArgumentCount(); index++) {</b>
+<b class="nc">&nbsp;                resolve(constant.getBootstrapMethodArgument(index));</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Observes an internal name of an object type that might be an array type.
+&nbsp;         *
+&nbsp;         * @param internalName The internal name to resolve.
+&nbsp;         */
+&nbsp;        private void observeInternalName(String internalName) {
+<b class="fc">&nbsp;            int index = internalName.lastIndexOf(&#39;[&#39;);</b>
+<b class="fc">&nbsp;            if (index != -1) {</b>
+<b class="nc">&nbsp;                internalName = internalName.substring(index + 2, internalName.length() - 1);</b>
+&nbsp;            }
+<b class="fc">&nbsp;            observedTypes.add(internalName);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Resolves all type references that are referenced by any ASM constant value.
+&nbsp;         *
+&nbsp;         * @param value The unknown constant value to resolve.
+&nbsp;         */
+&nbsp;        protected void resolve(Object value) {
+<b class="fc">&nbsp;            if (value instanceof Type) {</b>
+<b class="fc">&nbsp;                resolve((Type) value);</b>
+<b class="nc">&nbsp;            } else if (value instanceof Handle) {</b>
+<b class="nc">&nbsp;                resolve((Handle) value);</b>
+<b class="nc">&nbsp;            } else if (value instanceof ConstantDynamic) {</b>
+<b class="nc">&nbsp;                resolve((ConstantDynamic) value);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * An annotation visitor that collects all type references.
+&nbsp;         */
+&nbsp;        protected class TypeReferenceAnnotationVisitor extends AnnotationVisitor {
+&nbsp;
+&nbsp;            /**
+&nbsp;             * Creates a new type reference-collecting annotation visitor.
+&nbsp;             *
+&nbsp;             * @param annotationVisitor The annotation visitor to delegate to.
+&nbsp;             */
+<b class="fc">&nbsp;            protected TypeReferenceAnnotationVisitor(AnnotationVisitor annotationVisitor) {</b>
+<b class="fc">&nbsp;                super(OpenedClassReader.ASM_API, annotationVisitor);</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            @Override
+&nbsp;            public void visit(String name, Object value) {
+<b class="nc">&nbsp;                resolve(value);</b>
+<b class="nc">&nbsp;                super.visit(name, value);</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            @Override
+&nbsp;            public void visitEnum(String name, String descriptor, String value) {
+<b class="nc">&nbsp;                observedTypes.add(Type.getType(descriptor).getInternalName());</b>
+<b class="nc">&nbsp;                super.visitEnum(name, descriptor, value);</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            @Override
+&nbsp;            @MaybeNull
+&nbsp;            public AnnotationVisitor visitAnnotation(String name, String descriptor) {
+<b class="nc">&nbsp;                observedTypes.add(Type.getType(descriptor).getInternalName());</b>
+<b class="nc">&nbsp;                AnnotationVisitor annotationVisitor = super.visitAnnotation(name, descriptor);</b>
+<b class="nc">&nbsp;                if (annotationVisitor != null) {</b>
+<b class="nc">&nbsp;                    return new TypeReferenceAnnotationVisitor(annotationVisitor);</b>
+&nbsp;                } else {
+<b class="nc">&nbsp;                    return IGNORE_ANNOTATION;</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;
+&nbsp;            @Override
+&nbsp;            @MaybeNull
+&nbsp;            public AnnotationVisitor visitArray(String name) {
+<b class="nc">&nbsp;                AnnotationVisitor annotationVisitor = super.visitArray(name);</b>
+<b class="nc">&nbsp;                if (annotationVisitor != null) {</b>
+<b class="nc">&nbsp;                    return new TypeReferenceAnnotationVisitor(annotationVisitor);</b>
+&nbsp;                } else {
+<b class="nc">&nbsp;                    return IGNORE_ANNOTATION;</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * A field visitor that collects all type references.
+&nbsp;         */
+&nbsp;        protected class TypeReferenceFieldVisitor extends FieldVisitor {
+&nbsp;
+&nbsp;            /**
+&nbsp;             * Creates a new type reference-collecting field visitor.
+&nbsp;             *
+&nbsp;             * @param fieldVisitor The field visitor to delegate to.
+&nbsp;             */
+<b class="fc">&nbsp;            protected TypeReferenceFieldVisitor(FieldVisitor fieldVisitor) {</b>
+<b class="fc">&nbsp;                super(OpenedClassReader.ASM_API, fieldVisitor);</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            @Override
+&nbsp;            @MaybeNull
+&nbsp;            public AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
+<b class="fc">&nbsp;                observedTypes.add(Type.getType(descriptor).getInternalName());</b>
+<b class="fc">&nbsp;                AnnotationVisitor annotationVisitor = super.visitAnnotation(descriptor, visible);</b>
+<b class="fc">&nbsp;                if (annotationVisitor != null) {</b>
+<b class="fc">&nbsp;                    return new TypeReferenceAnnotationVisitor(annotationVisitor);</b>
+&nbsp;                } else {
+<b class="nc">&nbsp;                    return IGNORE_ANNOTATION;</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * A method visitor that collects all type references.
+&nbsp;         */
+&nbsp;        protected class TypeReferenceMethodVisitor extends MethodVisitor {
+&nbsp;
+&nbsp;            /**
+&nbsp;             * Creates a new type reference-collecting method visitor.
+&nbsp;             *
+&nbsp;             * @param methodVisitor The method visitor to delegate to.
+&nbsp;             */
+<b class="fc">&nbsp;            protected TypeReferenceMethodVisitor(MethodVisitor methodVisitor) {</b>
+<b class="fc">&nbsp;                super(OpenedClassReader.ASM_API, methodVisitor);</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            @Override
+&nbsp;            @MaybeNull
+&nbsp;            public AnnotationVisitor visitAnnotationDefault() {
+<b class="nc">&nbsp;                AnnotationVisitor annotationVisitor = super.visitAnnotationDefault();</b>
+<b class="nc">&nbsp;                if (annotationVisitor != null) {</b>
+<b class="nc">&nbsp;                    return new TypeReferenceAnnotationVisitor(annotationVisitor);</b>
+&nbsp;                } else {
+<b class="nc">&nbsp;                    return IGNORE_ANNOTATION;</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;
+&nbsp;            @Override
+&nbsp;            @MaybeNull
+&nbsp;            public AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
+<b class="fc">&nbsp;                observedTypes.add(Type.getType(descriptor).getInternalName());</b>
+<b class="fc">&nbsp;                AnnotationVisitor annotationVisitor = super.visitAnnotation(descriptor, visible);</b>
+<b class="fc">&nbsp;                if (annotationVisitor != null) {</b>
+<b class="fc">&nbsp;                    return new TypeReferenceAnnotationVisitor(annotationVisitor);</b>
+&nbsp;                } else {
+<b class="nc">&nbsp;                    return IGNORE_ANNOTATION;</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;
+&nbsp;            @Override
+&nbsp;            @MaybeNull
+&nbsp;            public AnnotationVisitor visitTypeAnnotation(int typeReference, @MaybeNull TypePath typePath, String descriptor, boolean visible) {
+<b class="nc">&nbsp;                observedTypes.add(Type.getType(descriptor).getInternalName());</b>
+<b class="nc">&nbsp;                AnnotationVisitor annotationVisitor = super.visitTypeAnnotation(typeReference, typePath, descriptor, visible);</b>
+<b class="nc">&nbsp;                if (annotationVisitor != null) {</b>
+<b class="nc">&nbsp;                    return new TypeReferenceAnnotationVisitor(annotationVisitor);</b>
+&nbsp;                } else {
+<b class="nc">&nbsp;                    return IGNORE_ANNOTATION;</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;
+&nbsp;            @Override
+&nbsp;            @MaybeNull
+&nbsp;            public AnnotationVisitor visitParameterAnnotation(int index, String descriptor, boolean visible) {
+<b class="fc">&nbsp;                observedTypes.add(Type.getType(descriptor).getInternalName());</b>
+<b class="fc">&nbsp;                AnnotationVisitor annotationVisitor = super.visitParameterAnnotation(index, descriptor, visible);</b>
+<b class="fc">&nbsp;                if (annotationVisitor != null) {</b>
+<b class="fc">&nbsp;                    return new TypeReferenceAnnotationVisitor(annotationVisitor);</b>
+&nbsp;                } else {
+<b class="nc">&nbsp;                    return IGNORE_ANNOTATION;</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;
+&nbsp;            @Override
+&nbsp;            @MaybeNull
+&nbsp;            public AnnotationVisitor visitInsnAnnotation(int typeReference, @MaybeNull TypePath typePath, String descriptor, boolean visible) {
+<b class="nc">&nbsp;                observedTypes.add(Type.getType(descriptor).getInternalName());</b>
+<b class="nc">&nbsp;                AnnotationVisitor annotationVisitor = super.visitInsnAnnotation(typeReference, typePath, descriptor, visible);</b>
+<b class="nc">&nbsp;                if (annotationVisitor != null) {</b>
+<b class="nc">&nbsp;                    return new TypeReferenceAnnotationVisitor(annotationVisitor);</b>
+&nbsp;                } else {
+<b class="nc">&nbsp;                    return IGNORE_ANNOTATION;</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;
+&nbsp;            @Override
+&nbsp;            @MaybeNull
+&nbsp;            public AnnotationVisitor visitTryCatchAnnotation(int typeReference, @MaybeNull TypePath typePath, String descriptor, boolean visible) {
+<b class="nc">&nbsp;                observedTypes.add(Type.getType(descriptor).getInternalName());</b>
+<b class="nc">&nbsp;                AnnotationVisitor annotationVisitor = super.visitTryCatchAnnotation(typeReference, typePath, descriptor, visible);</b>
+<b class="nc">&nbsp;                if (annotationVisitor != null) {</b>
+<b class="nc">&nbsp;                    return new TypeReferenceAnnotationVisitor(annotationVisitor);</b>
+&nbsp;                } else {
+<b class="nc">&nbsp;                    return IGNORE_ANNOTATION;</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;
+&nbsp;            @Override
+&nbsp;            @MaybeNull
+&nbsp;            public AnnotationVisitor visitLocalVariableAnnotation(int typeReference,
+&nbsp;                                                                  @MaybeNull TypePath typePath,
+&nbsp;                                                                  Label[] start,
+&nbsp;                                                                  Label[] end,
+&nbsp;                                                                  int[] offset,
+&nbsp;                                                                  String descriptor,
+&nbsp;                                                                  boolean visible) {
+<b class="nc">&nbsp;                observedTypes.add(Type.getType(descriptor).getInternalName());</b>
+<b class="nc">&nbsp;                AnnotationVisitor annotationVisitor = super.visitLocalVariableAnnotation(typeReference, typePath, start, end, offset, descriptor, visible);</b>
+<b class="nc">&nbsp;                if (annotationVisitor != null) {</b>
+<b class="nc">&nbsp;                    return new TypeReferenceAnnotationVisitor(annotationVisitor);</b>
+&nbsp;                } else {
+<b class="nc">&nbsp;                    return IGNORE_ANNOTATION;</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;
+&nbsp;            @Override
+&nbsp;            public void visitTypeInsn(int opcode, String internalName) {
+<b class="nc">&nbsp;                observeInternalName(internalName);</b>
+<b class="nc">&nbsp;                super.visitTypeInsn(opcode, internalName);</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            @Override
+&nbsp;            public void visitFieldInsn(int opcode, String ownerInternalName, String name, String descriptor) {
+<b class="nc">&nbsp;                observeInternalName(ownerInternalName);</b>
+<b class="nc">&nbsp;                resolve(Type.getType(descriptor));</b>
+<b class="nc">&nbsp;                super.visitFieldInsn(opcode, ownerInternalName, name, descriptor);</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            @Override
+&nbsp;            public void visitMethodInsn(int opcode, String ownerInternalName, String name, String descriptor, boolean isInterface) {
+<b class="fc">&nbsp;                observeInternalName(ownerInternalName);</b>
+<b class="fc">&nbsp;                resolve(Type.getType(descriptor));</b>
+<b class="fc">&nbsp;                super.visitMethodInsn(opcode, ownerInternalName, name, descriptor, isInterface);</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            @Override
+&nbsp;            public void visitInvokeDynamicInsn(String name, String descriptor, Handle handle, Object... argument) {
+<b class="nc">&nbsp;                resolve(Type.getType(descriptor));</b>
+<b class="nc">&nbsp;                resolve(handle);</b>
+<b class="nc">&nbsp;                for (Object anArgument : argument) {</b>
+<b class="nc">&nbsp;                    resolve(anArgument);</b>
+&nbsp;                }
+<b class="nc">&nbsp;                super.visitInvokeDynamicInsn(name, descriptor, handle, argument);</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            @Override
+&nbsp;            public void visitLdcInsn(Object value) {
+<b class="fc">&nbsp;                resolve(value);</b>
+<b class="fc">&nbsp;                super.visitLdcInsn(value);</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            @Override
+&nbsp;            public void visitMultiANewArrayInsn(String descriptor, int dimension) {
+<b class="nc">&nbsp;                resolve(Type.getType(descriptor));</b>
+<b class="nc">&nbsp;                super.visitMultiANewArrayInsn(descriptor, dimension);</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            @Override
+&nbsp;            public void visitTryCatchBlock(Label start, Label end, Label handler, @MaybeNull String typeInternalName) {
+<b class="nc">&nbsp;                if (typeInternalName != null) {</b>
+<b class="nc">&nbsp;                    observedTypes.add(typeInternalName);</b>
+&nbsp;                }
+<b class="nc">&nbsp;                super.visitTryCatchBlock(start, end, handler, typeInternalName);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-02 15:48</div>
+</div>
+</body>
+</html>

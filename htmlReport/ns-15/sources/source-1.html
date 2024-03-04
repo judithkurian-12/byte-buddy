@@ -1,0 +1,228 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > AbstractInliningDynamicTypeBuilder</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">net.bytebuddy.dynamic.scaffold.inline</a>
+</div>
+
+<h1>Coverage Summary for Class: AbstractInliningDynamicTypeBuilder (net.bytebuddy.dynamic.scaffold.inline)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AbstractInliningDynamicTypeBuilder</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/4)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Copyright 2014 - Present Rafael Winterhalter
+&nbsp; *
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;package net.bytebuddy.dynamic.scaffold.inline;
+&nbsp;
+&nbsp;import net.bytebuddy.ClassFileVersion;
+&nbsp;import net.bytebuddy.asm.AsmVisitorWrapper;
+&nbsp;import net.bytebuddy.build.HashCodeAndEqualsPlugin;
+&nbsp;import net.bytebuddy.description.method.MethodDescription;
+&nbsp;import net.bytebuddy.description.type.TypeDescription;
+&nbsp;import net.bytebuddy.dynamic.ClassFileLocator;
+&nbsp;import net.bytebuddy.dynamic.DynamicType;
+&nbsp;import net.bytebuddy.dynamic.VisibilityBridgeStrategy;
+&nbsp;import net.bytebuddy.dynamic.scaffold.*;
+&nbsp;import net.bytebuddy.implementation.Implementation;
+&nbsp;import net.bytebuddy.implementation.attribute.AnnotationRetention;
+&nbsp;import net.bytebuddy.implementation.attribute.AnnotationValueFilter;
+&nbsp;import net.bytebuddy.implementation.attribute.TypeAttributeAppender;
+&nbsp;import net.bytebuddy.implementation.auxiliary.AuxiliaryType;
+&nbsp;import net.bytebuddy.matcher.LatentMatcher;
+&nbsp;import net.bytebuddy.pool.TypePool;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;/**
+&nbsp; * An abstract base implementation of a dynamic type builder that alters an existing type.
+&nbsp; *
+&nbsp; * @param &lt;T&gt; A loaded type that the dynamic type is guaranteed to be a subtype of.
+&nbsp; */
+&nbsp;@HashCodeAndEqualsPlugin.Enhance
+&nbsp;public abstract class AbstractInliningDynamicTypeBuilder&lt;T&gt; extends DynamicType.Builder.AbstractBase.Adapter&lt;T&gt; {
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The original type that is being redefined or rebased.
+&nbsp;     */
+&nbsp;    protected final TypeDescription originalType;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The class file locator for locating the original type&#39;s class file.
+&nbsp;     */
+&nbsp;    protected final ClassFileLocator classFileLocator;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates an inlining dynamic type builder.
+&nbsp;     *
+&nbsp;     * @param instrumentedType             An instrumented type representing the subclass.
+&nbsp;     * @param fieldRegistry                The field pool to use.
+&nbsp;     * @param methodRegistry               The method pool to use.
+&nbsp;     * @param recordComponentRegistry      The record component pool to use.
+&nbsp;     * @param typeAttributeAppender        The type attribute appender to apply onto the instrumented type.
+&nbsp;     * @param asmVisitorWrapper            The ASM visitor wrapper to apply onto the class writer.
+&nbsp;     * @param classFileVersion             The class file version to use for types that are not based on an existing class file.
+&nbsp;     * @param auxiliaryTypeNamingStrategy  The naming strategy to use for naming auxiliary types.
+&nbsp;     * @param annotationValueFilterFactory The annotation value filter factory to use.
+&nbsp;     * @param annotationRetention          The annotation retention strategy to use.
+&nbsp;     * @param implementationContextFactory The implementation context factory to use.
+&nbsp;     * @param methodGraphCompiler          The method graph compiler to use.
+&nbsp;     * @param typeValidation               Determines if a type should be explicitly validated.
+&nbsp;     * @param visibilityBridgeStrategy     The visibility bridge strategy to apply.
+&nbsp;     * @param classWriterStrategy          The class writer strategy to use.
+&nbsp;     * @param ignoredMethods               A matcher for identifying methods that should be excluded from instrumentation.
+&nbsp;     * @param auxiliaryTypes               A list of explicitly defined auxiliary types.
+&nbsp;     * @param originalType                 The original type that is being redefined or rebased.
+&nbsp;     * @param classFileLocator             The class file locator for locating the original type&#39;s class file.
+&nbsp;     */
+&nbsp;    protected AbstractInliningDynamicTypeBuilder(InstrumentedType.WithFlexibleName instrumentedType,
+&nbsp;                                                 FieldRegistry fieldRegistry,
+&nbsp;                                                 MethodRegistry methodRegistry,
+&nbsp;                                                 RecordComponentRegistry recordComponentRegistry,
+&nbsp;                                                 TypeAttributeAppender typeAttributeAppender,
+&nbsp;                                                 AsmVisitorWrapper asmVisitorWrapper,
+&nbsp;                                                 ClassFileVersion classFileVersion,
+&nbsp;                                                 AuxiliaryType.NamingStrategy auxiliaryTypeNamingStrategy,
+&nbsp;                                                 AnnotationValueFilter.Factory annotationValueFilterFactory,
+&nbsp;                                                 AnnotationRetention annotationRetention,
+&nbsp;                                                 Implementation.Context.Factory implementationContextFactory,
+&nbsp;                                                 MethodGraph.Compiler methodGraphCompiler,
+&nbsp;                                                 TypeValidation typeValidation,
+&nbsp;                                                 VisibilityBridgeStrategy visibilityBridgeStrategy,
+&nbsp;                                                 ClassWriterStrategy classWriterStrategy,
+&nbsp;                                                 LatentMatcher&lt;? super MethodDescription&gt; ignoredMethods,
+&nbsp;                                                 List&lt;? extends DynamicType&gt; auxiliaryTypes,
+&nbsp;                                                 TypeDescription originalType,
+&nbsp;                                                 ClassFileLocator classFileLocator) {
+<b class="fc">&nbsp;        super(instrumentedType,</b>
+&nbsp;                fieldRegistry,
+&nbsp;                methodRegistry,
+&nbsp;                recordComponentRegistry,
+&nbsp;                typeAttributeAppender,
+&nbsp;                asmVisitorWrapper,
+&nbsp;                classFileVersion,
+&nbsp;                auxiliaryTypeNamingStrategy,
+&nbsp;                annotationValueFilterFactory,
+&nbsp;                annotationRetention,
+&nbsp;                implementationContextFactory,
+&nbsp;                methodGraphCompiler,
+&nbsp;                typeValidation,
+&nbsp;                visibilityBridgeStrategy,
+&nbsp;                classWriterStrategy,
+&nbsp;                ignoredMethods,
+&nbsp;                auxiliaryTypes);
+<b class="fc">&nbsp;        this.originalType = originalType;</b>
+<b class="fc">&nbsp;        this.classFileLocator = classFileLocator;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    protected TypeWriter&lt;T&gt; toTypeWriter() {
+<b class="fc">&nbsp;        return toTypeWriter(TypePool.Default.of(classFileLocator));</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-03 11:00</div>
+</div>
+</body>
+</html>

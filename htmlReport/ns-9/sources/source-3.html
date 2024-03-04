@@ -1,0 +1,786 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > BuildLogger</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">net.bytebuddy.build</a>
+</div>
+
+<h1>Coverage Summary for Class: BuildLogger (net.bytebuddy.build)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+  <tr>
+    <td class="name">BuildLogger$Adapter</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (13/13)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (13/13)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">BuildLogger$Compound</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (14/14)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    98.4%
+  </span>
+  <span class="absValue">
+    (60/61)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">BuildLogger$MockitoMock$1019079911</td>
+  </tr>
+  <tr>
+    <td class="name">BuildLogger$MockitoMock$1019079911$auxiliary$mRpm671W</td>
+  </tr>
+  <tr>
+    <td class="name">BuildLogger$MockitoMock$1019079911$auxiliary$nmAOiI0W</td>
+  </tr>
+  <tr>
+    <td class="name">BuildLogger$NoOp</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (14/14)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (14/14)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">BuildLogger$StreamWriting</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (15/15)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (28/28)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (56/56)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    99.1%
+  </span>
+  <span class="absValue">
+    (115/116)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Copyright 2014 - Present Rafael Winterhalter
+&nbsp; *
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;package net.bytebuddy.build;
+&nbsp;
+&nbsp;import java.io.PrintStream;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.Arrays;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;/**
+&nbsp; * An API that can be implemented by logging build systems to allow plugins to log information without depending on
+&nbsp; * a build system-specific logging API.
+&nbsp; */
+&nbsp;public interface BuildLogger {
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns {@code true} if the debug log level is enabled.
+&nbsp;     *
+&nbsp;     * @return {@code true} if the debug log level is enabled.
+&nbsp;     */
+&nbsp;    boolean isDebugEnabled();
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Logs a message on the debug level.
+&nbsp;     *
+&nbsp;     * @param message The message to log.
+&nbsp;     */
+&nbsp;    void debug(String message);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Logs a message on the debug level.
+&nbsp;     *
+&nbsp;     * @param message   The message to log.
+&nbsp;     * @param throwable A throwable that is attached to the message.
+&nbsp;     */
+&nbsp;    void debug(String message, Throwable throwable);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns {@code true} if the info log level is enabled.
+&nbsp;     *
+&nbsp;     * @return {@code true} if the info log level is enabled.
+&nbsp;     */
+&nbsp;    boolean isInfoEnabled();
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Logs a message on the info level.
+&nbsp;     *
+&nbsp;     * @param message The message to log.
+&nbsp;     */
+&nbsp;    void info(String message);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Logs a message on the info level.
+&nbsp;     *
+&nbsp;     * @param message   The message to log.
+&nbsp;     * @param throwable A throwable that is attached to the message.
+&nbsp;     */
+&nbsp;    void info(String message, Throwable throwable);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns {@code true} if the warn log level is enabled.
+&nbsp;     *
+&nbsp;     * @return {@code true} if the warn log level is enabled.
+&nbsp;     */
+&nbsp;    boolean isWarnEnabled();
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Logs a message on the warn level.
+&nbsp;     *
+&nbsp;     * @param message The message to log.
+&nbsp;     */
+&nbsp;    void warn(String message);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Logs a message on the warn level.
+&nbsp;     *
+&nbsp;     * @param message   The message to log.
+&nbsp;     * @param throwable A throwable that is attached to the message.
+&nbsp;     */
+&nbsp;    void warn(String message, Throwable throwable);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns {@code true} if the error log level is enabled.
+&nbsp;     *
+&nbsp;     * @return {@code true} if the error log level is enabled.
+&nbsp;     */
+&nbsp;    boolean isErrorEnabled();
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Logs a message on the error level.
+&nbsp;     *
+&nbsp;     * @param message The message to log.
+&nbsp;     */
+&nbsp;    void error(String message);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Logs a message on the error level.
+&nbsp;     *
+&nbsp;     * @param message   The message to log.
+&nbsp;     * @param throwable A throwable that is attached to the message.
+&nbsp;     */
+&nbsp;    void error(String message, Throwable throwable);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A non-operational build logger that discards all statements.
+&nbsp;     */
+<b class="fc">&nbsp;    enum NoOp implements BuildLogger {</b>
+&nbsp;
+&nbsp;        /**
+&nbsp;         * The singleton instance.
+&nbsp;         */
+<b class="fc">&nbsp;        INSTANCE;</b>
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public boolean isDebugEnabled() {
+<b class="fc">&nbsp;            return false;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public void debug(String message) {
+&nbsp;            /* empty */
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public void debug(String message, Throwable throwable) {
+&nbsp;            /* empty */
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public boolean isInfoEnabled() {
+<b class="fc">&nbsp;            return false;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public void info(String message) {
+&nbsp;            /* empty */
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public void info(String message, Throwable throwable) {
+&nbsp;            /* empty */
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public boolean isWarnEnabled() {
+<b class="fc">&nbsp;            return false;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public void warn(String message) {
+&nbsp;            /* empty */
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public void warn(String message, Throwable throwable) {
+&nbsp;            /* empty */
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public boolean isErrorEnabled() {
+<b class="fc">&nbsp;            return false;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public void error(String message) {
+&nbsp;            /* empty */
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public void error(String message, Throwable throwable) {
+&nbsp;            /* empty */
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * An abstract adapter implementation for a build logger.
+&nbsp;     */
+<b class="fc">&nbsp;    abstract class Adapter implements BuildLogger {</b>
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public boolean isDebugEnabled() {
+<b class="fc">&nbsp;            return false;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public void debug(String message) {
+&nbsp;            /* empty */
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public void debug(String message, Throwable throwable) {
+&nbsp;            /* empty */
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public boolean isInfoEnabled() {
+<b class="fc">&nbsp;            return false;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public void info(String message) {
+&nbsp;            /* empty */
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public void info(String message, Throwable throwable) {
+&nbsp;            /* empty */
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public boolean isWarnEnabled() {
+<b class="fc">&nbsp;            return false;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public void warn(String message) {
+&nbsp;            /* empty */
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public void warn(String message, Throwable throwable) {
+&nbsp;            /* empty */
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public boolean isErrorEnabled() {
+<b class="fc">&nbsp;            return false;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public void error(String message) {
+&nbsp;            /* empty */
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public void error(String message, Throwable throwable) {
+&nbsp;            /* empty */
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A build logger that writes all statements to a {@link PrintStream}.
+&nbsp;     */
+&nbsp;    @HashCodeAndEqualsPlugin.Enhance
+&nbsp;    class StreamWriting implements BuildLogger {
+&nbsp;
+&nbsp;        /**
+&nbsp;         * The target for writing statements.
+&nbsp;         */
+&nbsp;        private final PrintStream printStream;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Creates a new stream writing build logger.
+&nbsp;         *
+&nbsp;         * @param printStream The target for writing statements.
+&nbsp;         */
+<b class="fc">&nbsp;        public StreamWriting(PrintStream printStream) {</b>
+<b class="fc">&nbsp;            this.printStream = printStream;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Creates a build logger that writes to {@link System#out}.
+&nbsp;         *
+&nbsp;         * @return A build logger that writes to {@link System#out}.
+&nbsp;         */
+&nbsp;        public static BuildLogger toSystemOut() {
+<b class="fc">&nbsp;            return new StreamWriting(System.out);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Creates a build logger that writes to {@link System#err}.
+&nbsp;         *
+&nbsp;         * @return A build logger that writes to {@link System#err}.
+&nbsp;         */
+&nbsp;        public static BuildLogger toSystemError() {
+<b class="fc">&nbsp;            return new StreamWriting(System.err);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public boolean isDebugEnabled() {
+<b class="fc">&nbsp;            return true;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public void debug(String message) {
+<b class="fc">&nbsp;            printStream.print(message);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public void debug(String message, Throwable throwable) {
+<b class="fc">&nbsp;            synchronized (printStream) {</b>
+<b class="fc">&nbsp;                printStream.print(message);</b>
+<b class="fc">&nbsp;                throwable.printStackTrace(printStream);</b>
+<b class="fc">&nbsp;            }</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public boolean isInfoEnabled() {
+<b class="fc">&nbsp;            return true;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public void info(String message) {
+<b class="fc">&nbsp;            printStream.print(message);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public void info(String message, Throwable throwable) {
+<b class="fc">&nbsp;            synchronized (printStream) {</b>
+<b class="fc">&nbsp;                printStream.print(message);</b>
+<b class="fc">&nbsp;                throwable.printStackTrace(printStream);</b>
+<b class="fc">&nbsp;            }</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public boolean isWarnEnabled() {
+<b class="fc">&nbsp;            return true;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public void warn(String message) {
+<b class="fc">&nbsp;            printStream.print(message);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public void warn(String message, Throwable throwable) {
+<b class="fc">&nbsp;            synchronized (printStream) {</b>
+<b class="fc">&nbsp;                printStream.print(message);</b>
+<b class="fc">&nbsp;                throwable.printStackTrace(printStream);</b>
+<b class="fc">&nbsp;            }</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public boolean isErrorEnabled() {
+<b class="fc">&nbsp;            return true;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public void error(String message) {
+<b class="fc">&nbsp;            printStream.print(message);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public void error(String message, Throwable throwable) {
+<b class="fc">&nbsp;            synchronized (printStream) {</b>
+<b class="fc">&nbsp;                printStream.print(message);</b>
+<b class="fc">&nbsp;                throwable.printStackTrace(printStream);</b>
+<b class="fc">&nbsp;            }</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A compound build logger.
+&nbsp;     */
+&nbsp;    @HashCodeAndEqualsPlugin.Enhance
+&nbsp;    class Compound implements BuildLogger {
+&nbsp;
+&nbsp;        /**
+&nbsp;         * The build loggers to delegate to.
+&nbsp;         */
+&nbsp;        private final List&lt;BuildLogger&gt; buildLoggers;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Creates a new compound build logger.
+&nbsp;         *
+&nbsp;         * @param buildLogger The build loggers to delegate to.
+&nbsp;         */
+&nbsp;        public Compound(BuildLogger... buildLogger) {
+<b class="fc">&nbsp;            this(Arrays.asList(buildLogger));</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Creates a new compound build logger.
+&nbsp;         *
+&nbsp;         * @param buildLoggers The build loggers to delegate to.
+&nbsp;         */
+<b class="fc">&nbsp;        public Compound(List&lt;? extends BuildLogger&gt; buildLoggers) {</b>
+<b class="fc">&nbsp;            this.buildLoggers = new ArrayList&lt;BuildLogger&gt;();</b>
+<b class="fc">&nbsp;            for (BuildLogger buildLogger : buildLoggers) {</b>
+<b class="fc">&nbsp;                if (buildLogger instanceof Compound) {</b>
+<b class="nc">&nbsp;                    this.buildLoggers.addAll(((Compound) buildLogger).buildLoggers);</b>
+<b class="fc">&nbsp;                } else if (!(buildLogger instanceof NoOp)) {</b>
+<b class="fc">&nbsp;                    this.buildLoggers.add(buildLogger);</b>
+&nbsp;                }
+<b class="fc">&nbsp;            }</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public boolean isDebugEnabled() {
+<b class="fc">&nbsp;            for (BuildLogger buildLogger : buildLoggers) {</b>
+<b class="fc">&nbsp;                if (buildLogger.isDebugEnabled()) {</b>
+<b class="fc">&nbsp;                    return true;</b>
+&nbsp;                }
+<b class="fc">&nbsp;            }</b>
+<b class="fc">&nbsp;            return false;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public void debug(String message) {
+<b class="fc">&nbsp;            for (BuildLogger buildLogger : buildLoggers) {</b>
+<b class="fc">&nbsp;                if (buildLogger.isDebugEnabled()) {</b>
+<b class="fc">&nbsp;                    buildLogger.debug(message);</b>
+&nbsp;                }
+<b class="fc">&nbsp;            }</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public void debug(String message, Throwable throwable) {
+<b class="fc">&nbsp;            for (BuildLogger buildLogger : buildLoggers) {</b>
+<b class="fc">&nbsp;                if (buildLogger.isDebugEnabled()) {</b>
+<b class="fc">&nbsp;                    buildLogger.debug(message, throwable);</b>
+&nbsp;                }
+<b class="fc">&nbsp;            }</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public boolean isInfoEnabled() {
+<b class="fc">&nbsp;            for (BuildLogger buildLogger : buildLoggers) {</b>
+<b class="fc">&nbsp;                if (buildLogger.isInfoEnabled()) {</b>
+<b class="fc">&nbsp;                    return true;</b>
+&nbsp;                }
+<b class="fc">&nbsp;            }</b>
+<b class="fc">&nbsp;            return false;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public void info(String message) {
+<b class="fc">&nbsp;            for (BuildLogger buildLogger : buildLoggers) {</b>
+<b class="fc">&nbsp;                if (buildLogger.isInfoEnabled()) {</b>
+<b class="fc">&nbsp;                    buildLogger.info(message);</b>
+&nbsp;                }
+<b class="fc">&nbsp;            }</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public void info(String message, Throwable throwable) {
+<b class="fc">&nbsp;            for (BuildLogger buildLogger : buildLoggers) {</b>
+<b class="fc">&nbsp;                if (buildLogger.isInfoEnabled()) {</b>
+<b class="fc">&nbsp;                    buildLogger.info(message, throwable);</b>
+&nbsp;                }
+<b class="fc">&nbsp;            }</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public boolean isWarnEnabled() {
+<b class="fc">&nbsp;            for (BuildLogger buildLogger : buildLoggers) {</b>
+<b class="fc">&nbsp;                if (buildLogger.isWarnEnabled()) {</b>
+<b class="fc">&nbsp;                    return true;</b>
+&nbsp;                }
+<b class="fc">&nbsp;            }</b>
+<b class="fc">&nbsp;            return false;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public void warn(String message) {
+<b class="fc">&nbsp;            for (BuildLogger buildLogger : buildLoggers) {</b>
+<b class="fc">&nbsp;                if (buildLogger.isWarnEnabled()) {</b>
+<b class="fc">&nbsp;                    buildLogger.warn(message);</b>
+&nbsp;                }
+<b class="fc">&nbsp;            }</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public void warn(String message, Throwable throwable) {
+<b class="fc">&nbsp;            for (BuildLogger buildLogger : buildLoggers) {</b>
+<b class="fc">&nbsp;                if (buildLogger.isWarnEnabled()) {</b>
+<b class="fc">&nbsp;                    buildLogger.warn(message, throwable);</b>
+&nbsp;                }
+<b class="fc">&nbsp;            }</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public boolean isErrorEnabled() {
+<b class="fc">&nbsp;            for (BuildLogger buildLogger : buildLoggers) {</b>
+<b class="fc">&nbsp;                if (buildLogger.isErrorEnabled()) {</b>
+<b class="fc">&nbsp;                    return true;</b>
+&nbsp;                }
+<b class="fc">&nbsp;            }</b>
+<b class="fc">&nbsp;            return false;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public void error(String message) {
+<b class="fc">&nbsp;            for (BuildLogger buildLogger : buildLoggers) {</b>
+<b class="fc">&nbsp;                if (buildLogger.isErrorEnabled()) {</b>
+<b class="fc">&nbsp;                    buildLogger.error(message);</b>
+&nbsp;                }
+<b class="fc">&nbsp;            }</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public void error(String message, Throwable throwable) {
+<b class="fc">&nbsp;            for (BuildLogger buildLogger : buildLoggers) {</b>
+<b class="fc">&nbsp;                if (buildLogger.isErrorEnabled()) {</b>
+<b class="fc">&nbsp;                    buildLogger.error(message, throwable);</b>
+&nbsp;                }
+<b class="fc">&nbsp;            }</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-03 11:00</div>
+</div>
+</body>
+</html>

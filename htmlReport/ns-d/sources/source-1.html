@@ -1,0 +1,356 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > EnumerationDescription</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">net.bytebuddy.description.enumeration</a>
+</div>
+
+<h1>Coverage Summary for Class: EnumerationDescription (net.bytebuddy.description.enumeration)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+  <tr>
+    <td class="name">EnumerationDescription$AbstractBase</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (5/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (10/10)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">EnumerationDescription$ForLoadedEnumeration</td>
+<td class="coverageStat">
+  <span class="percent">
+    80%
+  </span>
+  <span class="absValue">
+    (4/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    63.6%
+  </span>
+  <span class="absValue">
+    (7/11)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">EnumerationDescription$Latent</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (8/8)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">EnumerationDescription$MockitoMock$604552658</td>
+  </tr>
+  <tr>
+    <td class="name">EnumerationDescription$MockitoMock$604552658$auxiliary$1dQ63C24</td>
+  </tr>
+  <tr>
+    <td class="name">EnumerationDescription$MockitoMock$604552658$auxiliary$YjQeIIcX</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    92.9%
+  </span>
+  <span class="absValue">
+    (13/14)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    86.2%
+  </span>
+  <span class="absValue">
+    (25/29)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Copyright 2014 - Present Rafael Winterhalter
+&nbsp; *
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;package net.bytebuddy.description.enumeration;
+&nbsp;
+&nbsp;import net.bytebuddy.build.CachedReturnPlugin;
+&nbsp;import net.bytebuddy.description.NamedElement;
+&nbsp;import net.bytebuddy.description.type.TypeDescription;
+&nbsp;import net.bytebuddy.utility.nullability.MaybeNull;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;/**
+&nbsp; * Describes an enumeration value. Note that the {@link java.lang.Object#toString} method always returns the
+&nbsp; * value as if the method was not overridden, i.e. the name of the enumeration constant.
+&nbsp; */
+&nbsp;public interface EnumerationDescription extends NamedElement {
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns the name of this instance&#39;s enumeration value.
+&nbsp;     *
+&nbsp;     * @return The name of this enumeration constant.
+&nbsp;     */
+&nbsp;    String getValue();
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns the type of this enumeration.
+&nbsp;     *
+&nbsp;     * @return The type of this enumeration.
+&nbsp;     */
+&nbsp;    TypeDescription getEnumerationType();
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Prepares this enumeration value to be loaded.
+&nbsp;     *
+&nbsp;     * @param type A type constant representing the enumeration value.
+&nbsp;     * @param &lt;T&gt;  The enumeration type.
+&nbsp;     * @return The loaded enumeration constant corresponding to this value.
+&nbsp;     */
+&nbsp;    &lt;T extends Enum&lt;T&gt;&gt; T load(Class&lt;T&gt; type);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * An adapter implementation of an enumeration description.
+&nbsp;     */
+<b class="fc">&nbsp;    abstract class AbstractBase implements EnumerationDescription {</b>
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public String getActualName() {
+<b class="fc">&nbsp;            return getValue();</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        @Override
+&nbsp;        @CachedReturnPlugin.Enhance(&quot;hashCode&quot;)
+&nbsp;        public int hashCode() {
+<b class="fc">&nbsp;            return getValue().hashCode() + 31 * getEnumerationType().hashCode();</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public boolean equals(@MaybeNull Object other) {
+<b class="fc">&nbsp;            if (this == other) {</b>
+<b class="fc">&nbsp;                return true;</b>
+<b class="fc">&nbsp;            } else if (!(other instanceof EnumerationDescription)) {</b>
+<b class="fc">&nbsp;                return false;</b>
+&nbsp;            }
+<b class="fc">&nbsp;            EnumerationDescription enumerationDescription = (EnumerationDescription) other;</b>
+<b class="fc">&nbsp;            return getEnumerationType().equals(enumerationDescription.getEnumerationType()) &amp;&amp; getValue().equals(enumerationDescription.getValue());</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public String toString() {
+<b class="fc">&nbsp;            return getValue();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * An enumeration description representing a loaded enumeration.
+&nbsp;     */
+&nbsp;    class ForLoadedEnumeration extends AbstractBase {
+&nbsp;
+&nbsp;        /**
+&nbsp;         * The loaded enumeration value.
+&nbsp;         */
+&nbsp;        private final Enum&lt;?&gt; value;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Creates a new enumeration value representation for a loaded enumeration.
+&nbsp;         *
+&nbsp;         * @param value The value to represent.
+&nbsp;         */
+<b class="fc">&nbsp;        public ForLoadedEnumeration(Enum&lt;?&gt; value) {</b>
+<b class="fc">&nbsp;            this.value = value;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Enlists a given array of loaded enumerations as enumeration values.
+&nbsp;         *
+&nbsp;         * @param enumerations The enumerations to represent.
+&nbsp;         * @return A list of the given enumerations.
+&nbsp;         */
+&nbsp;        public static List&lt;EnumerationDescription&gt; asList(Enum&lt;?&gt;[] enumerations) {
+<b class="nc">&nbsp;            List&lt;EnumerationDescription&gt; result = new ArrayList&lt;EnumerationDescription&gt;(enumerations.length);</b>
+<b class="nc">&nbsp;            for (Enum&lt;?&gt; enumeration : enumerations) {</b>
+<b class="nc">&nbsp;                result.add(new ForLoadedEnumeration(enumeration));</b>
+&nbsp;            }
+<b class="nc">&nbsp;            return result;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public String getValue() {
+<b class="fc">&nbsp;            return value.name();</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public TypeDescription getEnumerationType() {
+<b class="fc">&nbsp;            return TypeDescription.ForLoadedType.of(value.getDeclaringClass());</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        @SuppressWarnings(&quot;unchecked&quot;)
+&nbsp;        public &lt;T extends Enum&lt;T&gt;&gt; T load(Class&lt;T&gt; type) {
+<b class="fc">&nbsp;            return value.getDeclaringClass() == type</b>
+<b class="fc">&nbsp;                    ? (T) value</b>
+<b class="fc">&nbsp;                    : Enum.valueOf(type, value.name());</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A latent description of an enumeration value.
+&nbsp;     */
+&nbsp;    class Latent extends AbstractBase {
+&nbsp;
+&nbsp;        /**
+&nbsp;         * The type of the enumeration.
+&nbsp;         */
+&nbsp;        private final TypeDescription enumerationType;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * The value of the enumeration.
+&nbsp;         */
+&nbsp;        private final String value;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Creates a latent description of an enumeration value.
+&nbsp;         *
+&nbsp;         * @param enumerationType The enumeration type.
+&nbsp;         * @param value           The value of the enumeration.
+&nbsp;         */
+<b class="fc">&nbsp;        public Latent(TypeDescription enumerationType, String value) {</b>
+<b class="fc">&nbsp;            this.enumerationType = enumerationType;</b>
+<b class="fc">&nbsp;            this.value = value;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public String getValue() {
+<b class="fc">&nbsp;            return value;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public TypeDescription getEnumerationType() {
+<b class="fc">&nbsp;            return enumerationType;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public &lt;T extends Enum&lt;T&gt;&gt; T load(Class&lt;T&gt; type) {
+<b class="fc">&nbsp;            if (!enumerationType.represents(type)) {</b>
+<b class="fc">&nbsp;                throw new IllegalArgumentException(type + &quot; does not represent &quot; + enumerationType);</b>
+&nbsp;            }
+<b class="fc">&nbsp;            return Enum.valueOf(type, value);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-03 11:00</div>
+</div>
+</body>
+</html>

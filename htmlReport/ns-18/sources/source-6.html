@@ -1,0 +1,454 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > RecordComponentAttributeAppender</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">net.bytebuddy.implementation.attribute</a>
+</div>
+
+<h1>Coverage Summary for Class: RecordComponentAttributeAppender (net.bytebuddy.implementation.attribute)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+  <tr>
+    <td class="name">RecordComponentAttributeAppender$Compound</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    91.7%
+  </span>
+  <span class="absValue">
+    (11/12)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">RecordComponentAttributeAppender$Explicit</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/7)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">RecordComponentAttributeAppender$Factory</td>
+  </tr>
+  <tr>
+    <td class="name">RecordComponentAttributeAppender$Factory$Compound</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    92.9%
+  </span>
+  <span class="absValue">
+    (13/14)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">RecordComponentAttributeAppender$Factory$MockitoMock$752757688</td>
+  </tr>
+  <tr>
+    <td class="name">RecordComponentAttributeAppender$Factory$MockitoMock$752757688$auxiliary$hdUMNy8w</td>
+  </tr>
+  <tr>
+    <td class="name">RecordComponentAttributeAppender$Factory$MockitoMock$752757688$auxiliary$wLkvYH4h</td>
+  </tr>
+  <tr>
+    <td class="name">RecordComponentAttributeAppender$ForInstrumentedRecordComponent</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (8/8)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">RecordComponentAttributeAppender$MockitoMock$1999856021</td>
+  </tr>
+  <tr>
+    <td class="name">RecordComponentAttributeAppender$MockitoMock$1999856021$auxiliary$IvIeve58</td>
+  </tr>
+  <tr>
+    <td class="name">RecordComponentAttributeAppender$MockitoMock$1999856021$auxiliary$oz1fJvtI</td>
+  </tr>
+  <tr>
+    <td class="name">RecordComponentAttributeAppender$NoOp</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/4)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (17/17)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    95.6%
+  </span>
+  <span class="absValue">
+    (43/45)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Copyright 2014 - Present Rafael Winterhalter
+&nbsp; *
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;package net.bytebuddy.implementation.attribute;
+&nbsp;
+&nbsp;import net.bytebuddy.build.HashCodeAndEqualsPlugin;
+&nbsp;import net.bytebuddy.description.annotation.AnnotationDescription;
+&nbsp;import net.bytebuddy.description.type.RecordComponentDescription;
+&nbsp;import net.bytebuddy.description.type.TypeDescription;
+&nbsp;import org.objectweb.asm.RecordComponentVisitor;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.Arrays;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;/**
+&nbsp; * An appender that writes attributes or annotations to a given ASM {@link RecordComponentVisitor}.
+&nbsp; */
+&nbsp;public interface RecordComponentAttributeAppender {
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Applies this attribute appender to a given record component visitor.
+&nbsp;     *
+&nbsp;     * @param recordComponentVisitor     The record component visitor to which the attributes that are represented by this attribute appender are written to.
+&nbsp;     * @param recordComponentDescription The description of the record component to which the record component visitor belongs to.
+&nbsp;     * @param annotationValueFilter      The annotation value filter to apply when writing annotations.
+&nbsp;     */
+&nbsp;    void apply(RecordComponentVisitor recordComponentVisitor, RecordComponentDescription recordComponentDescription, AnnotationValueFilter annotationValueFilter);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A record component attribute appender that does not append any attributes.
+&nbsp;     */
+<b class="fc">&nbsp;    enum NoOp implements RecordComponentAttributeAppender, Factory {</b>
+&nbsp;
+&nbsp;        /**
+&nbsp;         * The singleton instance.
+&nbsp;         */
+<b class="fc">&nbsp;        INSTANCE;</b>
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public RecordComponentAttributeAppender make(TypeDescription typeDescription) {
+<b class="fc">&nbsp;            return this;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public void apply(RecordComponentVisitor recordComponentVisitor, RecordComponentDescription recordComponentDescription, AnnotationValueFilter annotationValueFilter) {
+&nbsp;            /* do nothing */
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A factory that creates record component attribute appenders for a given type.
+&nbsp;     */
+&nbsp;    interface Factory {
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Returns a record component attribute appender that is applicable for a given type description.
+&nbsp;         *
+&nbsp;         * @param typeDescription The type for which a record component attribute appender is to be applied for.
+&nbsp;         * @return The record component attribute appender which should be applied for the given type.
+&nbsp;         */
+&nbsp;        RecordComponentAttributeAppender make(TypeDescription typeDescription);
+&nbsp;
+&nbsp;        /**
+&nbsp;         * A record component attribute appender factory that combines several record component attribute appender factories to be
+&nbsp;         * represented as a single factory.
+&nbsp;         */
+&nbsp;        @HashCodeAndEqualsPlugin.Enhance
+&nbsp;        class Compound implements Factory {
+&nbsp;
+&nbsp;            /**
+&nbsp;             * The factories that this compound factory represents in their application order.
+&nbsp;             */
+&nbsp;            private final List&lt;Factory&gt; factories;
+&nbsp;
+&nbsp;            /**
+&nbsp;             * Creates a new compound record component attribute appender factory.
+&nbsp;             *
+&nbsp;             * @param factory The factories to represent in the order of their application.
+&nbsp;             */
+&nbsp;            public Compound(Factory... factory) {
+<b class="fc">&nbsp;                this(Arrays.asList(factory));</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            /**
+&nbsp;             * Creates a new compound record component attribute appender factory.
+&nbsp;             *
+&nbsp;             * @param factories The factories to represent in the order of their application.
+&nbsp;             */
+<b class="fc">&nbsp;            public Compound(List&lt;? extends Factory&gt; factories) {</b>
+<b class="fc">&nbsp;                this.factories = new ArrayList&lt;Factory&gt;();</b>
+<b class="fc">&nbsp;                for (Factory factory : factories) {</b>
+<b class="fc">&nbsp;                    if (factory instanceof Compound) {</b>
+<b class="nc">&nbsp;                        this.factories.addAll(((Compound) factory).factories);</b>
+<b class="fc">&nbsp;                    } else if (!(factory instanceof NoOp)) {</b>
+<b class="fc">&nbsp;                        this.factories.add(factory);</b>
+&nbsp;                    }
+<b class="fc">&nbsp;                }</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            /**
+&nbsp;             * {@inheritDoc}
+&nbsp;             */
+&nbsp;            public RecordComponentAttributeAppender make(TypeDescription typeDescription) {
+<b class="fc">&nbsp;                List&lt;RecordComponentAttributeAppender&gt; recordComponentAttributeAppenders = new ArrayList&lt;RecordComponentAttributeAppender&gt;(factories.size());</b>
+<b class="fc">&nbsp;                for (Factory factory : factories) {</b>
+<b class="fc">&nbsp;                    recordComponentAttributeAppenders.add(factory.make(typeDescription));</b>
+<b class="fc">&nbsp;                }</b>
+<b class="fc">&nbsp;                return new RecordComponentAttributeAppender.Compound(recordComponentAttributeAppenders);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * An attribute appender that writes all annotations that are declared on a record component.
+&nbsp;     */
+<b class="fc">&nbsp;    enum ForInstrumentedRecordComponent implements RecordComponentAttributeAppender, Factory {</b>
+&nbsp;
+&nbsp;        /**
+&nbsp;         * The singleton instance.
+&nbsp;         */
+<b class="fc">&nbsp;        INSTANCE;</b>
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public void apply(RecordComponentVisitor recordComponentVisitor, RecordComponentDescription recordComponentDescription, AnnotationValueFilter annotationValueFilter) {
+<b class="fc">&nbsp;            AnnotationAppender annotationAppender = new AnnotationAppender.Default(new AnnotationAppender.Target.OnRecordComponent(recordComponentVisitor));</b>
+<b class="fc">&nbsp;            annotationAppender = recordComponentDescription.getType().accept(AnnotationAppender.ForTypeAnnotations.ofFieldType(annotationAppender, annotationValueFilter));</b>
+<b class="fc">&nbsp;            for (AnnotationDescription annotation : recordComponentDescription.getDeclaredAnnotations()) {</b>
+<b class="fc">&nbsp;                annotationAppender = annotationAppender.append(annotation, annotationValueFilter);</b>
+<b class="fc">&nbsp;            }</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public RecordComponentAttributeAppender make(TypeDescription typeDescription) {
+<b class="fc">&nbsp;            return this;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Appends an annotation to a record component. The visibility of the annotation is determined by the annotation type&#39;s
+&nbsp;     * {@link java.lang.annotation.RetentionPolicy} annotation.
+&nbsp;     */
+&nbsp;    @HashCodeAndEqualsPlugin.Enhance
+&nbsp;    class Explicit implements RecordComponentAttributeAppender, Factory {
+&nbsp;
+&nbsp;        /**
+&nbsp;         * The annotations that this appender appends.
+&nbsp;         */
+&nbsp;        private final List&lt;? extends AnnotationDescription&gt; annotations;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Creates a new annotation attribute appender for explicit annotation values. All values, including default values, are copied.
+&nbsp;         *
+&nbsp;         * @param annotations The annotations to be appended to the record component.
+&nbsp;         */
+<b class="fc">&nbsp;        public Explicit(List&lt;? extends AnnotationDescription&gt; annotations) {</b>
+<b class="fc">&nbsp;            this.annotations = annotations;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public void apply(RecordComponentVisitor recordComponentVisitor, RecordComponentDescription recordComponentDescription, AnnotationValueFilter annotationValueFilter) {
+<b class="fc">&nbsp;            AnnotationAppender appender = new AnnotationAppender.Default(new AnnotationAppender.Target.OnRecordComponent(recordComponentVisitor));</b>
+<b class="fc">&nbsp;            for (AnnotationDescription annotation : annotations) {</b>
+<b class="fc">&nbsp;                appender = appender.append(annotation, annotationValueFilter);</b>
+<b class="fc">&nbsp;            }</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public RecordComponentAttributeAppender make(TypeDescription typeDescription) {
+<b class="fc">&nbsp;            return this;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A record component attribute appender that combines several method attribute appenders to be represented as a single
+&nbsp;     * record component attribute appender.
+&nbsp;     */
+&nbsp;    @HashCodeAndEqualsPlugin.Enhance
+&nbsp;    class Compound implements RecordComponentAttributeAppender {
+&nbsp;
+&nbsp;        /**
+&nbsp;         * The record component attribute appenders this appender represents in their application order.
+&nbsp;         */
+&nbsp;        private final List&lt;RecordComponentAttributeAppender&gt; recordComponentAttributeAppenders;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Creates a new compound record component attribute appender.
+&nbsp;         *
+&nbsp;         * @param recordComponentAttributeAppender The record component attribute appenders that are to be combined by this compound appender
+&nbsp;         *                                         in the order of their application.
+&nbsp;         */
+&nbsp;        public Compound(RecordComponentAttributeAppender... recordComponentAttributeAppender) {
+<b class="fc">&nbsp;            this(Arrays.asList(recordComponentAttributeAppender));</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Creates a new compound record component attribute appender.
+&nbsp;         *
+&nbsp;         * @param recordComponentAttributeAppenders The record component attribute appenders that are to be combined by this compound appender
+&nbsp;         *                                          in the order of their application.
+&nbsp;         */
+<b class="fc">&nbsp;        public Compound(List&lt;? extends RecordComponentAttributeAppender&gt; recordComponentAttributeAppenders) {</b>
+<b class="fc">&nbsp;            this.recordComponentAttributeAppenders = new ArrayList&lt;RecordComponentAttributeAppender&gt;();</b>
+<b class="fc">&nbsp;            for (RecordComponentAttributeAppender recordComponentAttributeAppender : recordComponentAttributeAppenders) {</b>
+<b class="fc">&nbsp;                if (recordComponentAttributeAppender instanceof Compound) {</b>
+<b class="nc">&nbsp;                    this.recordComponentAttributeAppenders.addAll(((Compound) recordComponentAttributeAppender).recordComponentAttributeAppenders);</b>
+<b class="fc">&nbsp;                } else if (!(recordComponentAttributeAppender instanceof NoOp)) {</b>
+<b class="fc">&nbsp;                    this.recordComponentAttributeAppenders.add(recordComponentAttributeAppender);</b>
+&nbsp;                }
+<b class="fc">&nbsp;            }</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public void apply(RecordComponentVisitor recordComponentVisitor, RecordComponentDescription recordComponentDescription, AnnotationValueFilter annotationValueFilter) {
+<b class="fc">&nbsp;            for (RecordComponentAttributeAppender recordComponentAttributeAppender : recordComponentAttributeAppenders) {</b>
+<b class="fc">&nbsp;                recordComponentAttributeAppender.apply(recordComponentVisitor, recordComponentDescription, annotationValueFilter);</b>
+<b class="fc">&nbsp;            }</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-03 11:00</div>
+</div>
+</body>
+</html>

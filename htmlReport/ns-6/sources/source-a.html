@@ -1,0 +1,264 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > RepeatedAnnotationPlugin</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">net.bytebuddy.build</a>
+</div>
+
+<h1>Coverage Summary for Class: RepeatedAnnotationPlugin (net.bytebuddy.build)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">RepeatedAnnotationPlugin</td>
+<td class="coverageStat">
+  <span class="percent">
+    75%
+  </span>
+  <span class="absValue">
+    (3/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    88.9%
+  </span>
+  <span class="absValue">
+    (16/18)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">RepeatedAnnotationPlugin$Enhance</td>
+  </tr>
+  <tr>
+    <td class="name">RepeatedAnnotationPlugin$RepeatedAnnotationAppender</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/6)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    83.3%
+  </span>
+  <span class="absValue">
+    (5/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    91.7%
+  </span>
+  <span class="absValue">
+    (22/24)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Copyright 2014 - Present Rafael Winterhalter
+&nbsp; *
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;package net.bytebuddy.build;
+&nbsp;
+&nbsp;import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+&nbsp;import net.bytebuddy.description.method.MethodDescription;
+&nbsp;import net.bytebuddy.description.type.TypeDescription;
+&nbsp;import net.bytebuddy.dynamic.ClassFileLocator;
+&nbsp;import net.bytebuddy.dynamic.DynamicType;
+&nbsp;import net.bytebuddy.implementation.attribute.AnnotationValueFilter;
+&nbsp;import net.bytebuddy.implementation.attribute.TypeAttributeAppender;
+&nbsp;import org.objectweb.asm.AnnotationVisitor;
+&nbsp;import org.objectweb.asm.ClassVisitor;
+&nbsp;import org.objectweb.asm.Type;
+&nbsp;
+&nbsp;import java.lang.annotation.*;
+&nbsp;
+&nbsp;import static net.bytebuddy.matcher.ElementMatchers.isAnnotatedWith;
+&nbsp;import static net.bytebuddy.matcher.ElementMatchers.named;
+&nbsp;
+&nbsp;/**
+&nbsp; * A plugin that allows for adding a {@code java.lang.annotation.Repeatable} annotation even if compiled prior to
+&nbsp; * Java 8 which introduces this annotation. As the annotation is not present on previous JVM versions, it is ignored
+&nbsp; * at runtime for older JVM versions what makes this approach feasible.
+&nbsp; */
+&nbsp;@HashCodeAndEqualsPlugin.Enhance
+&nbsp;public class RepeatedAnnotationPlugin extends Plugin.ForElementMatcher {
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A description of the {@link Enhance#value()} method.
+&nbsp;     */
+<b class="fc">&nbsp;    private static final MethodDescription.InDefinedShape VALUE = TypeDescription.ForLoadedType.of(Enhance.class)</b>
+<b class="fc">&nbsp;            .getDeclaredMethods()</b>
+<b class="fc">&nbsp;            .filter(named(&quot;value&quot;))</b>
+<b class="fc">&nbsp;            .getOnly();</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a new plugin for creating repeated annotations.
+&nbsp;     */
+&nbsp;    public RepeatedAnnotationPlugin() {
+<b class="fc">&nbsp;        super(isAnnotatedWith(Enhance.class));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    @SuppressFBWarnings(value = &quot;NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE&quot;, justification = &quot;Assuming component type for array type.&quot;)
+&nbsp;    public DynamicType.Builder&lt;?&gt; apply(DynamicType.Builder&lt;?&gt; builder, TypeDescription typeDescription, ClassFileLocator classFileLocator) {
+<b class="fc">&nbsp;        TypeDescription target = typeDescription.getDeclaredAnnotations()</b>
+<b class="fc">&nbsp;                .ofType(Enhance.class)</b>
+<b class="fc">&nbsp;                .getValue(VALUE)</b>
+<b class="fc">&nbsp;                .resolve(TypeDescription.class);</b>
+<b class="fc">&nbsp;        if (!target.isAnnotation()) {</b>
+<b class="fc">&nbsp;            throw new IllegalStateException(&quot;Expected &quot; + target + &quot; to be an annotation type&quot;);</b>
+<b class="fc">&nbsp;        } else if (target.getDeclaredMethods().size() != 1</b>
+<b class="fc">&nbsp;                || target.getDeclaredMethods().filter(named(&quot;value&quot;)).size() != 1</b>
+<b class="fc">&nbsp;                || !target.getDeclaredMethods().filter(named(&quot;value&quot;)).getOnly().getReturnType().isArray()</b>
+<b class="fc">&nbsp;                || !target.getDeclaredMethods().filter(named(&quot;value&quot;)).getOnly().getReturnType().getComponentType().asErasure().equals(typeDescription)) {</b>
+<b class="nc">&nbsp;            throw new IllegalStateException(&quot;Expected &quot; + target + &quot; to declare exactly one property named value of an array type&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return builder.attribute(new RepeatedAnnotationAppender(target));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public void close() {
+&nbsp;        /* do nothing */
+<b class="nc">&nbsp;    }</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Indicates that the annotated annotation should be repeatable by the supplied annotation.
+&nbsp;     */
+&nbsp;    @Documented
+&nbsp;    @Target(ElementType.ANNOTATION_TYPE)
+&nbsp;    @Retention(RetentionPolicy.RUNTIME)
+&nbsp;    public @interface Enhance {
+&nbsp;
+&nbsp;        /**
+&nbsp;         * The repeating annotation type.
+&nbsp;         *
+&nbsp;         * @return The repeating annotation type.
+&nbsp;         */
+&nbsp;        Class&lt;? extends Annotation&gt; value();
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A type attribute appender that adds a repeated annotation for a target type.
+&nbsp;     */
+&nbsp;    @HashCodeAndEqualsPlugin.Enhance
+&nbsp;    protected static class RepeatedAnnotationAppender implements TypeAttributeAppender {
+&nbsp;
+&nbsp;        /**
+&nbsp;         * The repeated type.
+&nbsp;         */
+&nbsp;        private final TypeDescription target;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Creates a new appender.
+&nbsp;         *
+&nbsp;         * @param target The repeated type.
+&nbsp;         */
+<b class="fc">&nbsp;        protected RepeatedAnnotationAppender(TypeDescription target) {</b>
+<b class="fc">&nbsp;            this.target = target;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public void apply(ClassVisitor classVisitor, TypeDescription instrumentedType, AnnotationValueFilter annotationValueFilter) {
+<b class="fc">&nbsp;            AnnotationVisitor visitor = classVisitor.visitAnnotation(&quot;Ljava/lang/annotation/Repeatable;&quot;, true);</b>
+<b class="fc">&nbsp;            if (visitor != null) {</b>
+<b class="fc">&nbsp;                visitor.visit(&quot;value&quot;, Type.getType(target.getDescriptor()));</b>
+<b class="fc">&nbsp;                visitor.visitEnd();</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-02 16:00</div>
+</div>
+</body>
+</html>

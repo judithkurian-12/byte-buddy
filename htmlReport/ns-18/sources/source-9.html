@@ -1,0 +1,270 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > ShiftRight</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">net.bytebuddy.implementation.bytecode</a>
+</div>
+
+<h1>Coverage Summary for Class: ShiftRight (net.bytebuddy.implementation.bytecode)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ShiftRight</td>
+<td class="coverageStat">
+  <span class="percent">
+    83.3%
+  </span>
+  <span class="absValue">
+    (5/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    90.9%
+  </span>
+  <span class="absValue">
+    (10/11)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">ShiftRight$Unsigned</td>
+<td class="coverageStat">
+  <span class="percent">
+    80%
+  </span>
+  <span class="absValue">
+    (4/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    88.9%
+  </span>
+  <span class="absValue">
+    (8/9)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    81.8%
+  </span>
+  <span class="absValue">
+    (9/11)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    90%
+  </span>
+  <span class="absValue">
+    (18/20)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Copyright 2014 - Present Rafael Winterhalter
+&nbsp; *
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;package net.bytebuddy.implementation.bytecode;
+&nbsp;
+&nbsp;import net.bytebuddy.implementation.Implementation;
+&nbsp;import org.objectweb.asm.MethodVisitor;
+&nbsp;import org.objectweb.asm.Opcodes;
+&nbsp;
+&nbsp;/**
+&nbsp; * A stack manipulation that shifts right two numbers on the operand stack.
+&nbsp; */
+<b class="fc">&nbsp;public enum ShiftRight implements StackManipulation {</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Shifts right two integers or integer-compatible values.
+&nbsp;     */
+<b class="fc">&nbsp;    INTEGER(Opcodes.ISHR, StackSize.SINGLE, Unsigned.INTEGER),</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Shifts right two longs.
+&nbsp;     */
+<b class="fc">&nbsp;    LONG(Opcodes.LSHR, StackSize.DOUBLE, Unsigned.LONG);</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The opcode to apply.
+&nbsp;     */
+&nbsp;    private final int opcode;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The stack size of the shift right primitive.
+&nbsp;     */
+&nbsp;    private final StackSize stackSize;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The unsigned equivalent of this operation.
+&nbsp;     */
+&nbsp;    private final StackManipulation unsigned;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a new shift right.
+&nbsp;     *
+&nbsp;     * @param opcode    The opcode to apply.
+&nbsp;     * @param stackSize The stack size of the shift right primitive.
+&nbsp;     * @param unsigned  The unsigned equivalent of this operation.
+&nbsp;     */
+<b class="fc">&nbsp;    ShiftRight(int opcode, StackSize stackSize, StackManipulation unsigned) {</b>
+<b class="fc">&nbsp;        this.opcode = opcode;</b>
+<b class="fc">&nbsp;        this.stackSize = stackSize;</b>
+<b class="fc">&nbsp;        this.unsigned = unsigned;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns the unsigned equivalent of this operation.
+&nbsp;     *
+&nbsp;     * @return The unsigned equivalent of this operation.
+&nbsp;     */
+&nbsp;    public StackManipulation toUnsigned() {
+<b class="fc">&nbsp;        return unsigned;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public boolean isValid() {
+<b class="nc">&nbsp;        return true;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public Size apply(MethodVisitor methodVisitor, Implementation.Context implementationContext) {
+<b class="fc">&nbsp;        methodVisitor.visitInsn(opcode);</b>
+<b class="fc">&nbsp;        return stackSize.toDecreasingSize();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A stack manipulation that shifts right unsigned two numbers on the operand stack.
+&nbsp;     */
+<b class="fc">&nbsp;    protected enum Unsigned implements StackManipulation {</b>
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Shifts right unsigned two integers or integer-compatible values.
+&nbsp;         */
+<b class="fc">&nbsp;        INTEGER(Opcodes.IUSHR, StackSize.SINGLE),</b>
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Shifts right unsigned two longs.
+&nbsp;         */
+<b class="fc">&nbsp;        LONG(Opcodes.LUSHR, StackSize.DOUBLE);</b>
+&nbsp;
+&nbsp;        /**
+&nbsp;         * The opcode to apply.
+&nbsp;         */
+&nbsp;        private final int opcode;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * The stack size of the shift right unsigned primitive.
+&nbsp;         */
+&nbsp;        private final StackSize stackSize;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Creates a new shift right unsigned.
+&nbsp;         *
+&nbsp;         * @param opcode    The opcode to apply.
+&nbsp;         * @param stackSize The stack size of the shift right unsigned primitive.
+&nbsp;         */
+<b class="fc">&nbsp;        Unsigned(int opcode, StackSize stackSize) {</b>
+<b class="fc">&nbsp;            this.opcode = opcode;</b>
+<b class="fc">&nbsp;            this.stackSize = stackSize;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public boolean isValid() {
+<b class="nc">&nbsp;            return true;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public Size apply(MethodVisitor methodVisitor, Implementation.Context implementationContext) {
+<b class="fc">&nbsp;            methodVisitor.visitInsn(opcode);</b>
+<b class="fc">&nbsp;            return stackSize.toDecreasingSize();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-02 16:00</div>
+</div>
+</body>
+</html>

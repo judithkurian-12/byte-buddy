@@ -1,0 +1,286 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > NamedElement</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">net.bytebuddy.description</a>
+</div>
+
+<h1>Coverage Summary for Class: NamedElement (net.bytebuddy.description)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">NamedElement</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">NamedElement$MockitoMock$1925328418</td>
+  </tr>
+  <tr>
+    <td class="name">NamedElement$MockitoMock$1925328418$auxiliary$5nsDJ0eH</td>
+  </tr>
+  <tr>
+    <td class="name">NamedElement$MockitoMock$1925328418$auxiliary$cSnYBZyz</td>
+  </tr>
+  <tr>
+    <td class="name">NamedElement$WithDescriptor</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">NamedElement$WithDescriptor$MockitoMock$160373890</td>
+  </tr>
+  <tr>
+    <td class="name">NamedElement$WithDescriptor$MockitoMock$160373890$auxiliary$I3GUTC1t</td>
+  </tr>
+  <tr>
+    <td class="name">NamedElement$WithDescriptor$MockitoMock$160373890$auxiliary$X34451nj</td>
+  </tr>
+  <tr>
+    <td class="name">NamedElement$WithGenericName</td>
+  </tr>
+  <tr>
+    <td class="name">NamedElement$WithOptionalName</td>
+  </tr>
+  <tr>
+    <td class="name">NamedElement$WithOptionalName$MockitoMock$947813610</td>
+  </tr>
+  <tr>
+    <td class="name">NamedElement$WithOptionalName$MockitoMock$947813610$auxiliary$h4FbdSvB</td>
+  </tr>
+  <tr>
+    <td class="name">NamedElement$WithOptionalName$MockitoMock$947813610$auxiliary$oHqiWasH</td>
+  </tr>
+  <tr>
+    <td class="name">NamedElement$WithRuntimeName</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Copyright 2014 - Present Rafael Winterhalter
+&nbsp; *
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;package net.bytebuddy.description;
+&nbsp;
+&nbsp;import net.bytebuddy.utility.nullability.AlwaysNull;
+&nbsp;import net.bytebuddy.utility.nullability.MaybeNull;
+&nbsp;
+&nbsp;/**
+&nbsp; * Represents a Java element with a name.
+&nbsp; */
+&nbsp;public interface NamedElement {
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Indicates that an element is not named.
+&nbsp;     */
+&nbsp;    @AlwaysNull
+<b class="fc">&nbsp;    String NO_NAME = null;</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Represents an element without a name in the source code.
+&nbsp;     */
+&nbsp;    String EMPTY_NAME = &quot;&quot;;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns the display name of this element as it is found in the source code. If no such name exists,
+&nbsp;     * an empty string is returned.
+&nbsp;     *
+&nbsp;     * @return The name of this element as given in a Java program&#39;s source code.
+&nbsp;     */
+&nbsp;    String getActualName();
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A named element with a name that has a particular meaning to the Java runtime.
+&nbsp;     */
+&nbsp;    interface WithRuntimeName extends NamedElement {
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Returns the binary name of this byte code element. If no well-defined internal name is known for this element,
+&nbsp;         * the actual name is returned.
+&nbsp;         *
+&nbsp;         * @return The binary ame of this byte code element as visible from within a running Java application.
+&nbsp;         */
+&nbsp;        String getName();
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Returns the internal name of this byte code element. If no well-defined internal name is known for this element,
+&nbsp;         * the actual name is returned.
+&nbsp;         *
+&nbsp;         * @return The internal name of this byte code element as used within the Java class file format.
+&nbsp;         */
+&nbsp;        String getInternalName();
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Describes a named element where naming the element is optional and an alternative default name is provided if no explicit name is given.
+&nbsp;     */
+&nbsp;    interface WithOptionalName extends NamedElement {
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Returns {@code true} if this element has an explicit name.
+&nbsp;         *
+&nbsp;         * @return {@code true} if this element has an explicit name.
+&nbsp;         */
+&nbsp;        boolean isNamed();
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A named element with a generic type name.
+&nbsp;     */
+&nbsp;    interface WithGenericName extends WithRuntimeName {
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Returns a generic string of this byte code element.
+&nbsp;         *
+&nbsp;         * @return A generic string of this byte code element.
+&nbsp;         */
+&nbsp;        String toGenericString();
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A named element with a class file descriptor and a generic signature.
+&nbsp;     */
+&nbsp;    interface WithDescriptor extends NamedElement {
+&nbsp;
+&nbsp;        /**
+&nbsp;         * The generic type signature of a non-generic byte code element.
+&nbsp;         */
+&nbsp;        @AlwaysNull
+<b class="fc">&nbsp;        String NON_GENERIC_SIGNATURE = null;</b>
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Returns the descriptor of this byte code element.
+&nbsp;         *
+&nbsp;         * @return The descriptor of this byte code element.
+&nbsp;         */
+&nbsp;        String getDescriptor();
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Returns the generic signature of this byte code element. If this element does not reference generic types
+&nbsp;         * or references malformed generic types, {@code null} is returned as a signature.
+&nbsp;         *
+&nbsp;         * @return The generic signature or {@code null} if this element is not generic.
+&nbsp;         */
+&nbsp;        @MaybeNull
+&nbsp;        String getGenericSignature();
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-03 11:00</div>
+</div>
+</body>
+</html>

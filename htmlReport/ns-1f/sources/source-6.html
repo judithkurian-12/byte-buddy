@@ -1,0 +1,263 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > CachingMatcher</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">net.bytebuddy.matcher</a>
+</div>
+
+<h1>Coverage Summary for Class: CachingMatcher (net.bytebuddy.matcher)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CachingMatcher</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (5/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    87.5%
+  </span>
+  <span class="absValue">
+    (14/16)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">CachingMatcher$WithInlineEviction</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/7)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    91.3%
+  </span>
+  <span class="absValue">
+    (21/23)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Copyright 2014 - Present Rafael Winterhalter
+&nbsp; *
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;package net.bytebuddy.matcher;
+&nbsp;
+&nbsp;import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+&nbsp;import net.bytebuddy.build.HashCodeAndEqualsPlugin;
+&nbsp;import net.bytebuddy.utility.nullability.MaybeNull;
+&nbsp;
+&nbsp;import java.util.Iterator;
+&nbsp;import java.util.concurrent.ConcurrentMap;
+&nbsp;
+&nbsp;/**
+&nbsp; * A matcher that remembers the results of previously matching an equal target.
+&nbsp; *
+&nbsp; * @param &lt;T&gt; The actual matched type of this matcher.
+&nbsp; */
+&nbsp;@HashCodeAndEqualsPlugin.Enhance(permitSubclassEquality = true)
+&nbsp;public class CachingMatcher&lt;T&gt; extends ElementMatcher.Junction.AbstractBase&lt;T&gt; {
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A substitute value to store in a map instead of a {@code null} value.
+&nbsp;     */
+<b class="fc">&nbsp;    private static final Object NULL_VALUE = new Object();</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The underlying matcher to apply for non-cached targets.
+&nbsp;     */
+&nbsp;    private final ElementMatcher&lt;? super T&gt; matcher;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A map that serves as a cache for previous matches.
+&nbsp;     */
+&nbsp;    @HashCodeAndEqualsPlugin.ValueHandling(HashCodeAndEqualsPlugin.ValueHandling.Sort.IGNORE)
+&nbsp;    protected final ConcurrentMap&lt;? super T, Boolean&gt; map;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a new caching matcher.
+&nbsp;     *
+&nbsp;     * @param matcher The underlying matcher to apply for non-cached targets.
+&nbsp;     * @param map     A map that serves as a cache for previous matches. This match is strongly referenced and
+&nbsp;     *                can cause a memory leak if it is not evicted while keeping this matcher alive.
+&nbsp;     */
+<b class="fc">&nbsp;    public CachingMatcher(ElementMatcher&lt;? super T&gt; matcher, ConcurrentMap&lt;? super T, Boolean&gt; map) {</b>
+<b class="fc">&nbsp;        this.matcher = matcher;</b>
+<b class="fc">&nbsp;        this.map = map;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public boolean matches(@MaybeNull T target) {
+<b class="fc">&nbsp;        Boolean cached = map.get(target == null</b>
+<b class="nc">&nbsp;                ? NULL_VALUE</b>
+<b class="fc">&nbsp;                : target);</b>
+<b class="fc">&nbsp;        if (cached == null) {</b>
+<b class="fc">&nbsp;            cached = onCacheMiss(target);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return cached;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Invoked if the cache is not hit.
+&nbsp;     *
+&nbsp;     * @param target The element to be matched.
+&nbsp;     * @return {@code true} if the element is matched.
+&nbsp;     */
+&nbsp;    @SuppressWarnings(&quot;unchecked&quot;)
+&nbsp;    protected boolean onCacheMiss(@MaybeNull T target) {
+<b class="fc">&nbsp;        boolean cached = matcher.matches(target);</b>
+<b class="fc">&nbsp;        map.put(target == null</b>
+<b class="nc">&nbsp;                ? (T) NULL_VALUE</b>
+<b class="fc">&nbsp;                : target, cached);</b>
+<b class="fc">&nbsp;        return cached;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public String toString() {
+<b class="fc">&nbsp;        return &quot;cached(&quot; + matcher + &quot;)&quot;;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A caching matcher with inline cache eviction.
+&nbsp;     *
+&nbsp;     * @param &lt;S&gt; The actual matched type of this matcher.
+&nbsp;     */
+&nbsp;    @SuppressFBWarnings(value = &quot;EQ_DOESNT_OVERRIDE_EQUALS&quot;, justification = &quot;Equality does not consider eviction size.&quot;)
+&nbsp;    public static class WithInlineEviction&lt;S&gt; extends CachingMatcher&lt;S&gt; {
+&nbsp;
+&nbsp;        /**
+&nbsp;         * The maximum amount of entries in this map before removing a random entry from the map.
+&nbsp;         */
+&nbsp;        private final int evictionSize;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Creates a new caching matcher with inlined cache eviction.
+&nbsp;         *
+&nbsp;         * @param matcher      The underlying matcher to apply for non-cached targets.
+&nbsp;         * @param map          A map that serves as a cache for previous matches. This match is strongly referenced and
+&nbsp;         *                     can cause a memory leak if it is not evicted while keeping this matcher alive.
+&nbsp;         * @param evictionSize The maximum amount of entries in this map before removing a random entry from the map.
+&nbsp;         */
+&nbsp;        public WithInlineEviction(ElementMatcher&lt;? super S&gt; matcher, ConcurrentMap&lt;? super S, Boolean&gt; map, int evictionSize) {
+<b class="fc">&nbsp;            super(matcher, map);</b>
+<b class="fc">&nbsp;            this.evictionSize = evictionSize;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        protected boolean onCacheMiss(@MaybeNull S target) {
+<b class="fc">&nbsp;            if (map.size() &gt;= evictionSize) {</b>
+<b class="fc">&nbsp;                Iterator&lt;?&gt; iterator = map.entrySet().iterator();</b>
+<b class="fc">&nbsp;                iterator.next();</b>
+<b class="fc">&nbsp;                iterator.remove();</b>
+&nbsp;            }
+<b class="fc">&nbsp;            return super.onCacheMiss(target);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+&nbsp;
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-02 16:00</div>
+</div>
+</body>
+</html>

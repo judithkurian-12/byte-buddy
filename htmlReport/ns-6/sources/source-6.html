@@ -1,0 +1,411 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > EntryPoint</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">net.bytebuddy.build</a>
+</div>
+
+<h1>Coverage Summary for Class: EntryPoint (net.bytebuddy.build)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+  <tr>
+    <td class="name">EntryPoint$1</td>
+  </tr>
+  <tr>
+    <td class="name">EntryPoint$Default</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (5/5)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">EntryPoint$Default$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/3)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">EntryPoint$Default$2</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/3)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">EntryPoint$Default$3</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/3)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">EntryPoint$Default$4</td>
+<td class="coverageStat">
+  <span class="percent">
+    33.3%
+  </span>
+  <span class="absValue">
+    (1/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    20%
+  </span>
+  <span class="absValue">
+    (1/5)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">EntryPoint$MockitoMock$1563445969</td>
+  </tr>
+  <tr>
+    <td class="name">EntryPoint$MockitoMock$1563445969$auxiliary$5N0tBqvN</td>
+  </tr>
+  <tr>
+    <td class="name">EntryPoint$MockitoMock$1563445969$auxiliary$qursxwia</td>
+  </tr>
+  <tr>
+    <td class="name">EntryPoint$Unvalidated</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/4)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    88.2%
+  </span>
+  <span class="absValue">
+    (15/17)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    82.6%
+  </span>
+  <span class="absValue">
+    (19/23)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Copyright 2014 - Present Rafael Winterhalter
+&nbsp; *
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;package net.bytebuddy.build;
+&nbsp;
+&nbsp;import net.bytebuddy.ByteBuddy;
+&nbsp;import net.bytebuddy.ClassFileVersion;
+&nbsp;import net.bytebuddy.description.type.TypeDescription;
+&nbsp;import net.bytebuddy.dynamic.ClassFileLocator;
+&nbsp;import net.bytebuddy.dynamic.DynamicType;
+&nbsp;import net.bytebuddy.dynamic.scaffold.MethodGraph;
+&nbsp;import net.bytebuddy.dynamic.scaffold.TypeValidation;
+&nbsp;import net.bytebuddy.dynamic.scaffold.inline.MethodNameTransformer;
+&nbsp;import net.bytebuddy.implementation.Implementation;
+&nbsp;
+&nbsp;import static net.bytebuddy.matcher.ElementMatchers.isDeclaredBy;
+&nbsp;import static net.bytebuddy.matcher.ElementMatchers.not;
+&nbsp;
+&nbsp;/**
+&nbsp; * An entry point for a build tool which is responsible for the transformation&#39;s configuration.
+&nbsp; */
+&nbsp;public interface EntryPoint {
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns the Byte Buddy instance to use.
+&nbsp;     *
+&nbsp;     * @param classFileVersion The class file version in which to represent class files.
+&nbsp;     * @return The Byte Buddy instance to use.
+&nbsp;     */
+&nbsp;    ByteBuddy byteBuddy(ClassFileVersion classFileVersion);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Applies a transformation.
+&nbsp;     *
+&nbsp;     * @param typeDescription       The type to transform.
+&nbsp;     * @param byteBuddy             The Byte Buddy instance to use.
+&nbsp;     * @param classFileLocator      The class file locator to use.
+&nbsp;     * @param methodNameTransformer The Method name transformer to use.
+&nbsp;     * @return A builder for the dynamic type to create.
+&nbsp;     */
+&nbsp;    DynamicType.Builder&lt;?&gt; transform(TypeDescription typeDescription,
+&nbsp;                                     ByteBuddy byteBuddy,
+&nbsp;                                     ClassFileLocator classFileLocator,
+&nbsp;                                     MethodNameTransformer methodNameTransformer);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Default implementations for an entry point.
+&nbsp;     */
+<b class="fc">&nbsp;    enum Default implements EntryPoint {</b>
+&nbsp;
+&nbsp;        /**
+&nbsp;         * An entry point that rebases a type.
+&nbsp;         */
+<b class="fc">&nbsp;        REBASE {</b>
+&nbsp;            /**
+&nbsp;             * {@inheritDoc}
+&nbsp;             * */
+&nbsp;            public ByteBuddy byteBuddy(ClassFileVersion classFileVersion) {
+<b class="fc">&nbsp;                return new ByteBuddy(classFileVersion);</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            /**
+&nbsp;             * {@inheritDoc}
+&nbsp;             * */
+&nbsp;            public DynamicType.Builder&lt;?&gt; transform(TypeDescription typeDescription,
+&nbsp;                                                    ByteBuddy byteBuddy,
+&nbsp;                                                    ClassFileLocator classFileLocator,
+&nbsp;                                                    MethodNameTransformer methodNameTransformer) {
+<b class="fc">&nbsp;                return byteBuddy.rebase(typeDescription, classFileLocator, methodNameTransformer);</b>
+&nbsp;            }
+&nbsp;        },
+&nbsp;
+&nbsp;        /**
+&nbsp;         * An entry point that redefines a type.
+&nbsp;         */
+<b class="fc">&nbsp;        REDEFINE {</b>
+&nbsp;            /**
+&nbsp;             * {@inheritDoc}
+&nbsp;             * */
+&nbsp;            public ByteBuddy byteBuddy(ClassFileVersion classFileVersion) {
+<b class="fc">&nbsp;                return new ByteBuddy(classFileVersion);</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            /**
+&nbsp;             * {@inheritDoc}
+&nbsp;             * */
+&nbsp;            public DynamicType.Builder&lt;?&gt; transform(TypeDescription typeDescription,
+&nbsp;                                                    ByteBuddy byteBuddy,
+&nbsp;                                                    ClassFileLocator classFileLocator,
+&nbsp;                                                    MethodNameTransformer methodNameTransformer) {
+<b class="fc">&nbsp;                return byteBuddy.redefine(typeDescription, classFileLocator);</b>
+&nbsp;            }
+&nbsp;        },
+&nbsp;
+&nbsp;        /**
+&nbsp;         * An entry point that redefines a type and which does not change the dynamic type&#39;s shape, i.e. does
+&nbsp;         * not add any methods or considers intercepting inherited methods.
+&nbsp;         */
+<b class="fc">&nbsp;        REDEFINE_LOCAL {</b>
+&nbsp;            /**
+&nbsp;             * {@inheritDoc}
+&nbsp;             * */
+&nbsp;            public ByteBuddy byteBuddy(ClassFileVersion classFileVersion) {
+<b class="fc">&nbsp;                return new ByteBuddy(classFileVersion).with(Implementation.Context.Disabled.Factory.INSTANCE);</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            /**
+&nbsp;             * {@inheritDoc}
+&nbsp;             * */
+&nbsp;            public DynamicType.Builder&lt;?&gt; transform(TypeDescription typeDescription,
+&nbsp;                                                    ByteBuddy byteBuddy,
+&nbsp;                                                    ClassFileLocator classFileLocator,
+&nbsp;                                                    MethodNameTransformer methodNameTransformer) {
+<b class="fc">&nbsp;                return byteBuddy.redefine(typeDescription, classFileLocator).ignoreAlso(not(isDeclaredBy(typeDescription)));</b>
+&nbsp;            }
+&nbsp;        },
+&nbsp;
+&nbsp;        /**
+&nbsp;         * An entry point that decorates a type and which only offers limited support for transformation by only allowing
+&nbsp;         * for the application of {@link net.bytebuddy.asm.AsmVisitorWrapper}s while improving performance.
+&nbsp;         */
+<b class="fc">&nbsp;        DECORATE {</b>
+&nbsp;            /**
+&nbsp;             * {@inheritDoc}
+&nbsp;             * */
+&nbsp;            public ByteBuddy byteBuddy(ClassFileVersion classFileVersion) {
+<b class="nc">&nbsp;                return new ByteBuddy(classFileVersion)</b>
+<b class="nc">&nbsp;                        .with(MethodGraph.Compiler.ForDeclaredMethods.INSTANCE)</b>
+<b class="nc">&nbsp;                        .with(Implementation.Context.Disabled.Factory.INSTANCE);</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            /**
+&nbsp;             * {@inheritDoc}
+&nbsp;             * */
+&nbsp;            public DynamicType.Builder&lt;?&gt; transform(TypeDescription typeDescription,
+&nbsp;                                                    ByteBuddy byteBuddy,
+&nbsp;                                                    ClassFileLocator classFileLocator,
+&nbsp;                                                    MethodNameTransformer methodNameTransformer) {
+<b class="nc">&nbsp;                return byteBuddy.decorate(typeDescription, classFileLocator);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * An entry point that wraps another entry point but disables validation.
+&nbsp;     */
+&nbsp;    @HashCodeAndEqualsPlugin.Enhance
+&nbsp;    class Unvalidated implements EntryPoint {
+&nbsp;
+&nbsp;        /**
+&nbsp;         * The entry point to use.
+&nbsp;         */
+&nbsp;        private final EntryPoint delegate;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Creates a new entry point with disabled validation.
+&nbsp;         *
+&nbsp;         * @param delegate The entry point to use.
+&nbsp;         */
+<b class="fc">&nbsp;        public Unvalidated(EntryPoint delegate) {</b>
+<b class="fc">&nbsp;            this.delegate = delegate;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public ByteBuddy byteBuddy(ClassFileVersion classFileVersion) {
+<b class="fc">&nbsp;            return delegate.byteBuddy(classFileVersion).with(TypeValidation.DISABLED);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public DynamicType.Builder&lt;?&gt; transform(TypeDescription typeDescription,
+&nbsp;                                                ByteBuddy byteBuddy,
+&nbsp;                                                ClassFileLocator classFileLocator,
+&nbsp;                                                MethodNameTransformer methodNameTransformer) {
+<b class="fc">&nbsp;            return delegate.transform(typeDescription, byteBuddy, classFileLocator, methodNameTransformer);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-02 16:00</div>
+</div>
+</body>
+</html>

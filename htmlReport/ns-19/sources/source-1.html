@@ -1,0 +1,381 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > AuxiliaryType</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">net.bytebuddy.implementation.auxiliary</a>
+</div>
+
+<h1>Coverage Summary for Class: AuxiliaryType (net.bytebuddy.implementation.auxiliary)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AuxiliaryType</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">AuxiliaryType$MockitoMock$467876294</td>
+  </tr>
+  <tr>
+    <td class="name">AuxiliaryType$MockitoMock$467876294$auxiliary$aTqjpErR</td>
+  </tr>
+  <tr>
+    <td class="name">AuxiliaryType$MockitoMock$467876294$auxiliary$mm4j1Hyu</td>
+  </tr>
+  <tr>
+    <td class="name">AuxiliaryType$NamingStrategy</td>
+  </tr>
+  <tr>
+    <td class="name">AuxiliaryType$NamingStrategy$Enumerating</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/3)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">AuxiliaryType$NamingStrategy$MockitoMock$472782044</td>
+  </tr>
+  <tr>
+    <td class="name">AuxiliaryType$NamingStrategy$MockitoMock$472782044$auxiliary$jHYp9kNB</td>
+  </tr>
+  <tr>
+    <td class="name">AuxiliaryType$NamingStrategy$MockitoMock$472782044$auxiliary$m2inrtzJ</td>
+  </tr>
+  <tr>
+    <td class="name">AuxiliaryType$NamingStrategy$Suffixing</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/3)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">AuxiliaryType$NamingStrategy$SuffixingRandom</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/4)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">AuxiliaryType$SignatureRelevant</td>
+  </tr>
+  <tr>
+    <td class="name">AuxiliaryType$SignatureRelevant$MockitoMock$1847385111</td>
+  </tr>
+  <tr>
+    <td class="name">AuxiliaryType$SignatureRelevant$MockitoMock$1847385111$auxiliary$1sJsqsM0</td>
+  </tr>
+  <tr>
+    <td class="name">AuxiliaryType$SignatureRelevant$MockitoMock$1847385111$auxiliary$6Un1qE3z</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (11/11)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Copyright 2014 - Present Rafael Winterhalter
+&nbsp; *
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;package net.bytebuddy.implementation.auxiliary;
+&nbsp;
+&nbsp;import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+&nbsp;import net.bytebuddy.ClassFileVersion;
+&nbsp;import net.bytebuddy.build.HashCodeAndEqualsPlugin;
+&nbsp;import net.bytebuddy.description.modifier.ModifierContributor;
+&nbsp;import net.bytebuddy.description.modifier.SyntheticState;
+&nbsp;import net.bytebuddy.description.type.TypeDescription;
+&nbsp;import net.bytebuddy.dynamic.DynamicType;
+&nbsp;import net.bytebuddy.implementation.MethodAccessorFactory;
+&nbsp;import net.bytebuddy.utility.RandomString;
+&nbsp;
+&nbsp;import java.lang.annotation.ElementType;
+&nbsp;import java.lang.annotation.Retention;
+&nbsp;import java.lang.annotation.RetentionPolicy;
+&nbsp;import java.lang.annotation.Target;
+&nbsp;
+&nbsp;/**
+&nbsp; * An auxiliary type that provides services to the instrumentation of another type. Implementations should provide
+&nbsp; * meaningful {@code equals(Object)} and {@code hashCode()} implementations in order to avoid multiple creations
+&nbsp; * of this type.
+&nbsp; */
+&nbsp;public interface AuxiliaryType {
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The default type access of an auxiliary type. &lt;b&gt;This array must not be mutated&lt;/b&gt;.
+&nbsp;     */
+&nbsp;    @SuppressFBWarnings(value = {&quot;MS_MUTABLE_ARRAY&quot;, &quot;MS_OOI_PKGPROTECT&quot;}, justification = &quot;The array is not modified by class contract.&quot;)
+<b class="fc">&nbsp;    ModifierContributor.ForType[] DEFAULT_TYPE_MODIFIER = {SyntheticState.SYNTHETIC};</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a new auxiliary type.
+&nbsp;     *
+&nbsp;     * @param auxiliaryTypeName     The fully qualified binary name for this auxiliary type. The type should be in
+&nbsp;     *                              the same package than the instrumented type this auxiliary type is providing services
+&nbsp;     *                              to in order to allow package-private access.
+&nbsp;     * @param classFileVersion      The class file version the auxiliary class should be written in.
+&nbsp;     * @param methodAccessorFactory A factory for accessor methods.
+&nbsp;     * @return A dynamically created type representing this auxiliary type.
+&nbsp;     */
+&nbsp;    DynamicType make(String auxiliaryTypeName, ClassFileVersion classFileVersion, MethodAccessorFactory methodAccessorFactory);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Produces a suffix that gives this auxiliary type a stable name. A best effort is made that this suffix is unique.
+&nbsp;     *
+&nbsp;     * @return The suffix for this auxiliary type.
+&nbsp;     */
+&nbsp;    String getSuffix();
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Representation of a naming strategy for an auxiliary type.
+&nbsp;     */
+&nbsp;    interface NamingStrategy {
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Names an auxiliary type.
+&nbsp;         *
+&nbsp;         * @param instrumentedType The instrumented type for which an auxiliary type is registered.
+&nbsp;         * @param auxiliaryType    The named auxiliary type.
+&nbsp;         * @return The fully qualified name for the given auxiliary type.
+&nbsp;         */
+&nbsp;        String name(TypeDescription instrumentedType, AuxiliaryType auxiliaryType);
+&nbsp;
+&nbsp;        /**
+&nbsp;         * A naming strategy for an auxiliary type which attempts an enumeration of types by using the hash code
+&nbsp;         * of the instrumenting instance.
+&nbsp;         */
+&nbsp;        class Enumerating implements NamingStrategy {
+&nbsp;
+&nbsp;            /**
+&nbsp;             * The suffix to append to the instrumented type for creating names for the auxiliary types.
+&nbsp;             */
+&nbsp;            private final String suffix;
+&nbsp;
+&nbsp;            /**
+&nbsp;             * Creates a new suffixing random naming strategy.
+&nbsp;             *
+&nbsp;             * @param suffix The suffix to extend to the instrumented type.
+&nbsp;             */
+<b class="fc">&nbsp;            public Enumerating(String suffix) {</b>
+<b class="fc">&nbsp;                this.suffix = suffix;</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            /**
+&nbsp;             * {@inheritDoc}
+&nbsp;             */
+&nbsp;            public String name(TypeDescription instrumentedType, AuxiliaryType auxiliaryType) {
+<b class="fc">&nbsp;                return instrumentedType.getName() + &quot;$&quot; + suffix + &quot;$&quot; + RandomString.hashOf(auxiliaryType);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Creates a naming strategy that uses stable suffixes that are provided by the auxiliary types themselves.
+&nbsp;         */
+&nbsp;        class Suffixing implements NamingStrategy {
+&nbsp;
+&nbsp;            /**
+&nbsp;             * The suffix to append to the instrumented type for creating names for the auxiliary types.
+&nbsp;             */
+&nbsp;            private final String suffix;
+&nbsp;
+&nbsp;            /**
+&nbsp;             * Creates a new suffixing random naming strategy.
+&nbsp;             *
+&nbsp;             * @param suffix The suffix to extend to the instrumented type.
+&nbsp;             */
+<b class="fc">&nbsp;            public Suffixing(String suffix) {</b>
+<b class="fc">&nbsp;                this.suffix = suffix;</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            /**
+&nbsp;             * {@inheritDoc}
+&nbsp;             */
+&nbsp;            public String name(TypeDescription instrumentedType, AuxiliaryType auxiliaryType) {
+<b class="fc">&nbsp;                return instrumentedType.getName() + &quot;$&quot; + suffix + &quot;$&quot; + auxiliaryType.getSuffix();</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * A naming strategy for an auxiliary type which returns the instrumented type&#39;s name with a fixed extension
+&nbsp;         * and a random number as a suffix. All generated names will be in the same package as the instrumented type.
+&nbsp;         */
+&nbsp;        @HashCodeAndEqualsPlugin.Enhance
+&nbsp;        class SuffixingRandom implements NamingStrategy {
+&nbsp;
+&nbsp;            /**
+&nbsp;             * The suffix to append to the instrumented type for creating names for the auxiliary types.
+&nbsp;             */
+&nbsp;            private final String suffix;
+&nbsp;
+&nbsp;            /**
+&nbsp;             * An instance for creating random values.
+&nbsp;             */
+&nbsp;            @HashCodeAndEqualsPlugin.ValueHandling(HashCodeAndEqualsPlugin.ValueHandling.Sort.IGNORE)
+&nbsp;            private final RandomString randomString;
+&nbsp;
+&nbsp;            /**
+&nbsp;             * Creates a new suffixing random naming strategy.
+&nbsp;             *
+&nbsp;             * @param suffix The suffix to extend to the instrumented type.
+&nbsp;             */
+<b class="fc">&nbsp;            public SuffixingRandom(String suffix) {</b>
+<b class="fc">&nbsp;                this.suffix = suffix;</b>
+<b class="fc">&nbsp;                randomString = new RandomString();</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            /**
+&nbsp;             * {@inheritDoc}
+&nbsp;             */
+&nbsp;            public String name(TypeDescription instrumentedType, AuxiliaryType auxiliaryType) {
+<b class="fc">&nbsp;                return instrumentedType.getName() + &quot;$&quot; + suffix + &quot;$&quot; + randomString.nextString();</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A marker to indicate that an auxiliary type is part of the instrumented types signature. This information can be used to load a type before
+&nbsp;     * the instrumented type such that reflection on the instrumented type does not cause a {@link NoClassDefFoundError}.
+&nbsp;     */
+&nbsp;    @Retention(RetentionPolicy.CLASS)
+&nbsp;    @Target(ElementType.TYPE)
+&nbsp;    @interface SignatureRelevant {
+&nbsp;        /* empty */
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-03 11:00</div>
+</div>
+</body>
+</html>

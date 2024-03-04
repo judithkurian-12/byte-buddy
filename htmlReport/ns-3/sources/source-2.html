@@ -1,0 +1,334 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > LambdaFactory</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">net.bytebuddy.agent.builder</a>
+</div>
+
+<h1>Coverage Summary for Class: LambdaFactory (net.bytebuddy.agent.builder)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">LambdaFactory</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    70.7%
+  </span>
+  <span class="absValue">
+    (29/41)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Copyright 2014 - Present Rafael Winterhalter
+&nbsp; *
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;package net.bytebuddy.agent.builder;
+&nbsp;
+&nbsp;import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+&nbsp;import net.bytebuddy.build.HashCodeAndEqualsPlugin;
+&nbsp;import net.bytebuddy.description.type.TypeDescription;
+&nbsp;import net.bytebuddy.dynamic.ClassFileLocator;
+&nbsp;import net.bytebuddy.dynamic.loading.ClassInjector;
+&nbsp;
+&nbsp;import java.lang.instrument.ClassFileTransformer;
+&nbsp;import java.lang.reflect.Method;
+&nbsp;import java.util.Collection;
+&nbsp;import java.util.Collections;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Map;
+&nbsp;import java.util.concurrent.ConcurrentHashMap;
+&nbsp;
+&nbsp;/**
+&nbsp; * This class serves as a dispatcher for creating lambda expression objects when Byte Buddy is configured to instrument the
+&nbsp; * {@code java.lang.invoke.LambdaMetafactory}. For this purpose, this class is injected into the class path to serve as a VM-global
+&nbsp; * singleton and for becoming reachable from the JVM&#39;s meta factory. This class keeps a reference to all registered transformers which need
+&nbsp; * to be explicitly deregistered in order to avoid a memory leak.
+&nbsp; */
+&nbsp;@HashCodeAndEqualsPlugin.Enhance
+&nbsp;public class LambdaFactory {
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The name of the field to access.
+&nbsp;     */
+&nbsp;    private static final String FIELD_NAME = &quot;CLASS_FILE_TRANSFORMERS&quot;;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A mapping of all registered class file transformers and their lambda factories, linked in their application order.
+&nbsp;     * This field &lt;b&gt;must not&lt;/b&gt; be accessed directly but only by reading this class from the system class loader.
+&nbsp;     */
+&nbsp;    @SuppressFBWarnings(value = &quot;MS_MUTABLE_COLLECTION_PKGPROTECT&quot;, justification = &quot;The field must be accessible by different class loader instances.&quot;)
+<b class="fc">&nbsp;    public static final Map&lt;ClassFileTransformer, LambdaFactory&gt; CLASS_FILE_TRANSFORMERS = new ConcurrentHashMap&lt;ClassFileTransformer, LambdaFactory&gt;();</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The target instance that is a factory for creating lambdas.
+&nbsp;     */
+&nbsp;    private final Object target;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The dispatcher method to invoke for creating a new lambda instance.
+&nbsp;     */
+&nbsp;    private final Method dispatcher;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a new lambda factory.
+&nbsp;     *
+&nbsp;     * @param target     The target instance that is a factory for creating lambdas.
+&nbsp;     * @param dispatcher The dispatcher method to invoke for creating a new lambda instance.
+&nbsp;     */
+<b class="fc">&nbsp;    public LambdaFactory(Object target, Method dispatcher) {</b>
+<b class="fc">&nbsp;        this.target = target;</b>
+<b class="fc">&nbsp;        this.dispatcher = dispatcher;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Registers a class file transformer together with a factory for creating a lambda expression. It is possible to call this method independently
+&nbsp;     * of the class loader&#39;s context as the supplied injector makes sure that the manipulated collection is the one that is held by the system class
+&nbsp;     * loader.
+&nbsp;     *
+&nbsp;     * @param classFileTransformer The class file transformer to register.
+&nbsp;     * @param classFileFactory     The lambda class file factory to use. This factory must define a visible instance method with the signature
+&nbsp;     *                             {@code byte[] make(Object, String, Object, Object, Object, Object, boolean, List, List, Collection}. The arguments provided
+&nbsp;     *                             are the invokedynamic call site&#39;s lookup object, the lambda method&#39;s name, the factory method&#39;s type, the lambda method&#39;s
+&nbsp;     *                             type, the target method&#39;s handle, the specialized method type of the lambda expression, a boolean to indicate
+&nbsp;     *                             serializability, a list of marker interfaces, a list of additional bridges and a collection of class file transformers to
+&nbsp;     *                             apply.
+&nbsp;     * @return {@code true} if this is the first registered transformer. This indicates that the {@code LambdaMetafactory} must be instrumented to delegate
+&nbsp;     * to this alternative factory.
+&nbsp;     */
+&nbsp;    @SuppressWarnings(&quot;all&quot;)
+&nbsp;    public static boolean register(ClassFileTransformer classFileTransformer, Object classFileFactory) {
+&nbsp;        try {
+<b class="fc">&nbsp;            TypeDescription typeDescription = TypeDescription.ForLoadedType.of(LambdaFactory.class);</b>
+<b class="fc">&nbsp;            Class&lt;?&gt; lambdaFactory = ClassInjector.UsingReflection.ofSystemClassLoader()</b>
+<b class="fc">&nbsp;                    .inject(Collections.singletonMap(typeDescription, ClassFileLocator.ForClassLoader.read(LambdaFactory.class)))</b>
+<b class="fc">&nbsp;                    .get(typeDescription);</b>
+&nbsp;            @SuppressWarnings(&quot;unchecked&quot;)
+<b class="fc">&nbsp;            Map&lt;ClassFileTransformer, Object&gt; classFileTransformers = (Map&lt;ClassFileTransformer, Object&gt;) lambdaFactory</b>
+<b class="fc">&nbsp;                    .getField(FIELD_NAME)</b>
+<b class="fc">&nbsp;                    .get(null);</b>
+<b class="fc">&nbsp;            synchronized (classFileTransformers) {</b>
+&nbsp;                try {
+<b class="fc">&nbsp;                    return classFileTransformers.isEmpty();</b>
+&nbsp;                } finally {
+<b class="fc">&nbsp;                    classFileTransformers.put(classFileTransformer, lambdaFactory</b>
+<b class="fc">&nbsp;                            .getConstructor(Object.class, Method.class)</b>
+<b class="fc">&nbsp;                            .newInstance(classFileFactory, classFileFactory.getClass().getMethod(&quot;make&quot;,</b>
+&nbsp;                                    Object.class,
+&nbsp;                                    String.class,
+&nbsp;                                    Object.class,
+&nbsp;                                    Object.class,
+&nbsp;                                    Object.class,
+&nbsp;                                    Object.class,
+&nbsp;                                    boolean.class,
+&nbsp;                                    List.class,
+&nbsp;                                    List.class,
+&nbsp;                                    Collection.class)));
+<b class="nc">&nbsp;                }</b>
+<b class="fc">&nbsp;            }</b>
+<b class="nc">&nbsp;        } catch (RuntimeException exception) {</b>
+<b class="nc">&nbsp;            throw exception;</b>
+<b class="fc">&nbsp;        } catch (Exception exception) {</b>
+<b class="fc">&nbsp;            throw new IllegalStateException(&quot;Could not register class file transformer&quot;, exception);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Releases a class file transformer.
+&nbsp;     *
+&nbsp;     * @param classFileTransformer The class file transformer to release.
+&nbsp;     * @return {@code true} if the removed transformer was the last class file transformer registered. This indicates that the {@code LambdaMetafactory} must
+&nbsp;     * be instrumented to no longer delegate to this alternative factory.
+&nbsp;     */
+&nbsp;    @SuppressWarnings(&quot;all&quot;)
+&nbsp;    public static boolean release(ClassFileTransformer classFileTransformer) {
+&nbsp;        try {
+&nbsp;            @SuppressWarnings(&quot;unchecked&quot;)
+<b class="fc">&nbsp;            Map&lt;ClassFileTransformer, ?&gt; classFileTransformers = (Map&lt;ClassFileTransformer, ?&gt;) ClassLoader.getSystemClassLoader()</b>
+<b class="fc">&nbsp;                    .loadClass(LambdaFactory.class.getName())</b>
+<b class="fc">&nbsp;                    .getField(FIELD_NAME)</b>
+<b class="fc">&nbsp;                    .get(null);</b>
+<b class="fc">&nbsp;            synchronized (classFileTransformers) {</b>
+<b class="fc">&nbsp;                return classFileTransformers.remove(classFileTransformer) != null &amp;&amp; classFileTransformers.isEmpty();</b>
+<b class="nc">&nbsp;            }</b>
+<b class="nc">&nbsp;        } catch (RuntimeException exception) {</b>
+<b class="nc">&nbsp;            throw exception;</b>
+<b class="nc">&nbsp;        } catch (Exception exception) {</b>
+<b class="nc">&nbsp;            throw new IllegalStateException(&quot;Could not release class file transformer&quot;, exception);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Applies this lambda meta factory.
+&nbsp;     *
+&nbsp;     * @param caller                 A lookup context representing the creating class of this lambda expression.
+&nbsp;     * @param invokedName            The name of the lambda expression&#39;s represented method.
+&nbsp;     * @param invokedType            The type of the lambda expression&#39;s factory method.
+&nbsp;     * @param samMethodType          The type of the lambda expression&#39;s represented method.
+&nbsp;     * @param implMethod             A handle representing the target of the lambda expression&#39;s method.
+&nbsp;     * @param instantiatedMethodType A specialization of the type of the lambda expression&#39;s represented method.
+&nbsp;     * @param serializable           {@code true} if the lambda expression should be serializable.
+&nbsp;     * @param markerInterfaces       A list of interfaces for the lambda expression to represent.
+&nbsp;     * @param additionalBridges      A list of additional bridge methods to be implemented by the lambda expression.
+&nbsp;     * @param classFileTransformers  A collection of class file transformers to apply when creating the class.
+&nbsp;     * @return A binary representation of the transformed class file.
+&nbsp;     */
+&nbsp;    private byte[] invoke(Object caller,
+&nbsp;                          String invokedName,
+&nbsp;                          Object invokedType,
+&nbsp;                          Object samMethodType,
+&nbsp;                          Object implMethod,
+&nbsp;                          Object instantiatedMethodType,
+&nbsp;                          boolean serializable,
+&nbsp;                          List&lt;Class&lt;?&gt;&gt; markerInterfaces,
+&nbsp;                          List&lt;?&gt; additionalBridges,
+&nbsp;                          Collection&lt;ClassFileTransformer&gt; classFileTransformers) {
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            return (byte[]) dispatcher.invoke(target,</b>
+&nbsp;                    caller,
+&nbsp;                    invokedName,
+&nbsp;                    invokedType,
+&nbsp;                    samMethodType,
+&nbsp;                    implMethod,
+&nbsp;                    instantiatedMethodType,
+<b class="fc">&nbsp;                    serializable,</b>
+&nbsp;                    markerInterfaces,
+&nbsp;                    additionalBridges,
+&nbsp;                    classFileTransformers);
+<b class="nc">&nbsp;        } catch (RuntimeException exception) {</b>
+<b class="nc">&nbsp;            throw exception;</b>
+<b class="nc">&nbsp;        } catch (Exception exception) {</b>
+<b class="nc">&nbsp;            throw new IllegalStateException(&quot;Cannot create class for lambda expression&quot;, exception);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Dispatches the creation of a new class representing a class file.
+&nbsp;     *
+&nbsp;     * @param caller                 A lookup context representing the creating class of this lambda expression.
+&nbsp;     * @param invokedName            The name of the lambda expression&#39;s represented method.
+&nbsp;     * @param invokedType            The type of the lambda expression&#39;s factory method.
+&nbsp;     * @param samMethodType          The type of the lambda expression&#39;s represented method.
+&nbsp;     * @param implMethod             A handle representing the target of the lambda expression&#39;s method.
+&nbsp;     * @param instantiatedMethodType A specialization of the type of the lambda expression&#39;s represented method.
+&nbsp;     * @param serializable           {@code true} if the lambda expression should be serializable.
+&nbsp;     * @param markerInterfaces       A list of interfaces for the lambda expression to represent.
+&nbsp;     * @param additionalBridges      A list of additional bridge methods to be implemented by the lambda expression.
+&nbsp;     * @return A binary representation of the transformed class file.
+&nbsp;     */
+&nbsp;    public static byte[] make(Object caller,
+&nbsp;                              String invokedName,
+&nbsp;                              Object invokedType,
+&nbsp;                              Object samMethodType,
+&nbsp;                              Object implMethod,
+&nbsp;                              Object instantiatedMethodType,
+&nbsp;                              boolean serializable,
+&nbsp;                              List&lt;Class&lt;?&gt;&gt; markerInterfaces,
+&nbsp;                              List&lt;?&gt; additionalBridges) {
+<b class="fc">&nbsp;        return CLASS_FILE_TRANSFORMERS.values().iterator().next().invoke(caller,</b>
+&nbsp;                invokedName,
+&nbsp;                invokedType,
+&nbsp;                samMethodType,
+&nbsp;                implMethod,
+&nbsp;                instantiatedMethodType,
+&nbsp;                serializable,
+&nbsp;                markerInterfaces,
+&nbsp;                additionalBridges,
+<b class="fc">&nbsp;                CLASS_FILE_TRANSFORMERS.keySet());</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-03 11:00</div>
+</div>
+</body>
+</html>

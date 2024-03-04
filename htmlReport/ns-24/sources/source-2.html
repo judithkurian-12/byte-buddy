@@ -1,0 +1,249 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > ConstantValue</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">net.bytebuddy.utility</a>
+</div>
+
+<h1>Coverage Summary for Class: ConstantValue (net.bytebuddy.utility)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+  <tr>
+    <td class="name">ConstantValue$Simple</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/32)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/32)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Copyright 2014 - Present Rafael Winterhalter
+&nbsp; *
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;package net.bytebuddy.utility;
+&nbsp;
+&nbsp;import net.bytebuddy.build.HashCodeAndEqualsPlugin;
+&nbsp;import net.bytebuddy.description.enumeration.EnumerationDescription;
+&nbsp;import net.bytebuddy.description.type.TypeDescription;
+&nbsp;import net.bytebuddy.implementation.bytecode.StackManipulation;
+&nbsp;import net.bytebuddy.implementation.bytecode.constant.ClassConstant;
+&nbsp;import net.bytebuddy.implementation.bytecode.constant.IntegerConstant;
+&nbsp;import net.bytebuddy.implementation.bytecode.member.FieldAccess;
+&nbsp;import net.bytebuddy.utility.nullability.MaybeNull;
+&nbsp;
+&nbsp;/**
+&nbsp; * Represents a value that can be represented as a constant expression or constant pool value.
+&nbsp; */
+&nbsp;public interface ConstantValue {
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns a description of the type of this constant.
+&nbsp;     *
+&nbsp;     * @return A description of the type of this constant.
+&nbsp;     */
+&nbsp;    TypeDescription getTypeDescription();
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns a stack manipulation loading this value.
+&nbsp;     *
+&nbsp;     * @return A stack manipulation loading this value.
+&nbsp;     */
+&nbsp;    StackManipulation toStackManipulation();
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A simple representation of a constant value.
+&nbsp;     */
+&nbsp;    @HashCodeAndEqualsPlugin.Enhance
+&nbsp;    class Simple implements ConstantValue {
+&nbsp;
+&nbsp;        /**
+&nbsp;         * A stack manipulation that loads a constant.
+&nbsp;         */
+&nbsp;        private final StackManipulation stackManipulation;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * The description of the constant value&#39;s type.
+&nbsp;         */
+&nbsp;        private final TypeDescription typeDescription;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Creates a simple constant value.
+&nbsp;         *
+&nbsp;         * @param stackManipulation A stack manipulation that loads a constant.
+&nbsp;         * @param typeDescription   The description of the constant value&#39;s type.
+&nbsp;         */
+<b class="nc">&nbsp;        protected Simple(StackManipulation stackManipulation, TypeDescription typeDescription) {</b>
+<b class="nc">&nbsp;            this.stackManipulation = stackManipulation;</b>
+<b class="nc">&nbsp;            this.typeDescription = typeDescription;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Returns a constant value for the supplied constant value.
+&nbsp;         *
+&nbsp;         * @param value The value to represent as a constant.
+&nbsp;         * @return An appropriate representation of the constant value.
+&nbsp;         */
+&nbsp;        public static ConstantValue wrap(Object value) {
+<b class="nc">&nbsp;            ConstantValue constant = wrapOrNull(value);</b>
+<b class="nc">&nbsp;            if (constant == null) {</b>
+<b class="nc">&nbsp;                throw new IllegalArgumentException(&quot;Not a constant value: &quot; + value);</b>
+&nbsp;            } else {
+<b class="nc">&nbsp;                return constant;</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Returns a constant value for the supplied constant value.
+&nbsp;         *
+&nbsp;         * @param value The value to represent as a constant.
+&nbsp;         * @return An appropriate representation of the constant value or {@code null} if the
+&nbsp;         * supplied value is not representable as a compile-time constant.
+&nbsp;         */
+&nbsp;        @MaybeNull
+&nbsp;        public static ConstantValue wrapOrNull(Object value) {
+<b class="nc">&nbsp;            if (value instanceof ConstantValue) {</b>
+<b class="nc">&nbsp;                return (ConstantValue) value;</b>
+<b class="nc">&nbsp;            } else if (value instanceof TypeDescription) {</b>
+<b class="nc">&nbsp;                return ((TypeDescription) value).isPrimitive()</b>
+<b class="nc">&nbsp;                        ? new Simple(ClassConstant.of(((TypeDescription) value)), TypeDescription.ForLoadedType.of(Class.class))</b>
+<b class="nc">&nbsp;                        : JavaConstant.Simple.of((TypeDescription) value);</b>
+<b class="nc">&nbsp;            } else if (value instanceof EnumerationDescription) {</b>
+<b class="nc">&nbsp;                return new Simple(FieldAccess.forEnumeration((EnumerationDescription) value), ((EnumerationDescription) value).getEnumerationType());</b>
+<b class="nc">&nbsp;            } else if (value instanceof Boolean) {</b>
+<b class="nc">&nbsp;                return new Simple(IntegerConstant.forValue((Boolean) value), TypeDescription.ForLoadedType.of(boolean.class));</b>
+<b class="nc">&nbsp;            } else if (value instanceof Byte) {</b>
+<b class="nc">&nbsp;                return new Simple(IntegerConstant.forValue((Byte) value), TypeDescription.ForLoadedType.of(byte.class));</b>
+<b class="nc">&nbsp;            } else if (value instanceof Short) {</b>
+<b class="nc">&nbsp;                return new Simple(IntegerConstant.forValue((Short) value), TypeDescription.ForLoadedType.of(short.class));</b>
+<b class="nc">&nbsp;            } else if (value instanceof Character) {</b>
+<b class="nc">&nbsp;                return new Simple(IntegerConstant.forValue((Character) value), TypeDescription.ForLoadedType.of(char.class));</b>
+<b class="nc">&nbsp;            } else if (value instanceof Class&lt;?&gt;) {</b>
+<b class="nc">&nbsp;                return ((Class&lt;?&gt;) value).isPrimitive()</b>
+<b class="nc">&nbsp;                        ? new Simple(ClassConstant.of(TypeDescription.ForLoadedType.of((Class&lt;?&gt;) value)), TypeDescription.ForLoadedType.of(Class.class))</b>
+<b class="nc">&nbsp;                        : JavaConstant.Simple.of(TypeDescription.ForLoadedType.of((Class&lt;?&gt;) value));</b>
+<b class="nc">&nbsp;            } else if (value instanceof Enum&lt;?&gt;) {</b>
+<b class="nc">&nbsp;                return new Simple(FieldAccess.forEnumeration(new EnumerationDescription.ForLoadedEnumeration((Enum&lt;?&gt;) value)), TypeDescription.ForLoadedType.of(((Enum&lt;?&gt;) value).getDeclaringClass()));</b>
+&nbsp;            } else {
+<b class="nc">&nbsp;                return JavaConstant.Simple.ofLoadedOrNull(value);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public TypeDescription getTypeDescription() {
+<b class="nc">&nbsp;            return typeDescription;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public StackManipulation toStackManipulation() {
+<b class="nc">&nbsp;            return stackManipulation;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-03 10:47</div>
+</div>
+</body>
+</html>

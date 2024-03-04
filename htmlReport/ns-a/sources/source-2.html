@@ -1,0 +1,289 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > ClassLoaderResolver</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">net.bytebuddy.build.maven</a>
+</div>
+
+<h1>Coverage Summary for Class: ClassLoaderResolver (net.bytebuddy.build.maven)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ClassLoaderResolver</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    93.8%
+  </span>
+  <span class="absValue">
+    (30/32)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">ClassLoaderResolver$MockitoMock$1541047597</td>
+  </tr>
+  <tr>
+    <td class="name">ClassLoaderResolver$MockitoMock$1541047597$auxiliary$EvuhpFWw</td>
+  </tr>
+  <tr>
+    <td class="name">ClassLoaderResolver$MockitoMock$1541047597$auxiliary$GUuSP69v</td>
+  </tr>
+  <tr>
+    <td class="name">ClassLoaderResolver$MockitoMock$1541047597$auxiliary$HGQwVqSg</td>
+  </tr>
+  <tr>
+    <td class="name">ClassLoaderResolver$MockitoMock$1541047597$auxiliary$vdO63Tij</td>
+  </tr>
+  <tr>
+    <td class="name">ClassLoaderResolver$MockitoMock$310290142</td>
+  </tr>
+  <tr>
+    <td class="name">ClassLoaderResolver$MockitoMock$310290142$auxiliary$2wGAgmO0</td>
+  </tr>
+  <tr>
+    <td class="name">ClassLoaderResolver$MockitoMock$310290142$auxiliary$5wvk9NPR</td>
+  </tr>
+  <tr>
+    <td class="name">ClassLoaderResolver$MockitoMock$310290142$auxiliary$pE7R3LRS</td>
+  </tr>
+  <tr>
+    <td class="name">ClassLoaderResolver$MockitoMock$310290142$auxiliary$YRdJRgK2</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    93.8%
+  </span>
+  <span class="absValue">
+    (30/32)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Copyright 2014 - Present Rafael Winterhalter
+&nbsp; *
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;package net.bytebuddy.build.maven;
+&nbsp;
+&nbsp;import net.bytebuddy.ByteBuddy;
+&nbsp;import org.apache.maven.plugin.MojoExecutionException;
+&nbsp;import org.apache.maven.plugin.MojoFailureException;
+&nbsp;import org.apache.maven.plugin.logging.Log;
+&nbsp;import org.eclipse.aether.RepositorySystem;
+&nbsp;import org.eclipse.aether.RepositorySystemSession;
+&nbsp;import org.eclipse.aether.artifact.Artifact;
+&nbsp;import org.eclipse.aether.collection.CollectRequest;
+&nbsp;import org.eclipse.aether.collection.DependencyCollectionException;
+&nbsp;import org.eclipse.aether.graph.Dependency;
+&nbsp;import org.eclipse.aether.graph.DependencyNode;
+&nbsp;import org.eclipse.aether.repository.RemoteRepository;
+&nbsp;import org.eclipse.aether.resolution.DependencyRequest;
+&nbsp;import org.eclipse.aether.resolution.DependencyResolutionException;
+&nbsp;import org.eclipse.aether.util.graph.visitor.PreorderNodeListGenerator;
+&nbsp;
+&nbsp;import java.io.Closeable;
+&nbsp;import java.io.IOException;
+&nbsp;import java.net.MalformedURLException;
+&nbsp;import java.net.URL;
+&nbsp;import java.net.URLClassLoader;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.HashMap;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Map;
+&nbsp;
+&nbsp;/**
+&nbsp; * A resolver that transforms a Maven coordinate into a class loader that can view the dependencies implied by this coordinate.
+&nbsp; */
+&nbsp;public class ClassLoaderResolver implements Closeable {
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The Maven log dispatcher.
+&nbsp;     */
+&nbsp;    private final Log log;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The repository system to use.
+&nbsp;     */
+&nbsp;    private final RepositorySystem repositorySystem;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The repository system session to use.
+&nbsp;     */
+&nbsp;    private final RepositorySystemSession repositorySystemSession;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A list of remote repositories available.
+&nbsp;     */
+&nbsp;    private final List&lt;RemoteRepository&gt; remoteRepositories;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A mapping of Maven coordinates to already existing class loaders.
+&nbsp;     */
+&nbsp;    private final Map&lt;MavenCoordinate, ClassLoader&gt; classLoaders;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a new class loader resolver.
+&nbsp;     *
+&nbsp;     * @param log                     The Maven log dispatcher.
+&nbsp;     * @param repositorySystem        The repository system to use.
+&nbsp;     * @param repositorySystemSession The repository system session to use.
+&nbsp;     * @param remoteRepositories      A list of remote repositories available.
+&nbsp;     */
+<b class="fc">&nbsp;    public ClassLoaderResolver(Log log, RepositorySystem repositorySystem, RepositorySystemSession repositorySystemSession, List&lt;RemoteRepository&gt; remoteRepositories) {</b>
+<b class="fc">&nbsp;        this.log = log;</b>
+<b class="fc">&nbsp;        this.repositorySystem = repositorySystem;</b>
+<b class="fc">&nbsp;        this.repositorySystemSession = repositorySystemSession;</b>
+<b class="fc">&nbsp;        this.remoteRepositories = remoteRepositories;</b>
+<b class="fc">&nbsp;        classLoaders = new HashMap&lt;MavenCoordinate, ClassLoader&gt;();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Resolves a Maven coordinate to a class loader that can load all of the coordinates classes. If a Maven coordinate was resolved previously,
+&nbsp;     * the previously created class loader is returned.
+&nbsp;     *
+&nbsp;     * @param mavenCoordinate The Maven coordinate to resolve.
+&nbsp;     * @return A class loader that references all of the class loader&#39;s dependencies and which is a child of this class&#39;s class loader.
+&nbsp;     * @throws MojoExecutionException If the user configuration results in an error.
+&nbsp;     * @throws MojoFailureException   If the plugin application raises an error.
+&nbsp;     */
+&nbsp;    public ClassLoader resolve(MavenCoordinate mavenCoordinate) throws MojoFailureException, MojoExecutionException {
+<b class="fc">&nbsp;        ClassLoader classLoader = classLoaders.get(mavenCoordinate);</b>
+<b class="fc">&nbsp;        if (classLoader == null) {</b>
+<b class="fc">&nbsp;            classLoader = doResolve(mavenCoordinate);</b>
+<b class="fc">&nbsp;            classLoaders.put(mavenCoordinate, classLoader);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return classLoader;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Resolves a Maven coordinate to a class loader that can load all of the coordinates classes.
+&nbsp;     *
+&nbsp;     * @param mavenCoordinate The Maven coordinate to resolve.
+&nbsp;     * @return A class loader that references all of the class loader&#39;s dependencies and which is a child of this class&#39;s class loader.
+&nbsp;     * @throws MojoExecutionException If the user configuration results in an error.
+&nbsp;     * @throws MojoFailureException   If the plugin application raises an error.
+&nbsp;     */
+&nbsp;    private ClassLoader doResolve(MavenCoordinate mavenCoordinate) throws MojoExecutionException, MojoFailureException {
+<b class="fc">&nbsp;        List&lt;URL&gt; urls = new ArrayList&lt;URL&gt;();</b>
+<b class="fc">&nbsp;        log.info(&quot;Resolving transformer dependency: &quot; + mavenCoordinate);</b>
+&nbsp;        try {
+<b class="fc">&nbsp;            DependencyNode root = repositorySystem.collectDependencies(repositorySystemSession, new CollectRequest(new Dependency(mavenCoordinate.asArtifact(), &quot;runtime&quot;), remoteRepositories)).getRoot();</b>
+<b class="fc">&nbsp;            repositorySystem.resolveDependencies(repositorySystemSession, new DependencyRequest().setRoot(root));</b>
+<b class="fc">&nbsp;            PreorderNodeListGenerator preorderNodeListGenerator = new PreorderNodeListGenerator();</b>
+<b class="fc">&nbsp;            root.accept(preorderNodeListGenerator);</b>
+<b class="fc">&nbsp;            for (Artifact artifact : preorderNodeListGenerator.getArtifacts(false)) {</b>
+<b class="fc">&nbsp;                urls.add(artifact.getFile().toURI().toURL());</b>
+<b class="fc">&nbsp;            }</b>
+<b class="fc">&nbsp;        } catch (DependencyCollectionException exception) {</b>
+<b class="fc">&nbsp;            throw new MojoExecutionException(&quot;Could not collect dependencies for &quot; + mavenCoordinate, exception);</b>
+<b class="fc">&nbsp;        } catch (DependencyResolutionException exception) {</b>
+<b class="fc">&nbsp;            throw new MojoExecutionException(&quot;Could not resolve dependencies for &quot; + mavenCoordinate, exception);</b>
+<b class="nc">&nbsp;        } catch (MalformedURLException exception) {</b>
+<b class="nc">&nbsp;            throw new MojoFailureException(&quot;Could not resolve file as URL for &quot; + mavenCoordinate, exception);</b>
+<b class="fc">&nbsp;        }</b>
+<b class="fc">&nbsp;        return new URLClassLoader(urls.toArray(new URL[0]), ByteBuddy.class.getClassLoader());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public void close() throws IOException {
+<b class="fc">&nbsp;        for (ClassLoader classLoader : classLoaders.values()) {</b>
+<b class="fc">&nbsp;            if (classLoader instanceof Closeable) { // URLClassLoaders are only closeable since Java 1.7.</b>
+<b class="fc">&nbsp;                ((Closeable) classLoader).close();</b>
+&nbsp;            }
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-03 11:00</div>
+</div>
+</body>
+</html>

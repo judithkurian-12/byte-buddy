@@ -1,0 +1,283 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > SuperCallHandle</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">net.bytebuddy.implementation.bind.annotation</a>
+</div>
+
+<h1>Coverage Summary for Class: SuperCallHandle (net.bytebuddy.implementation.bind.annotation)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+  <tr>
+    <td class="name">SuperCallHandle$Binder</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (42/42)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">SuperCallHandle$MockitoMock$1835288002</td>
+  </tr>
+  <tr>
+    <td class="name">SuperCallHandle$MockitoMock$1835288002$auxiliary$C67aW5u2</td>
+  </tr>
+  <tr>
+    <td class="name">SuperCallHandle$MockitoMock$1835288002$auxiliary$JkxiNWwv</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (42/42)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Copyright 2014 - Present Rafael Winterhalter
+&nbsp; *
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;package net.bytebuddy.implementation.bind.annotation;
+&nbsp;
+&nbsp;import net.bytebuddy.description.annotation.AnnotationDescription;
+&nbsp;import net.bytebuddy.description.method.MethodDescription;
+&nbsp;import net.bytebuddy.description.method.MethodList;
+&nbsp;import net.bytebuddy.description.method.ParameterDescription;
+&nbsp;import net.bytebuddy.description.type.TypeDefinition;
+&nbsp;import net.bytebuddy.description.type.TypeDescription;
+&nbsp;import net.bytebuddy.description.type.TypeList;
+&nbsp;import net.bytebuddy.implementation.Implementation;
+&nbsp;import net.bytebuddy.implementation.bind.MethodDelegationBinder;
+&nbsp;import net.bytebuddy.implementation.bytecode.StackManipulation;
+&nbsp;import net.bytebuddy.implementation.bytecode.assign.Assigner;
+&nbsp;import net.bytebuddy.implementation.bytecode.collection.ArrayFactory;
+&nbsp;import net.bytebuddy.implementation.bytecode.constant.IntegerConstant;
+&nbsp;import net.bytebuddy.implementation.bytecode.constant.NullConstant;
+&nbsp;import net.bytebuddy.implementation.bytecode.member.MethodInvocation;
+&nbsp;import net.bytebuddy.implementation.bytecode.member.MethodVariableAccess;
+&nbsp;import net.bytebuddy.utility.JavaType;
+&nbsp;import org.objectweb.asm.Opcodes;
+&nbsp;
+&nbsp;import java.lang.annotation.*;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;import static net.bytebuddy.matcher.ElementMatchers.named;
+&nbsp;
+&nbsp;/**
+&nbsp; * Parameters that are annotated with this annotation will be assigned a {@code java.lang.invoke.MethodHandle} invoking
+&nbsp; * the {@code super} implementation.
+&nbsp; *
+&nbsp; * @see net.bytebuddy.implementation.MethodDelegation
+&nbsp; * @see TargetMethodAnnotationDrivenBinder
+&nbsp; */
+&nbsp;@Documented
+&nbsp;@Retention(RetentionPolicy.RUNTIME)
+&nbsp;@Target(ElementType.PARAMETER)
+&nbsp;public @interface SuperCallHandle {
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Determines if the method handle should invoke the default method to the intercepted method if a common
+&nbsp;     * super method invocation is not applicable. For this to be possible, the default method must not be ambiguous.
+&nbsp;     *
+&nbsp;     * @return {@code true} if the invocation should fall back to invoking the default method.
+&nbsp;     */
+&nbsp;    boolean fallbackToDefault() default true;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Assigns {@code null} to the parameter if it is impossible to invoke the super method or a possible dominant default method, if permitted.
+&nbsp;     *
+&nbsp;     * @return {@code true} if a {@code null} constant should be assigned to this parameter in case that a legal binding is impossible.
+&nbsp;     */
+&nbsp;    boolean nullIfImpossible() default false;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A binder for handling the {@link SuperCallHandle} annotation.
+&nbsp;     *
+&nbsp;     * @see TargetMethodAnnotationDrivenBinder
+&nbsp;     */
+<b class="fc">&nbsp;    enum Binder implements TargetMethodAnnotationDrivenBinder.ParameterBinder&lt;SuperCallHandle&gt; {</b>
+&nbsp;
+&nbsp;        /**
+&nbsp;         * The singleton instance.
+&nbsp;         */
+<b class="fc">&nbsp;        INSTANCE;</b>
+&nbsp;
+&nbsp;        /**
+&nbsp;         * A description of the {@link SuperCallHandle#fallbackToDefault()} method.
+&nbsp;         */
+&nbsp;        private static final MethodDescription.InDefinedShape FALLBACK_TO_DEFAULT;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * A description of the {@link SuperCallHandle#nullIfImpossible()} method.
+&nbsp;         */
+&nbsp;        private static final MethodDescription.InDefinedShape NULL_IF_IMPOSSIBLE;
+&nbsp;
+&nbsp;        /*
+&nbsp;         * Resolves annotation properties.
+&nbsp;         */
+&nbsp;        static {
+<b class="fc">&nbsp;            MethodList&lt;MethodDescription.InDefinedShape&gt; methods = TypeDescription.ForLoadedType.of(SuperCallHandle.class).getDeclaredMethods();</b>
+<b class="fc">&nbsp;            FALLBACK_TO_DEFAULT = methods.filter(named(&quot;fallbackToDefault&quot;)).getOnly();</b>
+<b class="fc">&nbsp;            NULL_IF_IMPOSSIBLE = methods.filter(named(&quot;nullIfImpossible&quot;)).getOnly();</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public Class&lt;SuperCallHandle&gt; getHandledType() {
+<b class="fc">&nbsp;            return SuperCallHandle.class;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public MethodDelegationBinder.ParameterBinding&lt;?&gt; bind(AnnotationDescription.Loadable&lt;SuperCallHandle&gt; annotation,
+&nbsp;                                                               MethodDescription source,
+&nbsp;                                                               ParameterDescription target,
+&nbsp;                                                               Implementation.Target implementationTarget,
+&nbsp;                                                               Assigner assigner,
+&nbsp;                                                               Assigner.Typing typing) {
+<b class="fc">&nbsp;            if (!target.getType().asErasure().isAssignableFrom(JavaType.METHOD_HANDLE.getTypeStub())) {</b>
+<b class="fc">&nbsp;                throw new IllegalStateException(&quot;A method handle for a super method invocation cannot be assigned to &quot; + target);</b>
+<b class="fc">&nbsp;            } else if (source.isConstructor()) {</b>
+<b class="fc">&nbsp;                return annotation.getValue(NULL_IF_IMPOSSIBLE).resolve(Boolean.class)</b>
+<b class="fc">&nbsp;                        ? new MethodDelegationBinder.ParameterBinding.Anonymous(NullConstant.INSTANCE)</b>
+<b class="fc">&nbsp;                        : MethodDelegationBinder.ParameterBinding.Illegal.INSTANCE;</b>
+&nbsp;            }
+<b class="fc">&nbsp;            Implementation.SpecialMethodInvocation specialMethodInvocation = (annotation.getValue(FALLBACK_TO_DEFAULT).resolve(Boolean.class)</b>
+<b class="fc">&nbsp;                    ? implementationTarget.invokeDominant(source.asSignatureToken())</b>
+<b class="fc">&nbsp;                    : implementationTarget.invokeSuper(source.asSignatureToken())).withCheckedCompatibilityTo(source.asTypeToken());</b>
+&nbsp;            StackManipulation stackManipulation;
+<b class="fc">&nbsp;            if (specialMethodInvocation.isValid()) {</b>
+<b class="fc">&nbsp;                List&lt;StackManipulation&gt; stackManipulations = new ArrayList&lt;StackManipulation&gt;(1</b>
+<b class="fc">&nbsp;                        + (source.isStatic() ? 0 : 2)</b>
+<b class="fc">&nbsp;                        + source.getParameters().size() * 3);</b>
+<b class="fc">&nbsp;                stackManipulations.add(specialMethodInvocation.toMethodHandle().toStackManipulation());</b>
+<b class="fc">&nbsp;                if (!source.isStatic()) {</b>
+<b class="fc">&nbsp;                    stackManipulations.add(MethodVariableAccess.loadThis());</b>
+<b class="fc">&nbsp;                    stackManipulations.add(MethodInvocation.invoke(new MethodDescription.Latent(JavaType.METHOD_HANDLE.getTypeStub(), new MethodDescription.Token(&quot;bindTo&quot;,</b>
+&nbsp;                            Opcodes.ACC_PUBLIC,
+<b class="fc">&nbsp;                            JavaType.METHOD_HANDLE.getTypeStub().asGenericType(),</b>
+<b class="fc">&nbsp;                            new TypeList.Generic.Explicit(TypeDefinition.Sort.describe(Object.class))))));</b>
+&nbsp;                }
+<b class="fc">&nbsp;                if (!source.getParameters().isEmpty()) {</b>
+<b class="fc">&nbsp;                    List&lt;StackManipulation&gt; values = new ArrayList&lt;StackManipulation&gt;(source.getParameters().size());</b>
+<b class="fc">&nbsp;                    for (ParameterDescription parameterDescription : source.getParameters()) {</b>
+<b class="fc">&nbsp;                        values.add(parameterDescription.getType().isPrimitive() ? new StackManipulation.Compound(MethodVariableAccess.load(parameterDescription), assigner.assign(parameterDescription.getType(),</b>
+<b class="fc">&nbsp;                                parameterDescription.getType().asErasure().asBoxed().asGenericType(),</b>
+<b class="fc">&nbsp;                                typing)) : MethodVariableAccess.load(parameterDescription));</b>
+<b class="fc">&nbsp;                    }</b>
+<b class="fc">&nbsp;                    stackManipulations.add(IntegerConstant.forValue(0));</b>
+<b class="fc">&nbsp;                    stackManipulations.add(ArrayFactory.forType(TypeDescription.ForLoadedType.of(Object.class).asGenericType()).withValues(values));</b>
+<b class="fc">&nbsp;                    stackManipulations.add(MethodInvocation.invoke(new MethodDescription.Latent(JavaType.METHOD_HANDLES.getTypeStub(), new MethodDescription.Token(&quot;insertArguments&quot;,</b>
+&nbsp;                            Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC,
+<b class="fc">&nbsp;                            JavaType.METHOD_HANDLE.getTypeStub().asGenericType(),</b>
+<b class="fc">&nbsp;                            new TypeList.Generic.Explicit(JavaType.METHOD_HANDLE.getTypeStub(), TypeDefinition.Sort.describe(int.class), TypeDefinition.Sort.describe(Object[].class))))));</b>
+&nbsp;                }
+<b class="fc">&nbsp;                stackManipulation = new StackManipulation.Compound(stackManipulations);</b>
+<b class="fc">&nbsp;            } else if (annotation.getValue(NULL_IF_IMPOSSIBLE).resolve(Boolean.class)) {</b>
+<b class="fc">&nbsp;                stackManipulation = NullConstant.INSTANCE;</b>
+&nbsp;            } else {
+<b class="fc">&nbsp;                return MethodDelegationBinder.ParameterBinding.Illegal.INSTANCE;</b>
+&nbsp;            }
+<b class="fc">&nbsp;            return new MethodDelegationBinder.ParameterBinding.Anonymous(stackManipulation);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-02 16:00</div>
+</div>
+</body>
+</html>

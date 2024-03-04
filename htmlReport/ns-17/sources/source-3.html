@@ -1,0 +1,386 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > ExceptionMethod</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">net.bytebuddy.implementation</a>
+</div>
+
+<h1>Coverage Summary for Class: ExceptionMethod (net.bytebuddy.implementation)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ExceptionMethod</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (8/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    87.5%
+  </span>
+  <span class="absValue">
+    (14/16)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">ExceptionMethod$ConstructionDelegate</td>
+  </tr>
+  <tr>
+    <td class="name">ExceptionMethod$ConstructionDelegate$ForDefaultConstructor</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/7)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">ExceptionMethod$ConstructionDelegate$ForStringConstructor</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (8/8)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (12/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    93.5%
+  </span>
+  <span class="absValue">
+    (29/31)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Copyright 2014 - Present Rafael Winterhalter
+&nbsp; *
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;package net.bytebuddy.implementation;
+&nbsp;
+&nbsp;import net.bytebuddy.build.HashCodeAndEqualsPlugin;
+&nbsp;import net.bytebuddy.description.method.MethodDescription;
+&nbsp;import net.bytebuddy.description.type.TypeDescription;
+&nbsp;import net.bytebuddy.dynamic.scaffold.InstrumentedType;
+&nbsp;import net.bytebuddy.implementation.bytecode.*;
+&nbsp;import net.bytebuddy.implementation.bytecode.constant.TextConstant;
+&nbsp;import net.bytebuddy.implementation.bytecode.member.MethodInvocation;
+&nbsp;import org.objectweb.asm.MethodVisitor;
+&nbsp;
+&nbsp;import static net.bytebuddy.matcher.ElementMatchers.isConstructor;
+&nbsp;import static net.bytebuddy.matcher.ElementMatchers.takesArguments;
+&nbsp;
+&nbsp;/**
+&nbsp; * This implementation causes a {@link java.lang.Throwable} to be thrown when the instrumented method is invoked.
+&nbsp; * Be aware that the Java Virtual machine does not care about exception declarations and will throw any
+&nbsp; * {@link java.lang.Throwable} from any method even if the method does not declared a checked exception.
+&nbsp; */
+&nbsp;@HashCodeAndEqualsPlugin.Enhance
+&nbsp;public class ExceptionMethod implements Implementation, ByteCodeAppender {
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The construction delegation which is responsible for creating the exception to be thrown.
+&nbsp;     */
+&nbsp;    private final ConstructionDelegate constructionDelegate;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a new instance of an implementation for throwing throwables.
+&nbsp;     *
+&nbsp;     * @param constructionDelegate A delegate that is responsible for calling the {@link Throwable}&#39;s constructor.
+&nbsp;     */
+<b class="fc">&nbsp;    public ExceptionMethod(ConstructionDelegate constructionDelegate) {</b>
+<b class="fc">&nbsp;        this.constructionDelegate = constructionDelegate;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates an implementation that creates a new instance of the given {@link Throwable} type on each method invocation
+&nbsp;     * which is then thrown immediately. For this to be possible, the given type must define a default constructor
+&nbsp;     * which is visible from the instrumented type.
+&nbsp;     *
+&nbsp;     * @param throwableType The type of the {@link Throwable}.
+&nbsp;     * @return An implementation that will throw an instance of the {@link Throwable} on each method invocation of the
+&nbsp;     * instrumented methods.
+&nbsp;     */
+&nbsp;    public static Implementation throwing(Class&lt;? extends Throwable&gt; throwableType) {
+<b class="fc">&nbsp;        return throwing(TypeDescription.ForLoadedType.of(throwableType));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates an implementation that creates a new instance of the given {@link Throwable} type on each method invocation
+&nbsp;     * which is then thrown immediately. For this to be possible, the given type must define a default constructor
+&nbsp;     * which is visible from the instrumented type.
+&nbsp;     *
+&nbsp;     * @param throwableType The type of the {@link Throwable}.
+&nbsp;     * @return An implementation that will throw an instance of the {@link Throwable} on each method invocation of the
+&nbsp;     * instrumented methods.
+&nbsp;     */
+&nbsp;    public static Implementation throwing(TypeDescription throwableType) {
+<b class="fc">&nbsp;        if (!throwableType.isAssignableTo(Throwable.class)) {</b>
+<b class="nc">&nbsp;            throw new IllegalArgumentException(throwableType + &quot; does not extend throwable&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return new ExceptionMethod(new ConstructionDelegate.ForDefaultConstructor(throwableType));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates an implementation that creates a new instance of the given {@link Throwable} type on each method
+&nbsp;     * invocation which is then thrown immediately. For this to be possible, the given type must define a
+&nbsp;     * constructor that takes a single {@link java.lang.String} as its argument.
+&nbsp;     *
+&nbsp;     * @param throwableType The type of the {@link Throwable}.
+&nbsp;     * @param message       The string that is handed to the constructor. Usually an exception message.
+&nbsp;     * @return An implementation that will throw an instance of the {@link Throwable} on each method invocation
+&nbsp;     * of the instrumented methods.
+&nbsp;     */
+&nbsp;    public static Implementation throwing(Class&lt;? extends Throwable&gt; throwableType, String message) {
+<b class="fc">&nbsp;        return throwing(TypeDescription.ForLoadedType.of(throwableType), message);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates an implementation that creates a new instance of the given {@link Throwable} type on each method
+&nbsp;     * invocation which is then thrown immediately. For this to be possible, the given type must define a
+&nbsp;     * constructor that takes a single {@link java.lang.String} as its argument.
+&nbsp;     *
+&nbsp;     * @param throwableType The type of the {@link Throwable}.
+&nbsp;     * @param message       The string that is handed to the constructor. Usually an exception message.
+&nbsp;     * @return An implementation that will throw an instance of the {@link Throwable} on each method invocation
+&nbsp;     * of the instrumented methods.
+&nbsp;     */
+&nbsp;    public static Implementation throwing(TypeDescription throwableType, String message) {
+<b class="fc">&nbsp;        if (!throwableType.isAssignableTo(Throwable.class)) {</b>
+<b class="nc">&nbsp;            throw new IllegalArgumentException(throwableType + &quot; does not extend throwable&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return new ExceptionMethod(new ConstructionDelegate.ForStringConstructor(throwableType, message));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public InstrumentedType prepare(InstrumentedType instrumentedType) {
+<b class="fc">&nbsp;        return instrumentedType;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public ByteCodeAppender appender(Target implementationTarget) {
+<b class="fc">&nbsp;        return this;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public Size apply(MethodVisitor methodVisitor, Context implementationContext, MethodDescription instrumentedMethod) {
+<b class="fc">&nbsp;        StackManipulation.Size stackSize = new StackManipulation.Compound(</b>
+<b class="fc">&nbsp;                constructionDelegate.make(),</b>
+&nbsp;                Throw.INSTANCE
+<b class="fc">&nbsp;        ).apply(methodVisitor, implementationContext);</b>
+<b class="fc">&nbsp;        return new Size(stackSize.getMaximalSize(), instrumentedMethod.getStackSize());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A construction delegate is responsible for calling a {@link Throwable}&#39;s constructor.
+&nbsp;     */
+&nbsp;    public interface ConstructionDelegate {
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Creates a stack manipulation that creates pushes all constructor arguments onto the operand stack
+&nbsp;         * and subsequently calls the constructor.
+&nbsp;         *
+&nbsp;         * @return A stack manipulation for constructing a {@link Throwable}.
+&nbsp;         */
+&nbsp;        StackManipulation make();
+&nbsp;
+&nbsp;        /**
+&nbsp;         * A construction delegate that calls the default constructor.
+&nbsp;         */
+&nbsp;        @HashCodeAndEqualsPlugin.Enhance
+&nbsp;        class ForDefaultConstructor implements ConstructionDelegate {
+&nbsp;
+&nbsp;            /**
+&nbsp;             * The type of the exception that is to be thrown.
+&nbsp;             */
+&nbsp;            private final TypeDescription throwableType;
+&nbsp;
+&nbsp;            /**
+&nbsp;             * The constructor that is used for creating the exception.
+&nbsp;             */
+&nbsp;            private final MethodDescription targetConstructor;
+&nbsp;
+&nbsp;            /**
+&nbsp;             * Creates a new construction delegate that calls a default constructor.
+&nbsp;             *
+&nbsp;             * @param throwableType The type of the {@link Throwable}.
+&nbsp;             */
+<b class="fc">&nbsp;            public ForDefaultConstructor(TypeDescription throwableType) {</b>
+<b class="fc">&nbsp;                this.throwableType = throwableType;</b>
+<b class="fc">&nbsp;                this.targetConstructor = throwableType.getDeclaredMethods()</b>
+<b class="fc">&nbsp;                        .filter(isConstructor().and(takesArguments(0))).getOnly();</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            /**
+&nbsp;             * {@inheritDoc}
+&nbsp;             */
+&nbsp;            public StackManipulation make() {
+<b class="fc">&nbsp;                return new StackManipulation.Compound(</b>
+<b class="fc">&nbsp;                        TypeCreation.of(throwableType),</b>
+&nbsp;                        Duplication.SINGLE,
+<b class="fc">&nbsp;                        MethodInvocation.invoke(targetConstructor));</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * A construction delegate that calls a constructor that takes a single string as its argument.
+&nbsp;         */
+&nbsp;        @HashCodeAndEqualsPlugin.Enhance
+&nbsp;        class ForStringConstructor implements ConstructionDelegate {
+&nbsp;
+&nbsp;            /**
+&nbsp;             * The type of the exception that is to be thrown.
+&nbsp;             */
+&nbsp;            private final TypeDescription throwableType;
+&nbsp;
+&nbsp;            /**
+&nbsp;             * The constructor that is used for creating the exception.
+&nbsp;             */
+&nbsp;            private final MethodDescription targetConstructor;
+&nbsp;
+&nbsp;            /**
+&nbsp;             * The {@link java.lang.String} that is to be passed to the exception&#39;s constructor.
+&nbsp;             */
+&nbsp;            private final String message;
+&nbsp;
+&nbsp;            /**
+&nbsp;             * Creates a new construction delegate that calls a constructor by handing it the given string.
+&nbsp;             *
+&nbsp;             * @param throwableType The type of the {@link Throwable}.
+&nbsp;             * @param message       The string that is handed to the constructor.
+&nbsp;             */
+<b class="fc">&nbsp;            public ForStringConstructor(TypeDescription throwableType, String message) {</b>
+<b class="fc">&nbsp;                this.throwableType = throwableType;</b>
+<b class="fc">&nbsp;                this.targetConstructor = throwableType.getDeclaredMethods()</b>
+<b class="fc">&nbsp;                        .filter(isConstructor().and(takesArguments(String.class))).getOnly();</b>
+<b class="fc">&nbsp;                this.message = message;</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            /**
+&nbsp;             * {@inheritDoc}
+&nbsp;             */
+&nbsp;            public StackManipulation make() {
+<b class="fc">&nbsp;                return new StackManipulation.Compound(</b>
+<b class="fc">&nbsp;                        TypeCreation.of(throwableType),</b>
+&nbsp;                        Duplication.SINGLE,
+&nbsp;                        new TextConstant(message),
+<b class="fc">&nbsp;                        MethodInvocation.invoke(targetConstructor));</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-03 11:00</div>
+</div>
+</body>
+</html>

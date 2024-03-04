@@ -1,0 +1,789 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > ModifierReviewable</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">net.bytebuddy.description</a>
+</div>
+
+<h1>Coverage Summary for Class: ModifierReviewable (net.bytebuddy.description)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+  <tr>
+    <td class="name">ModifierReviewable$AbstractBase</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (34/34)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    92.4%
+  </span>
+  <span class="absValue">
+    (73/79)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">ModifierReviewable$ForFieldDescription</td>
+  </tr>
+  <tr>
+    <td class="name">ModifierReviewable$ForMethodDescription</td>
+  </tr>
+  <tr>
+    <td class="name">ModifierReviewable$ForParameterDescription</td>
+  </tr>
+  <tr>
+    <td class="name">ModifierReviewable$ForTypeDefinition</td>
+  </tr>
+  <tr>
+    <td class="name">ModifierReviewable$MockitoMock$1863236340</td>
+  </tr>
+  <tr>
+    <td class="name">ModifierReviewable$MockitoMock$1863236340$auxiliary$klO4pA8J</td>
+  </tr>
+  <tr>
+    <td class="name">ModifierReviewable$MockitoMock$1863236340$auxiliary$VeTYKOBt</td>
+  </tr>
+  <tr>
+    <td class="name">ModifierReviewable$OfAbstraction</td>
+  </tr>
+  <tr>
+    <td class="name">ModifierReviewable$OfAbstraction$MockitoMock$1133422810</td>
+  </tr>
+  <tr>
+    <td class="name">ModifierReviewable$OfAbstraction$MockitoMock$1133422810$auxiliary$PRecuyru</td>
+  </tr>
+  <tr>
+    <td class="name">ModifierReviewable$OfAbstraction$MockitoMock$1133422810$auxiliary$ULFZRQEP</td>
+  </tr>
+  <tr>
+    <td class="name">ModifierReviewable$OfByteCodeElement</td>
+  </tr>
+  <tr>
+    <td class="name">ModifierReviewable$OfByteCodeElement$MockitoMock$1676945974</td>
+  </tr>
+  <tr>
+    <td class="name">ModifierReviewable$OfByteCodeElement$MockitoMock$1676945974$auxiliary$nG9a36eC</td>
+  </tr>
+  <tr>
+    <td class="name">ModifierReviewable$OfByteCodeElement$MockitoMock$1676945974$auxiliary$rFZcsOgu</td>
+  </tr>
+  <tr>
+    <td class="name">ModifierReviewable$OfEnumeration</td>
+  </tr>
+  <tr>
+    <td class="name">ModifierReviewable$OfEnumeration$MockitoMock$1211642190</td>
+  </tr>
+  <tr>
+    <td class="name">ModifierReviewable$OfEnumeration$MockitoMock$1211642190$auxiliary$EWnPXUwb</td>
+  </tr>
+  <tr>
+    <td class="name">ModifierReviewable$OfEnumeration$MockitoMock$1211642190$auxiliary$gnNjkKcc</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (34/34)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    92.4%
+  </span>
+  <span class="absValue">
+    (73/79)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Copyright 2014 - Present Rafael Winterhalter
+&nbsp; *
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;package net.bytebuddy.description;
+&nbsp;
+&nbsp;import net.bytebuddy.description.modifier.*;
+&nbsp;import org.objectweb.asm.Opcodes;
+&nbsp;
+&nbsp;/**
+&nbsp; * Implementations of this interface can be described in terms of a Java modifier.
+&nbsp; */
+&nbsp;public interface ModifierReviewable {
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Representation of the default modifier.
+&nbsp;     */
+&nbsp;    int EMPTY_MASK = 0;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns the modifier that is described by this object.
+&nbsp;     *
+&nbsp;     * @return The modifier that is described by this object.
+&nbsp;     */
+&nbsp;    int getModifiers();
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Specifies if the modifier described by this object is {@code final}.
+&nbsp;     *
+&nbsp;     * @return {@code true} if the modifier described by this object is {@code final}.
+&nbsp;     */
+&nbsp;    boolean isFinal();
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Specifies if the modifier described by this object is synthetic.
+&nbsp;     *
+&nbsp;     * @return {@code true} if the modifier described by this object is synthetic.
+&nbsp;     */
+&nbsp;    boolean isSynthetic();
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns this objects synthetic state.
+&nbsp;     *
+&nbsp;     * @return This objects synthetic state.
+&nbsp;     */
+&nbsp;    SyntheticState getSyntheticState();
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A modifier reviewable for a {@link ByteCodeElement}, i.e. a type, a field or a method.
+&nbsp;     */
+&nbsp;    interface OfByteCodeElement extends ModifierReviewable {
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Specifies if the modifier described by this object is {@code public}.
+&nbsp;         *
+&nbsp;         * @return {@code true} if the modifier described by this object is {@code public}.
+&nbsp;         */
+&nbsp;        boolean isPublic();
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Specifies if the modifier described by this object is {@code protected}.
+&nbsp;         *
+&nbsp;         * @return {@code true} if the modifier described by this object is {@code protected}.
+&nbsp;         */
+&nbsp;        boolean isProtected();
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Specifies if the modifier described by this object is package private.
+&nbsp;         *
+&nbsp;         * @return {@code true} if the modifier described by this object is package private.
+&nbsp;         */
+&nbsp;        boolean isPackagePrivate();
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Specifies if the modifier described by this object is {@code private}.
+&nbsp;         *
+&nbsp;         * @return {@code true} if the modifier described by this object is {@code private}.
+&nbsp;         */
+&nbsp;        boolean isPrivate();
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Specifies if the modifier described by this object is {@code static}.
+&nbsp;         *
+&nbsp;         * @return {@code true} if the modifier described by this object is {@code static}.
+&nbsp;         */
+&nbsp;        boolean isStatic();
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Specifies if the modifier described by this object represents the deprecated flag.
+&nbsp;         *
+&nbsp;         * @return {@code true} if the modifier described by this object represents the deprecated flag.
+&nbsp;         */
+&nbsp;        boolean isDeprecated();
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Return&#39;s this byte code element&#39;s ownership.
+&nbsp;         *
+&nbsp;         * @return This byte code element&#39;s ownership.
+&nbsp;         */
+&nbsp;        Ownership getOwnership();
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Returns this byte code element&#39;s visibility.
+&nbsp;         *
+&nbsp;         * @return This byte code element&#39;s visibility.
+&nbsp;         */
+&nbsp;        Visibility getVisibility();
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A modifier reviewable for a byte code element that can be abstract, i.e. a {@link net.bytebuddy.description.type.TypeDescription}
+&nbsp;     * or a {@link net.bytebuddy.description.method.MethodDescription}.
+&nbsp;     */
+&nbsp;    interface OfAbstraction extends OfByteCodeElement {
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Specifies if the modifier described by this object is {@code abstract}.
+&nbsp;         *
+&nbsp;         * @return {@code true} if the modifier described by this object is {@code abstract}.
+&nbsp;         */
+&nbsp;        boolean isAbstract();
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A modifier reviewable for a byte code element that can represent an enumeration, i.e. a {@link net.bytebuddy.description.field.FieldDescription}
+&nbsp;     * that holds an enumeration value or a {@link net.bytebuddy.description.type.TypeDescription} that represents an enumeration.
+&nbsp;     */
+&nbsp;    interface OfEnumeration extends OfByteCodeElement {
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Specifies if the modifier described by this object represents the enum flag.
+&nbsp;         *
+&nbsp;         * @return {@code true} if the modifier described by this object represents the enum flag.
+&nbsp;         */
+&nbsp;        boolean isEnum();
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Returns this byte code element&#39;s enumeration state.
+&nbsp;         *
+&nbsp;         * @return This byte code element&#39;s enumeration state.
+&nbsp;         */
+&nbsp;        EnumerationState getEnumerationState();
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A modifier reviewable for a {@link net.bytebuddy.description.type.TypeDescription}.
+&nbsp;     */
+&nbsp;    interface ForTypeDefinition extends OfAbstraction, OfEnumeration {
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Specifies if the modifier described by this object represents the interface flag.
+&nbsp;         *
+&nbsp;         * @return {@code true} if the modifier described by this object represents the interface flag.
+&nbsp;         */
+&nbsp;        boolean isInterface();
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Specifies if the modifier described by this object represents the annotation flag.
+&nbsp;         *
+&nbsp;         * @return {@code true} if the modifier described by this object represents the annotation flag.
+&nbsp;         */
+&nbsp;        boolean isAnnotation();
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Returns this type&#39;s manifestation.
+&nbsp;         *
+&nbsp;         * @return This type&#39;s manifestation.
+&nbsp;         */
+&nbsp;        TypeManifestation getTypeManifestation();
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A modifier reviewable for a {@link net.bytebuddy.description.field.FieldDescription}.
+&nbsp;     */
+&nbsp;    interface ForFieldDescription extends OfEnumeration {
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Specifies if the modifier described by this object represents the volatile flag.
+&nbsp;         *
+&nbsp;         * @return {@code true} if the modifier described by this object represents the volatile flag.
+&nbsp;         */
+&nbsp;        boolean isVolatile();
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Specifies if the modifier described by this object represents the transient flag.
+&nbsp;         *
+&nbsp;         * @return {@code true} if the modifier described by this object represents the transient flag.
+&nbsp;         */
+&nbsp;        boolean isTransient();
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Returns this field&#39;s manifestation.
+&nbsp;         *
+&nbsp;         * @return This field&#39;s manifestation.
+&nbsp;         */
+&nbsp;        FieldManifestation getFieldManifestation();
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Returns this field&#39;s persistence.
+&nbsp;         *
+&nbsp;         * @return This field&#39;s persistence.
+&nbsp;         */
+&nbsp;        FieldPersistence getFieldPersistence();
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A modifier reviewable for a {@link net.bytebuddy.description.method.MethodDescription}.
+&nbsp;     */
+&nbsp;    interface ForMethodDescription extends OfAbstraction {
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Specifies if the modifier described by this object is {@code synchronized}.
+&nbsp;         *
+&nbsp;         * @return {@code true} if the modifier described by this object is {@code synchronized}.
+&nbsp;         */
+&nbsp;        boolean isSynchronized();
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Specifies if the modifier described by this object represents the var args flag.
+&nbsp;         *
+&nbsp;         * @return {@code true} if the modifier described by this object represents the var args flag.
+&nbsp;         */
+&nbsp;        boolean isVarArgs();
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Specifies if the modifier described by this object is {@code native}.
+&nbsp;         *
+&nbsp;         * @return {@code true} if the modifier described by this object is {@code native}.
+&nbsp;         */
+&nbsp;        boolean isNative();
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Specifies if the modifier described by this object represents the bridge flag.
+&nbsp;         *
+&nbsp;         * @return {@code true} if the modifier described by this object represents the bridge flag
+&nbsp;         */
+&nbsp;        boolean isBridge();
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Specifies if the modifier described by this object is {@code strictfp}.
+&nbsp;         *
+&nbsp;         * @return {@code true} if the modifier described by this object is {@code strictfp}.
+&nbsp;         */
+&nbsp;        boolean isStrict();
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Returns this method&#39;s synchronization state.
+&nbsp;         *
+&nbsp;         * @return This method&#39;s synchronization state.
+&nbsp;         */
+&nbsp;        SynchronizationState getSynchronizationState();
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Returns this method&#39;s strictness in floating-point computation.
+&nbsp;         *
+&nbsp;         * @return This method&#39;s strictness in floating-point computation.
+&nbsp;         */
+&nbsp;        MethodStrictness getMethodStrictness();
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Returns this method&#39;s manifestation.
+&nbsp;         *
+&nbsp;         * @return This method&#39;s manifestation.
+&nbsp;         */
+&nbsp;        MethodManifestation getMethodManifestation();
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A modifier reviewable for a {@link net.bytebuddy.description.method.ParameterDescription}.
+&nbsp;     */
+&nbsp;    interface ForParameterDescription extends ModifierReviewable {
+&nbsp;
+&nbsp;        /**
+&nbsp;         * CSpecifies if the modifier described by this object is mandated.
+&nbsp;         *
+&nbsp;         * @return {@code true} if the modifier described by this object is mandated.
+&nbsp;         */
+&nbsp;        boolean isMandated();
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Returns this parameter&#39;s manifestation.
+&nbsp;         *
+&nbsp;         * @return This parameter&#39;s manifestation.
+&nbsp;         */
+&nbsp;        ParameterManifestation getParameterManifestation();
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Returns this parameter&#39;s provisioning state.
+&nbsp;         *
+&nbsp;         * @return This parameter&#39;s provisioning state.
+&nbsp;         */
+&nbsp;        ProvisioningState getProvisioningState();
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * An abstract base implementation of a {@link ModifierReviewable} class.
+&nbsp;     */
+<b class="fc">&nbsp;    abstract class AbstractBase implements ForTypeDefinition, ForFieldDescription, ForMethodDescription, ForParameterDescription {</b>
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public boolean isAbstract() {
+<b class="fc">&nbsp;            return matchesMask(Opcodes.ACC_ABSTRACT);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public boolean isFinal() {
+<b class="fc">&nbsp;            return matchesMask(Opcodes.ACC_FINAL);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public boolean isStatic() {
+<b class="fc">&nbsp;            return matchesMask(Opcodes.ACC_STATIC);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public boolean isPublic() {
+<b class="fc">&nbsp;            return matchesMask(Opcodes.ACC_PUBLIC);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public boolean isProtected() {
+<b class="fc">&nbsp;            return matchesMask(Opcodes.ACC_PROTECTED);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public boolean isPackagePrivate() {
+<b class="fc">&nbsp;            return !isPublic() &amp;&amp; !isProtected() &amp;&amp; !isPrivate();</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public boolean isPrivate() {
+<b class="fc">&nbsp;            return matchesMask(Opcodes.ACC_PRIVATE);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public boolean isNative() {
+<b class="fc">&nbsp;            return matchesMask(Opcodes.ACC_NATIVE);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public boolean isSynchronized() {
+<b class="fc">&nbsp;            return matchesMask(Opcodes.ACC_SYNCHRONIZED);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public boolean isStrict() {
+<b class="fc">&nbsp;            return matchesMask(Opcodes.ACC_STRICT);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public boolean isMandated() {
+<b class="fc">&nbsp;            return matchesMask(Opcodes.ACC_MANDATED);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public boolean isSynthetic() {
+<b class="fc">&nbsp;            return matchesMask(Opcodes.ACC_SYNTHETIC);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public boolean isBridge() {
+<b class="fc">&nbsp;            return matchesMask(Opcodes.ACC_BRIDGE);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public boolean isDeprecated() {
+<b class="fc">&nbsp;            return matchesMask(Opcodes.ACC_DEPRECATED);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public boolean isAnnotation() {
+<b class="fc">&nbsp;            return matchesMask(Opcodes.ACC_ANNOTATION);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public boolean isEnum() {
+<b class="fc">&nbsp;            return matchesMask(Opcodes.ACC_ENUM);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public boolean isInterface() {
+<b class="fc">&nbsp;            return matchesMask(Opcodes.ACC_INTERFACE);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public boolean isTransient() {
+<b class="fc">&nbsp;            return matchesMask(Opcodes.ACC_TRANSIENT);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public boolean isVolatile() {
+<b class="fc">&nbsp;            return matchesMask(Opcodes.ACC_VOLATILE);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public boolean isVarArgs() {
+<b class="fc">&nbsp;            return matchesMask(Opcodes.ACC_VARARGS);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public SyntheticState getSyntheticState() {
+<b class="fc">&nbsp;            return isSynthetic()</b>
+<b class="fc">&nbsp;                    ? SyntheticState.SYNTHETIC</b>
+<b class="fc">&nbsp;                    : SyntheticState.PLAIN;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public Visibility getVisibility() {
+<b class="fc">&nbsp;            int modifiers = getModifiers();</b>
+<b class="fc">&nbsp;            switch (modifiers &amp; (Opcodes.ACC_PUBLIC | Opcodes.ACC_PROTECTED | Opcodes.ACC_PRIVATE)) {</b>
+&nbsp;                case Opcodes.ACC_PUBLIC:
+<b class="fc">&nbsp;                    return Visibility.PUBLIC;</b>
+&nbsp;                case Opcodes.ACC_PROTECTED:
+<b class="fc">&nbsp;                    return Visibility.PROTECTED;</b>
+&nbsp;                case EMPTY_MASK:
+<b class="fc">&nbsp;                    return Visibility.PACKAGE_PRIVATE;</b>
+&nbsp;                case Opcodes.ACC_PRIVATE:
+<b class="fc">&nbsp;                    return Visibility.PRIVATE;</b>
+&nbsp;                default:
+<b class="nc">&nbsp;                    throw new IllegalStateException(&quot;Unexpected modifiers: &quot; + modifiers);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public Ownership getOwnership() {
+<b class="fc">&nbsp;            return isStatic()</b>
+<b class="fc">&nbsp;                    ? Ownership.STATIC</b>
+<b class="fc">&nbsp;                    : Ownership.MEMBER;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public EnumerationState getEnumerationState() {
+<b class="fc">&nbsp;            return isEnum()</b>
+<b class="fc">&nbsp;                    ? EnumerationState.ENUMERATION</b>
+<b class="fc">&nbsp;                    : EnumerationState.PLAIN;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public TypeManifestation getTypeManifestation() {
+<b class="fc">&nbsp;            int modifiers = getModifiers();</b>
+<b class="fc">&nbsp;            switch (modifiers &amp; (Opcodes.ACC_ANNOTATION | Opcodes.ACC_INTERFACE | Opcodes.ACC_ABSTRACT | Opcodes.ACC_FINAL)) {</b>
+&nbsp;                case Opcodes.ACC_FINAL:
+<b class="fc">&nbsp;                    return TypeManifestation.FINAL;</b>
+&nbsp;                case Opcodes.ACC_ABSTRACT:
+<b class="fc">&nbsp;                    return TypeManifestation.ABSTRACT;</b>
+&nbsp;                case Opcodes.ACC_ABSTRACT | Opcodes.ACC_INTERFACE:
+<b class="fc">&nbsp;                    return TypeManifestation.INTERFACE;</b>
+&nbsp;                case Opcodes.ACC_ABSTRACT | Opcodes.ACC_INTERFACE | Opcodes.ACC_ANNOTATION:
+<b class="fc">&nbsp;                    return TypeManifestation.ANNOTATION;</b>
+&nbsp;                case EMPTY_MASK:
+<b class="fc">&nbsp;                    return TypeManifestation.PLAIN;</b>
+&nbsp;                default:
+<b class="nc">&nbsp;                    throw new IllegalStateException(&quot;Unexpected modifiers: &quot; + modifiers);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public FieldManifestation getFieldManifestation() {
+<b class="fc">&nbsp;            int modifiers = getModifiers();</b>
+<b class="fc">&nbsp;            switch (modifiers &amp; (Opcodes.ACC_VOLATILE | Opcodes.ACC_FINAL)) {</b>
+&nbsp;                case Opcodes.ACC_FINAL:
+<b class="fc">&nbsp;                    return FieldManifestation.FINAL;</b>
+&nbsp;                case Opcodes.ACC_VOLATILE:
+<b class="fc">&nbsp;                    return FieldManifestation.VOLATILE;</b>
+&nbsp;                case EMPTY_MASK:
+<b class="nc">&nbsp;                    return FieldManifestation.PLAIN;</b>
+&nbsp;                default:
+<b class="nc">&nbsp;                    throw new IllegalStateException(&quot;Unexpected modifiers: &quot; + modifiers);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public FieldPersistence getFieldPersistence() {
+<b class="fc">&nbsp;            int modifiers = getModifiers();</b>
+<b class="fc">&nbsp;            switch (modifiers &amp; Opcodes.ACC_TRANSIENT) {</b>
+&nbsp;                case Opcodes.ACC_TRANSIENT:
+<b class="fc">&nbsp;                    return FieldPersistence.TRANSIENT;</b>
+&nbsp;                case EMPTY_MASK:
+<b class="fc">&nbsp;                    return FieldPersistence.PLAIN;</b>
+&nbsp;                default:
+<b class="nc">&nbsp;                    throw new IllegalStateException(&quot;Unexpected modifiers: &quot; + modifiers);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public SynchronizationState getSynchronizationState() {
+<b class="fc">&nbsp;            return isSynchronized()</b>
+<b class="fc">&nbsp;                    ? SynchronizationState.SYNCHRONIZED</b>
+<b class="fc">&nbsp;                    : SynchronizationState.PLAIN;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public MethodManifestation getMethodManifestation() {
+<b class="fc">&nbsp;            int modifiers = getModifiers();</b>
+<b class="fc">&nbsp;            switch (modifiers &amp; (Opcodes.ACC_NATIVE | Opcodes.ACC_ABSTRACT | Opcodes.ACC_FINAL | Opcodes.ACC_BRIDGE)) {</b>
+&nbsp;                case Opcodes.ACC_NATIVE | Opcodes.ACC_FINAL:
+<b class="fc">&nbsp;                    return MethodManifestation.FINAL_NATIVE;</b>
+&nbsp;                case Opcodes.ACC_NATIVE:
+<b class="fc">&nbsp;                    return MethodManifestation.NATIVE;</b>
+&nbsp;                case Opcodes.ACC_FINAL:
+<b class="fc">&nbsp;                    return MethodManifestation.FINAL;</b>
+&nbsp;                case Opcodes.ACC_BRIDGE:
+<b class="fc">&nbsp;                    return MethodManifestation.BRIDGE;</b>
+&nbsp;                case Opcodes.ACC_BRIDGE | Opcodes.ACC_FINAL:
+<b class="fc">&nbsp;                    return MethodManifestation.FINAL_BRIDGE;</b>
+&nbsp;                case Opcodes.ACC_ABSTRACT:
+<b class="fc">&nbsp;                    return MethodManifestation.ABSTRACT;</b>
+&nbsp;                case EMPTY_MASK:
+<b class="fc">&nbsp;                    return MethodManifestation.PLAIN;</b>
+&nbsp;                default:
+<b class="nc">&nbsp;                    throw new IllegalStateException(&quot;Unexpected modifiers: &quot; + modifiers);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public MethodStrictness getMethodStrictness() {
+<b class="fc">&nbsp;            return isStrict()</b>
+<b class="fc">&nbsp;                    ? MethodStrictness.STRICT</b>
+<b class="fc">&nbsp;                    : MethodStrictness.PLAIN;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public ParameterManifestation getParameterManifestation() {
+<b class="fc">&nbsp;            return isFinal()</b>
+<b class="fc">&nbsp;                    ? ParameterManifestation.FINAL</b>
+<b class="fc">&nbsp;                    : ParameterManifestation.PLAIN;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public ProvisioningState getProvisioningState() {
+<b class="fc">&nbsp;            return isMandated()</b>
+<b class="fc">&nbsp;                    ? ProvisioningState.MANDATED</b>
+<b class="fc">&nbsp;                    : ProvisioningState.PLAIN;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Checks if a mask is matched by this instance.
+&nbsp;         *
+&nbsp;         * @param mask The mask to check.
+&nbsp;         * @return {@code true} if the mask is matched.
+&nbsp;         */
+&nbsp;        private boolean matchesMask(int mask) {
+<b class="fc">&nbsp;            return (getModifiers() &amp; mask) == mask;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-02 16:00</div>
+</div>
+</body>
+</html>

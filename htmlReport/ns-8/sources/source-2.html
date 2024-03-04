@@ -1,0 +1,297 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > ExampleInterface</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">net.bytebuddy.benchmark.specimen</a>
+</div>
+
+<h1>Coverage Summary for Class: ExampleInterface (net.bytebuddy.benchmark.specimen)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+</tr>
+  <tr>
+    <td class="name">ExampleInterface$ByteBuddy$eHCSAWZd</td>
+  </tr>
+  <tr>
+    <td class="name">ExampleInterface$ByteBuddy$fk8WnxGQ</td>
+  </tr>
+  <tr>
+    <td class="name">ExampleInterface$ByteBuddy$FKJNzMg6</td>
+  </tr>
+  <tr>
+    <td class="name">ExampleInterface$ByteBuddy$IlM9puRp</td>
+  </tr>
+  <tr>
+    <td class="name">ExampleInterface$ByteBuddy$JoBPyB9T</td>
+  </tr>
+  <tr>
+    <td class="name">ExampleInterface$ByteBuddy$kGHQWBzI</td>
+  </tr>
+  <tr>
+    <td class="name">ExampleInterface$ByteBuddy$lJaB8Nhp</td>
+  </tr>
+  <tr>
+    <td class="name">ExampleInterface$ByteBuddy$lQjGmNXj</td>
+  </tr>
+  <tr>
+    <td class="name">ExampleInterface$ByteBuddy$pRuYV8ts</td>
+  </tr>
+  <tr>
+    <td class="name">ExampleInterface$ByteBuddy$UKQeaugQ</td>
+  </tr>
+  <tr>
+    <td class="name">ExampleInterface$ByteBuddy$VFNrJk67</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Copyright 2014 - Present Rafael Winterhalter
+&nbsp; *
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;package net.bytebuddy.benchmark.specimen;
+&nbsp;
+&nbsp;import net.bytebuddy.utility.nullability.MaybeNull;
+&nbsp;
+&nbsp;/**
+&nbsp; * An example interface with several methods which is used as a specimen in benchmarks.
+&nbsp; */
+&nbsp;public interface ExampleInterface {
+&nbsp;
+&nbsp;    /**
+&nbsp;     * An example method.
+&nbsp;     *
+&nbsp;     * @param arg An argument.
+&nbsp;     * @return The input argument.
+&nbsp;     */
+&nbsp;    boolean method(boolean arg);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * An example method.
+&nbsp;     *
+&nbsp;     * @param arg An argument.
+&nbsp;     * @return The input argument.
+&nbsp;     */
+&nbsp;    byte method(byte arg);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * An example method.
+&nbsp;     *
+&nbsp;     * @param arg An argument.
+&nbsp;     * @return The input argument.
+&nbsp;     */
+&nbsp;    short method(short arg);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * An example method.
+&nbsp;     *
+&nbsp;     * @param arg An argument.
+&nbsp;     * @return The input argument.
+&nbsp;     */
+&nbsp;    int method(int arg);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * An example method.
+&nbsp;     *
+&nbsp;     * @param arg An argument.
+&nbsp;     * @return The input argument.
+&nbsp;     */
+&nbsp;    char method(char arg);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * An example method.
+&nbsp;     *
+&nbsp;     * @param arg An argument.
+&nbsp;     * @return The input argument.
+&nbsp;     */
+&nbsp;    long method(long arg);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * An example method.
+&nbsp;     *
+&nbsp;     * @param arg An argument.
+&nbsp;     * @return The input argument.
+&nbsp;     */
+&nbsp;    float method(float arg);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * An example method.
+&nbsp;     *
+&nbsp;     * @param arg An argument.
+&nbsp;     * @return The input argument.
+&nbsp;     */
+&nbsp;    double method(double arg);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * An example method.
+&nbsp;     *
+&nbsp;     * @param arg An argument.
+&nbsp;     * @return The input argument.
+&nbsp;     */
+&nbsp;    @MaybeNull
+&nbsp;    Object method(Object arg);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * An example method.
+&nbsp;     *
+&nbsp;     * @param arg1 An argument.
+&nbsp;     * @param arg2 An argument.
+&nbsp;     * @param arg3 An argument.
+&nbsp;     * @return All arguments stored in an array.
+&nbsp;     */
+&nbsp;    @MaybeNull
+&nbsp;    boolean[] method(boolean arg1, boolean arg2, boolean arg3);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * An example method.
+&nbsp;     *
+&nbsp;     * @param arg1 An argument.
+&nbsp;     * @param arg2 An argument.
+&nbsp;     * @param arg3 An argument.
+&nbsp;     * @return All arguments stored in an array.
+&nbsp;     */
+&nbsp;    @MaybeNull
+&nbsp;    byte[] method(byte arg1, byte arg2, byte arg3);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * An example method.
+&nbsp;     *
+&nbsp;     * @param arg1 An argument.
+&nbsp;     * @param arg2 An argument.
+&nbsp;     * @param arg3 An argument.
+&nbsp;     * @return All arguments stored in an array.
+&nbsp;     */
+&nbsp;    @MaybeNull
+&nbsp;    short[] method(short arg1, short arg2, short arg3);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * An example method.
+&nbsp;     *
+&nbsp;     * @param arg1 An argument.
+&nbsp;     * @param arg2 An argument.
+&nbsp;     * @param arg3 An argument.
+&nbsp;     * @return All arguments stored in an array.
+&nbsp;     */
+&nbsp;    @MaybeNull
+&nbsp;    int[] method(int arg1, int arg2, int arg3);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * An example method.
+&nbsp;     *
+&nbsp;     * @param arg1 An argument.
+&nbsp;     * @param arg2 An argument.
+&nbsp;     * @param arg3 An argument.
+&nbsp;     * @return All arguments stored in an array.
+&nbsp;     */
+&nbsp;    @MaybeNull
+&nbsp;    char[] method(char arg1, char arg2, char arg3);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * An example method.
+&nbsp;     *
+&nbsp;     * @param arg1 An argument.
+&nbsp;     * @param arg2 An argument.
+&nbsp;     * @param arg3 An argument.
+&nbsp;     * @return All arguments stored in an array.
+&nbsp;     */
+&nbsp;    @MaybeNull
+&nbsp;    long[] method(long arg1, long arg2, long arg3);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * An example method.
+&nbsp;     *
+&nbsp;     * @param arg1 An argument.
+&nbsp;     * @param arg2 An argument.
+&nbsp;     * @param arg3 An argument.
+&nbsp;     * @return All arguments stored in an array.
+&nbsp;     */
+&nbsp;    @MaybeNull
+&nbsp;    float[] method(float arg1, float arg2, float arg3);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * An example method.
+&nbsp;     *
+&nbsp;     * @param arg1 An argument.
+&nbsp;     * @param arg2 An argument.
+&nbsp;     * @param arg3 An argument.
+&nbsp;     * @return All arguments stored in an array.
+&nbsp;     */
+&nbsp;    @MaybeNull
+&nbsp;    double[] method(double arg1, double arg2, double arg3);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * An example method.
+&nbsp;     *
+&nbsp;     * @param arg1 An argument.
+&nbsp;     * @param arg2 An argument.
+&nbsp;     * @param arg3 An argument.
+&nbsp;     * @return All arguments stored in an array.
+&nbsp;     */
+&nbsp;    @MaybeNull
+&nbsp;    Object[] method(Object arg1, Object arg2, Object arg3);
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-03 11:00</div>
+</div>
+</body>
+</html>

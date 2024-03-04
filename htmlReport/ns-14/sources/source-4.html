@@ -1,0 +1,2466 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > InstrumentedType</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">net.bytebuddy.dynamic.scaffold</a>
+</div>
+
+<h1>Coverage Summary for Class: InstrumentedType (net.bytebuddy.dynamic.scaffold)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+  <tr>
+    <td class="name">InstrumentedType$1</td>
+  </tr>
+  <tr>
+    <td class="name">InstrumentedType$Default</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (52/52)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    96.7%
+  </span>
+  <span class="absValue">
+    (349/361)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">InstrumentedType$Factory</td>
+  </tr>
+  <tr>
+    <td class="name">InstrumentedType$Factory$Default</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (13/13)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">InstrumentedType$Factory$Default$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    88.9%
+  </span>
+  <span class="absValue">
+    (24/27)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">InstrumentedType$Factory$Default$2</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">InstrumentedType$Frozen</td>
+<td class="coverageStat">
+  <span class="percent">
+    92%
+  </span>
+  <span class="absValue">
+    (46/50)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    92.3%
+  </span>
+  <span class="absValue">
+    (48/52)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">InstrumentedType$MockitoMock$1235510833</td>
+  </tr>
+  <tr>
+    <td class="name">InstrumentedType$MockitoMock$1235510833$auxiliary$3uDjQPZI</td>
+  </tr>
+  <tr>
+    <td class="name">InstrumentedType$MockitoMock$1235510833$auxiliary$DG4db8q1</td>
+  </tr>
+  <tr>
+    <td class="name">InstrumentedType$MockitoMock$1235510833$auxiliary$XZ0cs4nE</td>
+  </tr>
+  <tr>
+    <td class="name">InstrumentedType$MockitoMock$1235510833$auxiliary$zF5VRaDZ</td>
+  </tr>
+  <tr>
+    <td class="name">InstrumentedType$Prepareable</td>
+  </tr>
+  <tr>
+    <td class="name">InstrumentedType$Prepareable$NoOp</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/3)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">InstrumentedType$WithFlexibleName</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    96.4%
+  </span>
+  <span class="absValue">
+    (108/112)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    95.9%
+  </span>
+  <span class="absValue">
+    (439/458)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Copyright 2014 - Present Rafael Winterhalter
+&nbsp; *
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;package net.bytebuddy.dynamic.scaffold;
+&nbsp;
+&nbsp;import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+&nbsp;import net.bytebuddy.ClassFileVersion;
+&nbsp;import net.bytebuddy.description.annotation.AnnotationDescription;
+&nbsp;import net.bytebuddy.description.annotation.AnnotationList;
+&nbsp;import net.bytebuddy.description.annotation.AnnotationValue;
+&nbsp;import net.bytebuddy.description.field.FieldDescription;
+&nbsp;import net.bytebuddy.description.field.FieldList;
+&nbsp;import net.bytebuddy.description.method.MethodDescription;
+&nbsp;import net.bytebuddy.description.method.MethodList;
+&nbsp;import net.bytebuddy.description.method.ParameterDescription;
+&nbsp;import net.bytebuddy.description.modifier.ModifierContributor;
+&nbsp;import net.bytebuddy.description.type.*;
+&nbsp;import net.bytebuddy.dynamic.TargetType;
+&nbsp;import net.bytebuddy.dynamic.Transformer;
+&nbsp;import net.bytebuddy.implementation.LoadedTypeInitializer;
+&nbsp;import net.bytebuddy.implementation.bytecode.ByteCodeAppender;
+&nbsp;import net.bytebuddy.matcher.ElementMatcher;
+&nbsp;import net.bytebuddy.utility.CompoundList;
+&nbsp;import net.bytebuddy.utility.JavaType;
+&nbsp;import net.bytebuddy.utility.nullability.MaybeNull;
+&nbsp;
+&nbsp;import java.lang.annotation.ElementType;
+&nbsp;import java.util.*;
+&nbsp;
+&nbsp;import static net.bytebuddy.matcher.ElementMatchers.is;
+&nbsp;import static net.bytebuddy.matcher.ElementMatchers.not;
+&nbsp;
+&nbsp;/**
+&nbsp; * Implementations of this interface represent an instrumented type that is subject to change. Implementations
+&nbsp; * should however be immutable and return new instance when its builder methods are invoked.
+&nbsp; */
+&nbsp;public interface InstrumentedType extends TypeDescription {
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a new instrumented type that includes a new field.
+&nbsp;     *
+&nbsp;     * @param token A token that represents the field&#39;s shape.
+&nbsp;     * @return A new instrumented type that is equal to this instrumented type but with the additional field.
+&nbsp;     */
+&nbsp;    InstrumentedType withField(FieldDescription.Token token);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a new instrumented type that includes a new field.
+&nbsp;     *
+&nbsp;     * @param token A token that represents the field&#39;s shape.
+&nbsp;     * @param value The value that this assigned to this field.
+&nbsp;     * @return A new instrumented type that is equal to this instrumented type but with the additional field.
+&nbsp;     */
+&nbsp;    InstrumentedType withAuxiliaryField(FieldDescription.Token token, Object value);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a new instrumented type that includes a new method or constructor.
+&nbsp;     *
+&nbsp;     * @param token A token that represents the method&#39;s shape.
+&nbsp;     * @return A new instrumented type that is equal to this instrumented type but with the additional method.
+&nbsp;     */
+&nbsp;    InstrumentedType withMethod(MethodDescription.Token token);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a new instrumented type that includes a new record component.
+&nbsp;     *
+&nbsp;     * @param token A token that represents the record component&#39;s shape.
+&nbsp;     * @return A new instrumented type that is equal to this instrumented type but with the additional record component.
+&nbsp;     */
+&nbsp;    InstrumentedType withRecordComponent(RecordComponentDescription.Token token);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a new instrumented type with changed modifiers.
+&nbsp;     *
+&nbsp;     * @param modifiers The instrumented type&#39;s modifiers.
+&nbsp;     * @return A new instrumented type that is equal to this instrumented type but with the given modifiers.
+&nbsp;     */
+&nbsp;    InstrumentedType withModifiers(int modifiers);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a new instrumented type with the given interfaces implemented.
+&nbsp;     *
+&nbsp;     * @param interfaceTypes The interface types to implement.
+&nbsp;     * @return A new instrumented type that is equal to this instrumented type but with the given interfaces implemented.
+&nbsp;     */
+&nbsp;    InstrumentedType withInterfaces(TypeList.Generic interfaceTypes);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a new instrumented type with the given type variable defined.
+&nbsp;     *
+&nbsp;     * @param typeVariable The type variable to declare.
+&nbsp;     * @return A new instrumented type that is equal to this instrumented type but with the given type variable declared.
+&nbsp;     */
+&nbsp;    InstrumentedType withTypeVariable(TypeVariableToken typeVariable);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a new instrumented type with the given annotations.
+&nbsp;     *
+&nbsp;     * @param annotationDescriptions The annotations to add to the instrumented type.
+&nbsp;     * @return A new instrumented type that is equal to this instrumented type but annotated with the given annotations
+&nbsp;     */
+&nbsp;    InstrumentedType withAnnotations(List&lt;? extends AnnotationDescription&gt; annotationDescriptions);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a new instrumented type with the supplied nest host. An instrumented type can be its own nest host.
+&nbsp;     * Setting a nest host removes all nest members from the instrumented type.
+&nbsp;     *
+&nbsp;     * @param nestHost The nest host of the created instrumented type.
+&nbsp;     * @return A new instrumented type with the supplied type as its nest host.
+&nbsp;     */
+&nbsp;    InstrumentedType withNestHost(TypeDescription nestHost);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a new instrumented types with the supplied nest members added to this instrumented type. The instrumented
+&nbsp;     * type is defined as a nest host if this method is invoked. Any previous nest members are prepended to the supplied types.
+&nbsp;     *
+&nbsp;     * @param nestMembers The nest members to add to the created instrumented type.
+&nbsp;     * @return A new instrumented type that applies the supplied nest members.
+&nbsp;     */
+&nbsp;    InstrumentedType withNestMembers(TypeList nestMembers);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a new instrumented type with the supplied enclosing type.
+&nbsp;     *
+&nbsp;     * @param enclosingType The type to define as the created instrumented type&#39;s enclosing type.
+&nbsp;     * @return A new instrumented type with the supplied type as its enclosing type.
+&nbsp;     */
+&nbsp;    InstrumentedType withEnclosingType(TypeDescription enclosingType);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a new instrumented type with the supplied enclosing method.
+&nbsp;     *
+&nbsp;     * @param enclosingMethod The method to define as the created instrumented type&#39;s enclosing method.
+&nbsp;     * @return A new instrumented type with the supplied method as its enclosing method.
+&nbsp;     */
+&nbsp;    InstrumentedType withEnclosingMethod(MethodDescription.InDefinedShape enclosingMethod);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a new instrumented type that is declared by the supplied type.
+&nbsp;     *
+&nbsp;     * @param declaringType The type that declares the instrumented type or {@code null} if no such type exists.
+&nbsp;     * @return A new instrumented type that is declared by the instrumented type.
+&nbsp;     */
+&nbsp;    InstrumentedType withDeclaringType(@MaybeNull TypeDescription declaringType);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a new instrumented type that indicates that it declared the supplied types.
+&nbsp;     *
+&nbsp;     * @param declaredTypes The types to add to the created instrumented type as declared types.
+&nbsp;     * @return A new instrumented type that indicates that it has declared the supplied types.
+&nbsp;     */
+&nbsp;    InstrumentedType withDeclaredTypes(TypeList declaredTypes);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a new instrumented type that includes the supplied permitted subclasses or unseals the type.
+&nbsp;     *
+&nbsp;     * @param permittedSubclasses A list of permitted subclasses to include or {@code null} to unseal the type.
+&nbsp;     * @return A new instrumented type that includes the supplied permitted subclasses or unseals the type.
+&nbsp;     */
+&nbsp;    InstrumentedType withPermittedSubclasses(@MaybeNull TypeList permittedSubclasses);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a new instrumented type that indicates that is defined as a local class. Setting this property
+&nbsp;     * resets the anonymous class property.
+&nbsp;     *
+&nbsp;     * @param localClass {@code true} if the instrumented type is supposed to be treated as a local class.
+&nbsp;     * @return A new instrumented type that is treated as a local class.
+&nbsp;     */
+&nbsp;    InstrumentedType withLocalClass(boolean localClass);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a new instrumented type that indicates that it is defined as an anonymous class. Setting this property
+&nbsp;     * resets the local class property.
+&nbsp;     *
+&nbsp;     * @param anonymousClass {@code true} if the instrumented type is supposed to be treated as an anonymous class.
+&nbsp;     * @return A new instrumented type that is treated as an anonymous class.
+&nbsp;     */
+&nbsp;    InstrumentedType withAnonymousClass(boolean anonymousClass);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a new instrumented type that indicates that it defined as a record type. Setting this property to false
+&nbsp;     * removes all record components.
+&nbsp;     *
+&nbsp;     * @param record {@code true} if the instrumented type is supposed to be a record.
+&nbsp;     * @return A new instrumented type that is defined as a record.
+&nbsp;     */
+&nbsp;    InstrumentedType withRecord(boolean record);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a new instrumented type that includes the given {@link net.bytebuddy.implementation.LoadedTypeInitializer}.
+&nbsp;     *
+&nbsp;     * @param loadedTypeInitializer The type initializer to include.
+&nbsp;     * @return A new instrumented type that is equal to this instrumented type but with the additional type initializer.
+&nbsp;     */
+&nbsp;    InstrumentedType withInitializer(LoadedTypeInitializer loadedTypeInitializer);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a new instrumented type that executes the given initializer in the instrumented type&#39;s
+&nbsp;     * type initializer.
+&nbsp;     *
+&nbsp;     * @param byteCodeAppender The byte code to add to the type initializer.
+&nbsp;     * @return A new instrumented type that is equal to this instrumented type but with the given stack manipulation
+&nbsp;     * attached to its type initializer.
+&nbsp;     */
+&nbsp;    InstrumentedType withInitializer(ByteCodeAppender byteCodeAppender);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns the {@link net.bytebuddy.implementation.LoadedTypeInitializer}s that were registered
+&nbsp;     * for this instrumented type.
+&nbsp;     *
+&nbsp;     * @return The registered loaded type initializers for this instrumented type.
+&nbsp;     */
+&nbsp;    LoadedTypeInitializer getLoadedTypeInitializer();
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns this instrumented type&#39;s type initializer.
+&nbsp;     *
+&nbsp;     * @return This instrumented type&#39;s type initializer.
+&nbsp;     */
+&nbsp;    TypeInitializer getTypeInitializer();
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Validates the instrumented type to define a legal Java type.
+&nbsp;     *
+&nbsp;     * @return This instrumented type as a non-modifiable type description.
+&nbsp;     */
+&nbsp;    TypeDescription validated();
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Implementations represent an {@link InstrumentedType} with a flexible name.
+&nbsp;     */
+&nbsp;    interface WithFlexibleName extends InstrumentedType {
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        WithFlexibleName withField(FieldDescription.Token token);
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        WithFlexibleName withAuxiliaryField(FieldDescription.Token token, Object value);
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        WithFlexibleName withMethod(MethodDescription.Token token);
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        WithFlexibleName withRecordComponent(RecordComponentDescription.Token token);
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        WithFlexibleName withModifiers(int modifiers);
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        WithFlexibleName withInterfaces(TypeList.Generic interfaceTypes);
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        WithFlexibleName withNestHost(TypeDescription nestHost);
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        WithFlexibleName withNestMembers(TypeList nestMembers);
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        WithFlexibleName withEnclosingType(@MaybeNull TypeDescription enclosingType);
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        WithFlexibleName withEnclosingMethod(MethodDescription.InDefinedShape enclosingMethod);
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        WithFlexibleName withDeclaringType(@MaybeNull TypeDescription declaringType);
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        WithFlexibleName withDeclaredTypes(TypeList declaredTypes);
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        WithFlexibleName withPermittedSubclasses(@MaybeNull TypeList permittedSubclasses);
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        WithFlexibleName withLocalClass(boolean localClass);
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        WithFlexibleName withAnonymousClass(boolean anonymousClass);
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        WithFlexibleName withRecord(boolean record);
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        WithFlexibleName withTypeVariable(TypeVariableToken typeVariable);
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        WithFlexibleName withAnnotations(List&lt;? extends AnnotationDescription&gt; annotationDescriptions);
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        WithFlexibleName withInitializer(LoadedTypeInitializer loadedTypeInitializer);
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        WithFlexibleName withInitializer(ByteCodeAppender byteCodeAppender);
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Creates a new instrumented type with a changed name.
+&nbsp;         *
+&nbsp;         * @param name The name of the instrumented type.
+&nbsp;         * @return A new instrumented type that has the given name.
+&nbsp;         */
+&nbsp;        WithFlexibleName withName(String name);
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Applies a transformation onto all existing type variables of this instrumented type. A transformation is potentially unsafe
+&nbsp;         * and it is the responsibility of the supplier to return a valid type variable token from the transformer.
+&nbsp;         *
+&nbsp;         * @param matcher     The matcher to decide what type variables to transform.
+&nbsp;         * @param transformer The transformer to apply on all matched type variables.
+&nbsp;         * @return A new instrumented type with all matched type variables transformed.
+&nbsp;         */
+&nbsp;        WithFlexibleName withTypeVariables(ElementMatcher&lt;? super Generic&gt; matcher, Transformer&lt;TypeVariableToken&gt; transformer);
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Implementations are able to prepare an {@link InstrumentedType}.
+&nbsp;     */
+&nbsp;    interface Prepareable {
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Prepares a given instrumented type.
+&nbsp;         *
+&nbsp;         * @param instrumentedType The instrumented type in its current form.
+&nbsp;         * @return The prepared instrumented type.
+&nbsp;         */
+&nbsp;        InstrumentedType prepare(InstrumentedType instrumentedType);
+&nbsp;
+&nbsp;        /**
+&nbsp;         * A prepareable that does not alter the instrumented type.
+&nbsp;         */
+<b class="fc">&nbsp;        enum NoOp implements Prepareable {</b>
+&nbsp;
+&nbsp;            /**
+&nbsp;             * The singleton instance.
+&nbsp;             */
+<b class="fc">&nbsp;            INSTANCE;</b>
+&nbsp;
+&nbsp;            /**
+&nbsp;             * {@inheritDoc}
+&nbsp;             */
+&nbsp;            public InstrumentedType prepare(InstrumentedType instrumentedType) {
+<b class="fc">&nbsp;                return instrumentedType;</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A factory for creating an {@link InstrumentedType}.
+&nbsp;     */
+&nbsp;    interface Factory {
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Creates an instrumented type that represents the provided type.
+&nbsp;         *
+&nbsp;         * @param typeDescription The type to represent.
+&nbsp;         * @return An appropriate instrumented type.
+&nbsp;         */
+&nbsp;        InstrumentedType.WithFlexibleName represent(TypeDescription typeDescription);
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Creates a new instrumented type as a subclass.
+&nbsp;         *
+&nbsp;         * @param name       The type&#39;s name.
+&nbsp;         * @param modifiers  The type&#39;s modifiers.
+&nbsp;         * @param superClass The type&#39;s super class.
+&nbsp;         * @return A new instrumented type representing a subclass of the given parameters.
+&nbsp;         */
+&nbsp;        InstrumentedType.WithFlexibleName subclass(String name, int modifiers, TypeDescription.Generic superClass);
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Default implementations of instrumented type factories.
+&nbsp;         */
+<b class="fc">&nbsp;        enum Default implements Factory {</b>
+&nbsp;
+&nbsp;            /**
+&nbsp;             * A factory for an instrumented type that allows to modify represented types.
+&nbsp;             */
+<b class="fc">&nbsp;            MODIFIABLE {</b>
+&nbsp;                /** {@inheritDoc} */
+&nbsp;                public InstrumentedType.WithFlexibleName represent(TypeDescription typeDescription) {
+<b class="fc">&nbsp;                    return new InstrumentedType.Default(typeDescription.getName(),</b>
+<b class="fc">&nbsp;                            typeDescription.getModifiers(),</b>
+<b class="fc">&nbsp;                            typeDescription.getSuperClass(),</b>
+<b class="fc">&nbsp;                            typeDescription.getTypeVariables().asTokenList(is(typeDescription)),</b>
+<b class="fc">&nbsp;                            typeDescription.getInterfaces().accept(Generic.Visitor.Substitutor.ForDetachment.of(typeDescription)),</b>
+<b class="fc">&nbsp;                            typeDescription.getDeclaredFields().asTokenList(is(typeDescription)),</b>
+<b class="fc">&nbsp;                            Collections.&lt;String, Object&gt;emptyMap(),</b>
+<b class="fc">&nbsp;                            typeDescription.getDeclaredMethods().asTokenList(is(typeDescription)),</b>
+<b class="fc">&nbsp;                            typeDescription.getRecordComponents().asTokenList(is(typeDescription)),</b>
+<b class="fc">&nbsp;                            typeDescription.getDeclaredAnnotations(),</b>
+&nbsp;                            TypeInitializer.None.INSTANCE,
+&nbsp;                            LoadedTypeInitializer.NoOp.INSTANCE,
+<b class="fc">&nbsp;                            typeDescription.getDeclaringType(),</b>
+<b class="fc">&nbsp;                            typeDescription.getEnclosingMethod(),</b>
+<b class="fc">&nbsp;                            typeDescription.getEnclosingType(),</b>
+<b class="fc">&nbsp;                            typeDescription.getDeclaredTypes(),</b>
+<b class="fc">&nbsp;                            typeDescription.isSealed()</b>
+<b class="nc">&nbsp;                                    ? typeDescription.getPermittedSubtypes()</b>
+<b class="fc">&nbsp;                                    : TypeList.UNDEFINED,</b>
+<b class="fc">&nbsp;                            typeDescription.isAnonymousType(),</b>
+<b class="fc">&nbsp;                            typeDescription.isLocalType(),</b>
+<b class="fc">&nbsp;                            typeDescription.isRecord(),</b>
+<b class="fc">&nbsp;                            typeDescription.isNestHost()</b>
+<b class="fc">&nbsp;                                    ? TargetType.DESCRIPTION</b>
+<b class="nc">&nbsp;                                    : typeDescription.getNestHost(),</b>
+<b class="fc">&nbsp;                            typeDescription.isNestHost()</b>
+<b class="fc">&nbsp;                                    ? typeDescription.getNestMembers().filter(not(is(typeDescription)))</b>
+<b class="nc">&nbsp;                                    : Collections.&lt;TypeDescription&gt;emptyList());</b>
+&nbsp;                }
+&nbsp;            },
+&nbsp;
+&nbsp;            /**
+&nbsp;             * A factory for an instrumented type that does not allow to modify represented types.
+&nbsp;             */
+<b class="fc">&nbsp;            FROZEN {</b>
+&nbsp;                /** {@inheritDoc} */
+&nbsp;                public InstrumentedType.WithFlexibleName represent(TypeDescription typeDescription) {
+<b class="fc">&nbsp;                    return new Frozen(typeDescription, LoadedTypeInitializer.NoOp.INSTANCE);</b>
+&nbsp;                }
+&nbsp;            };
+&nbsp;
+&nbsp;            /**
+&nbsp;             * {@inheritDoc}
+&nbsp;             */
+&nbsp;            public InstrumentedType.WithFlexibleName subclass(String name, int modifiers, TypeDescription.Generic superClass) {
+<b class="fc">&nbsp;                return new InstrumentedType.Default(name,</b>
+&nbsp;                        modifiers,
+&nbsp;                        superClass,
+<b class="fc">&nbsp;                        Collections.&lt;TypeVariableToken&gt;emptyList(),</b>
+<b class="fc">&nbsp;                        Collections.&lt;Generic&gt;emptyList(),</b>
+<b class="fc">&nbsp;                        Collections.&lt;FieldDescription.Token&gt;emptyList(),</b>
+<b class="fc">&nbsp;                        Collections.&lt;String, Object&gt;emptyMap(),</b>
+<b class="fc">&nbsp;                        Collections.&lt;MethodDescription.Token&gt;emptyList(),</b>
+<b class="fc">&nbsp;                        Collections.&lt;RecordComponentDescription.Token&gt;emptyList(),</b>
+<b class="fc">&nbsp;                        Collections.&lt;AnnotationDescription&gt;emptyList(),</b>
+&nbsp;                        TypeInitializer.None.INSTANCE,
+&nbsp;                        LoadedTypeInitializer.NoOp.INSTANCE,
+&nbsp;                        TypeDescription.UNDEFINED,
+&nbsp;                        MethodDescription.UNDEFINED,
+&nbsp;                        TypeDescription.UNDEFINED,
+<b class="fc">&nbsp;                        Collections.&lt;TypeDescription&gt;emptyList(),</b>
+&nbsp;                        TypeList.UNDEFINED,
+&nbsp;                        false,
+&nbsp;                        false,
+&nbsp;                        false,
+&nbsp;                        TargetType.DESCRIPTION,
+<b class="fc">&nbsp;                        Collections.&lt;TypeDescription&gt;emptyList());</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A default implementation of an instrumented type.
+&nbsp;     */
+&nbsp;    class Default extends AbstractBase.OfSimpleType implements InstrumentedType.WithFlexibleName {
+&nbsp;
+&nbsp;        /**
+&nbsp;         * A set containing all keywords of the Java programming language.
+&nbsp;         */
+<b class="fc">&nbsp;        private static final Set&lt;String&gt; KEYWORDS = new HashSet&lt;String&gt;(Arrays.asList(</b>
+&nbsp;                &quot;abstract&quot;, &quot;continue&quot;, &quot;for&quot;, &quot;new&quot;, &quot;switch&quot;, &quot;assert&quot;, &quot;default&quot;, &quot;goto&quot;, &quot;package&quot;, &quot;synchronized&quot;, &quot;boolean&quot;,
+&nbsp;                &quot;do&quot;, &quot;if&quot;, &quot;private&quot;, &quot;this&quot;, &quot;break&quot;, &quot;double&quot;, &quot;implements&quot;, &quot;protected&quot;, &quot;throw&quot;, &quot;byte&quot;, &quot;else&quot;, &quot;import&quot;,
+&nbsp;                &quot;public&quot;, &quot;throws&quot;, &quot;case&quot;, &quot;enum&quot;, &quot;instanceof&quot;, &quot;return&quot;, &quot;transient&quot;, &quot;catch&quot;, &quot;extends&quot;, &quot;int&quot;, &quot;short&quot;,
+&nbsp;                &quot;try&quot;, &quot;char&quot;, &quot;final&quot;, &quot;interface&quot;, &quot;static&quot;, &quot;void&quot;, &quot;class&quot;, &quot;finally&quot;, &quot;long&quot;, &quot;strictfp&quot;, &quot;volatile&quot;,
+&nbsp;                &quot;const&quot;, &quot;float&quot;, &quot;native&quot;, &quot;super&quot;, &quot;while&quot;
+&nbsp;        ));
+&nbsp;
+&nbsp;        /**
+&nbsp;         * The binary name of the instrumented type.
+&nbsp;         */
+&nbsp;        private final String name;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * The modifiers of the instrumented type.
+&nbsp;         */
+&nbsp;        private final int modifiers;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * The generic super type of the instrumented type.
+&nbsp;         */
+&nbsp;        @MaybeNull
+&nbsp;        private final Generic superClass;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * The instrumented type&#39;s type variables in their tokenized form.
+&nbsp;         */
+&nbsp;        private final List&lt;? extends TypeVariableToken&gt; typeVariables;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * A list of interfaces of the instrumented type.
+&nbsp;         */
+&nbsp;        private final List&lt;? extends Generic&gt; interfaceTypes;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * A list of field tokens describing the fields of the instrumented type.
+&nbsp;         */
+&nbsp;        private final List&lt;? extends FieldDescription.Token&gt; fieldTokens;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * A mapping of auxiliary field names to their mapped values.
+&nbsp;         */
+&nbsp;        private final Map&lt;String, Object&gt; auxiliaryFields;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * A list of method tokens describing the methods of the instrumented type.
+&nbsp;         */
+&nbsp;        private final List&lt;? extends MethodDescription.Token&gt; methodTokens;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * A list of record component tokens describing the record components of the instrumented type.
+&nbsp;         */
+&nbsp;        private final List&lt;? extends RecordComponentDescription.Token&gt; recordComponentTokens;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * A list of annotations of the annotated type.
+&nbsp;         */
+&nbsp;        private final List&lt;? extends AnnotationDescription&gt; annotationDescriptions;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * The type initializer of the instrumented type.
+&nbsp;         */
+&nbsp;        private final TypeInitializer typeInitializer;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * The loaded type initializer of the instrumented type.
+&nbsp;         */
+&nbsp;        private final LoadedTypeInitializer loadedTypeInitializer;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * The declaring type of the instrumented type or {@code null} if no such type exists.
+&nbsp;         */
+&nbsp;        @MaybeNull
+&nbsp;        private final TypeDescription declaringType;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * The enclosing method of the instrumented type or {@code null} if no such type exists.
+&nbsp;         */
+&nbsp;        @MaybeNull
+&nbsp;        private final MethodDescription.InDefinedShape enclosingMethod;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * The enclosing type of the instrumented type or {@code null} if no such type exists.
+&nbsp;         */
+&nbsp;        @MaybeNull
+&nbsp;        private final TypeDescription enclosingType;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * A list of types that are declared by this type.
+&nbsp;         */
+&nbsp;        private final List&lt;? extends TypeDescription&gt; declaredTypes;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * A list of permitted subclasses or {@code null} if this type is not sealed.
+&nbsp;         */
+&nbsp;        @MaybeNull
+&nbsp;        private final List&lt;? extends TypeDescription&gt; permittedSubclasses;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@code true} if this type is an anonymous class.
+&nbsp;         */
+&nbsp;        private final boolean anonymousClass;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@code true} if this type is a local class.
+&nbsp;         */
+&nbsp;        private final boolean localClass;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@code true} if this class is a record class.
+&nbsp;         */
+&nbsp;        private final boolean record;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * The nest host of this instrumented type or a description of {@link TargetType} if this type is its own nest host.
+&nbsp;         */
+&nbsp;        private final TypeDescription nestHost;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * A list of all members of this types nest group excluding this type.
+&nbsp;         */
+&nbsp;        private final List&lt;? extends TypeDescription&gt; nestMembers;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Creates a new instrumented type.
+&nbsp;         *
+&nbsp;         * @param name                   The binary name of the instrumented type.
+&nbsp;         * @param modifiers              The modifiers of the instrumented type.
+&nbsp;         * @param typeVariables          The instrumented type&#39;s type variables in their tokenized form.
+&nbsp;         * @param superClass             The generic super type of the instrumented type.
+&nbsp;         * @param interfaceTypes         A list of interfaces of the instrumented type.
+&nbsp;         * @param fieldTokens            A list of field tokens describing the fields of the instrumented type.
+&nbsp;         * @param auxiliaryFieldValues   A mapping of auxiliary field names to their mapped values.
+&nbsp;         * @param methodTokens           A list of method tokens describing the methods of the instrumented type.
+&nbsp;         * @param recordComponentTokens  A list of record component tokens describing the record components of the instrumented type.
+&nbsp;         * @param annotationDescriptions A list of annotations of the annotated type.
+&nbsp;         * @param typeInitializer        The type initializer of the instrumented type.
+&nbsp;         * @param loadedTypeInitializer  The loaded type initializer of the instrumented type.
+&nbsp;         * @param declaringType          The declaring type of the instrumented type or {@code null} if no such type exists.
+&nbsp;         * @param enclosingMethod        The enclosing method of the instrumented type or {@code null} if no such type exists.
+&nbsp;         * @param enclosingType          The enclosing type of the instrumented type or {@code null} if no such type exists.
+&nbsp;         * @param declaredTypes          A list of types that are declared by this type.
+&nbsp;         * @param permittedSubclasses    A list of permitted subclasses or {@code null} if this type is not sealed.
+&nbsp;         * @param anonymousClass         {@code true} if this type is an anonymous class.
+&nbsp;         * @param localClass             {@code true} if this type is a local class.
+&nbsp;         * @param record                 {@code true} if this type is a record class.
+&nbsp;         * @param nestHost               The nest host of this instrumented type or a description of {@link TargetType} if this type is its own nest host.
+&nbsp;         * @param nestMembers            A list of all members of this types nest group excluding this type.
+&nbsp;         */
+&nbsp;        protected Default(String name,
+&nbsp;                          int modifiers,
+&nbsp;                          @MaybeNull Generic superClass,
+&nbsp;                          List&lt;? extends TypeVariableToken&gt; typeVariables,
+&nbsp;                          List&lt;? extends Generic&gt; interfaceTypes,
+&nbsp;                          List&lt;? extends FieldDescription.Token&gt; fieldTokens,
+&nbsp;                          Map&lt;String, Object&gt; auxiliaryFieldValues,
+&nbsp;                          List&lt;? extends MethodDescription.Token&gt; methodTokens,
+&nbsp;                          List&lt;? extends RecordComponentDescription.Token&gt; recordComponentTokens,
+&nbsp;                          List&lt;? extends AnnotationDescription&gt; annotationDescriptions,
+&nbsp;                          TypeInitializer typeInitializer,
+&nbsp;                          LoadedTypeInitializer loadedTypeInitializer,
+&nbsp;                          @MaybeNull TypeDescription declaringType,
+&nbsp;                          @MaybeNull MethodDescription.InDefinedShape enclosingMethod,
+&nbsp;                          @MaybeNull TypeDescription enclosingType,
+&nbsp;                          List&lt;? extends TypeDescription&gt; declaredTypes,
+&nbsp;                          @MaybeNull List&lt;? extends TypeDescription&gt; permittedSubclasses,
+&nbsp;                          boolean anonymousClass,
+&nbsp;                          boolean localClass,
+&nbsp;                          boolean record,
+&nbsp;                          TypeDescription nestHost,
+<b class="fc">&nbsp;                          List&lt;? extends TypeDescription&gt; nestMembers) {</b>
+<b class="fc">&nbsp;            this.name = name;</b>
+<b class="fc">&nbsp;            this.modifiers = modifiers;</b>
+<b class="fc">&nbsp;            this.typeVariables = typeVariables;</b>
+<b class="fc">&nbsp;            this.superClass = superClass;</b>
+<b class="fc">&nbsp;            this.interfaceTypes = interfaceTypes;</b>
+<b class="fc">&nbsp;            this.fieldTokens = fieldTokens;</b>
+<b class="fc">&nbsp;            this.auxiliaryFields = auxiliaryFieldValues;</b>
+<b class="fc">&nbsp;            this.methodTokens = methodTokens;</b>
+<b class="fc">&nbsp;            this.recordComponentTokens = recordComponentTokens;</b>
+<b class="fc">&nbsp;            this.annotationDescriptions = annotationDescriptions;</b>
+<b class="fc">&nbsp;            this.typeInitializer = typeInitializer;</b>
+<b class="fc">&nbsp;            this.loadedTypeInitializer = loadedTypeInitializer;</b>
+<b class="fc">&nbsp;            this.declaringType = declaringType;</b>
+<b class="fc">&nbsp;            this.enclosingMethod = enclosingMethod;</b>
+<b class="fc">&nbsp;            this.enclosingType = enclosingType;</b>
+<b class="fc">&nbsp;            this.declaredTypes = declaredTypes;</b>
+<b class="fc">&nbsp;            this.permittedSubclasses = permittedSubclasses;</b>
+<b class="fc">&nbsp;            this.anonymousClass = anonymousClass;</b>
+<b class="fc">&nbsp;            this.localClass = localClass;</b>
+<b class="fc">&nbsp;            this.record = record;</b>
+<b class="fc">&nbsp;            this.nestHost = nestHost;</b>
+<b class="fc">&nbsp;            this.nestMembers = nestMembers;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Creates a new instrumented type.
+&nbsp;         *
+&nbsp;         * @param name                The type&#39;s name.
+&nbsp;         * @param superClass          The type&#39;s super class.
+&nbsp;         * @param modifierContributor The type&#39;s modifiers.
+&nbsp;         * @return An appropriate instrumented type.
+&nbsp;         */
+&nbsp;        public static InstrumentedType of(String name, TypeDescription.Generic superClass, ModifierContributor.ForType... modifierContributor) {
+<b class="fc">&nbsp;            return of(name, superClass, ModifierContributor.Resolver.of(modifierContributor).resolve());</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Creates a new instrumented type.
+&nbsp;         *
+&nbsp;         * @param name       The type&#39;s name.
+&nbsp;         * @param superClass The type&#39;s super class.
+&nbsp;         * @param modifiers  The type&#39;s modifiers.
+&nbsp;         * @return An appropriate instrumented type.
+&nbsp;         */
+&nbsp;        public static InstrumentedType of(String name, TypeDescription.Generic superClass, int modifiers) {
+<b class="fc">&nbsp;            return Factory.Default.MODIFIABLE.subclass(name, modifiers, superClass);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public WithFlexibleName withModifiers(int modifiers) {
+<b class="fc">&nbsp;            return new Default(name,</b>
+&nbsp;                    modifiers,
+&nbsp;                    superClass,
+&nbsp;                    typeVariables,
+&nbsp;                    interfaceTypes,
+&nbsp;                    fieldTokens,
+&nbsp;                    auxiliaryFields,
+&nbsp;                    methodTokens,
+&nbsp;                    recordComponentTokens,
+&nbsp;                    annotationDescriptions,
+&nbsp;                    typeInitializer,
+&nbsp;                    loadedTypeInitializer,
+&nbsp;                    declaringType,
+&nbsp;                    enclosingMethod,
+&nbsp;                    enclosingType,
+&nbsp;                    declaredTypes,
+&nbsp;                    permittedSubclasses,
+&nbsp;                    anonymousClass,
+&nbsp;                    localClass,
+&nbsp;                    record,
+&nbsp;                    nestHost,
+&nbsp;                    nestMembers);
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public WithFlexibleName withField(FieldDescription.Token token) {
+<b class="fc">&nbsp;            return new Default(name,</b>
+&nbsp;                    modifiers,
+&nbsp;                    superClass,
+&nbsp;                    typeVariables,
+&nbsp;                    interfaceTypes,
+<b class="fc">&nbsp;                    CompoundList.of(fieldTokens, token.accept(Generic.Visitor.Substitutor.ForDetachment.of(this))),</b>
+&nbsp;                    auxiliaryFields,
+&nbsp;                    methodTokens,
+&nbsp;                    recordComponentTokens,
+&nbsp;                    annotationDescriptions,
+&nbsp;                    typeInitializer,
+&nbsp;                    loadedTypeInitializer,
+&nbsp;                    declaringType,
+&nbsp;                    enclosingMethod,
+&nbsp;                    enclosingType,
+&nbsp;                    declaredTypes,
+&nbsp;                    permittedSubclasses,
+&nbsp;                    anonymousClass,
+&nbsp;                    localClass,
+&nbsp;                    record,
+&nbsp;                    nestHost,
+&nbsp;                    nestMembers);
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public WithFlexibleName withAuxiliaryField(FieldDescription.Token token, Object value) {
+<b class="fc">&nbsp;            Map&lt;String, Object&gt; auxiliaryFields = new HashMap&lt;String, Object&gt;(this.auxiliaryFields);</b>
+<b class="fc">&nbsp;            Object previous = auxiliaryFields.put(token.getName(), value);</b>
+<b class="fc">&nbsp;            if (previous != null) {</b>
+<b class="fc">&nbsp;                if (previous == value) {</b>
+<b class="fc">&nbsp;                    return this;</b>
+&nbsp;                } else {
+<b class="fc">&nbsp;                    throw new IllegalStateException(&quot;Field &quot; + token.getName()</b>
+&nbsp;                            + &quot; for &quot; + this
+&nbsp;                            + &quot; already mapped to &quot; + previous
+&nbsp;                            + &quot; and not &quot; + value);
+&nbsp;                }
+&nbsp;            }
+<b class="fc">&nbsp;            return new Default(name,</b>
+&nbsp;                    modifiers,
+&nbsp;                    superClass,
+&nbsp;                    typeVariables,
+&nbsp;                    interfaceTypes,
+<b class="fc">&nbsp;                    CompoundList.of(fieldTokens, token.accept(Generic.Visitor.Substitutor.ForDetachment.of(this))),</b>
+&nbsp;                    auxiliaryFields,
+&nbsp;                    methodTokens,
+&nbsp;                    recordComponentTokens,
+&nbsp;                    annotationDescriptions,
+&nbsp;                    typeInitializer,
+<b class="fc">&nbsp;                    new LoadedTypeInitializer.Compound(loadedTypeInitializer, new LoadedTypeInitializer.ForStaticField(token.getName(), value)),</b>
+&nbsp;                    declaringType,
+&nbsp;                    enclosingMethod,
+&nbsp;                    enclosingType,
+&nbsp;                    declaredTypes,
+&nbsp;                    permittedSubclasses,
+&nbsp;                    anonymousClass,
+&nbsp;                    localClass,
+&nbsp;                    record,
+&nbsp;                    nestHost,
+&nbsp;                    nestMembers);
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public WithFlexibleName withMethod(MethodDescription.Token token) {
+<b class="fc">&nbsp;            return new Default(name,</b>
+&nbsp;                    modifiers,
+&nbsp;                    superClass,
+&nbsp;                    typeVariables,
+&nbsp;                    interfaceTypes,
+&nbsp;                    fieldTokens,
+&nbsp;                    auxiliaryFields,
+<b class="fc">&nbsp;                    CompoundList.of(methodTokens, token.accept(Generic.Visitor.Substitutor.ForDetachment.of(this))),</b>
+&nbsp;                    recordComponentTokens,
+&nbsp;                    annotationDescriptions,
+&nbsp;                    typeInitializer,
+&nbsp;                    loadedTypeInitializer,
+&nbsp;                    declaringType,
+&nbsp;                    enclosingMethod,
+&nbsp;                    enclosingType,
+&nbsp;                    declaredTypes,
+&nbsp;                    permittedSubclasses,
+&nbsp;                    anonymousClass,
+&nbsp;                    localClass,
+&nbsp;                    record,
+&nbsp;                    nestHost,
+&nbsp;                    nestMembers);
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public WithFlexibleName withRecordComponent(RecordComponentDescription.Token token) {
+<b class="fc">&nbsp;            return new Default(name,</b>
+&nbsp;                    modifiers,
+&nbsp;                    superClass,
+&nbsp;                    typeVariables,
+&nbsp;                    interfaceTypes,
+&nbsp;                    fieldTokens,
+&nbsp;                    auxiliaryFields,
+&nbsp;                    methodTokens,
+<b class="fc">&nbsp;                    CompoundList.of(recordComponentTokens, token.accept(Generic.Visitor.Substitutor.ForDetachment.of(this))),</b>
+&nbsp;                    annotationDescriptions,
+&nbsp;                    typeInitializer,
+&nbsp;                    loadedTypeInitializer,
+&nbsp;                    declaringType,
+&nbsp;                    enclosingMethod,
+&nbsp;                    enclosingType,
+&nbsp;                    declaredTypes,
+&nbsp;                    permittedSubclasses,
+&nbsp;                    anonymousClass,
+&nbsp;                    localClass,
+&nbsp;                    true,
+&nbsp;                    nestHost,
+&nbsp;                    nestMembers);
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public WithFlexibleName withInterfaces(TypeList.Generic interfaceTypes) {
+<b class="fc">&nbsp;            return new Default(name,</b>
+&nbsp;                    modifiers,
+&nbsp;                    superClass,
+&nbsp;                    typeVariables,
+<b class="fc">&nbsp;                    CompoundList.of(this.interfaceTypes, interfaceTypes.accept(Generic.Visitor.Substitutor.ForDetachment.of(this))),</b>
+&nbsp;                    fieldTokens,
+&nbsp;                    auxiliaryFields,
+&nbsp;                    methodTokens,
+&nbsp;                    recordComponentTokens,
+&nbsp;                    annotationDescriptions,
+&nbsp;                    typeInitializer,
+&nbsp;                    loadedTypeInitializer,
+&nbsp;                    declaringType,
+&nbsp;                    enclosingMethod,
+&nbsp;                    enclosingType,
+&nbsp;                    declaredTypes,
+&nbsp;                    permittedSubclasses,
+&nbsp;                    anonymousClass,
+&nbsp;                    localClass,
+&nbsp;                    record,
+&nbsp;                    nestHost,
+&nbsp;                    nestMembers);
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public WithFlexibleName withAnnotations(List&lt;? extends AnnotationDescription&gt; annotationDescriptions) {
+<b class="fc">&nbsp;            return new Default(name,</b>
+&nbsp;                    modifiers,
+&nbsp;                    superClass,
+&nbsp;                    typeVariables,
+&nbsp;                    interfaceTypes,
+&nbsp;                    fieldTokens,
+&nbsp;                    auxiliaryFields,
+&nbsp;                    methodTokens,
+&nbsp;                    recordComponentTokens,
+<b class="fc">&nbsp;                    CompoundList.of(this.annotationDescriptions, annotationDescriptions),</b>
+&nbsp;                    typeInitializer,
+&nbsp;                    loadedTypeInitializer,
+&nbsp;                    declaringType,
+&nbsp;                    enclosingMethod,
+&nbsp;                    enclosingType,
+&nbsp;                    declaredTypes,
+&nbsp;                    permittedSubclasses,
+&nbsp;                    anonymousClass,
+&nbsp;                    localClass,
+&nbsp;                    record,
+&nbsp;                    nestHost,
+&nbsp;                    nestMembers);
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public WithFlexibleName withNestHost(TypeDescription nestHost) {
+<b class="fc">&nbsp;            return new Default(name,</b>
+&nbsp;                    modifiers,
+&nbsp;                    superClass,
+&nbsp;                    typeVariables,
+&nbsp;                    interfaceTypes,
+&nbsp;                    fieldTokens,
+&nbsp;                    auxiliaryFields,
+&nbsp;                    methodTokens,
+&nbsp;                    recordComponentTokens,
+&nbsp;                    annotationDescriptions,
+&nbsp;                    typeInitializer,
+&nbsp;                    loadedTypeInitializer,
+&nbsp;                    declaringType,
+&nbsp;                    enclosingMethod,
+&nbsp;                    enclosingType,
+&nbsp;                    declaredTypes,
+&nbsp;                    permittedSubclasses,
+&nbsp;                    anonymousClass,
+&nbsp;                    localClass,
+&nbsp;                    record,
+<b class="fc">&nbsp;                    nestHost.equals(this)</b>
+<b class="nc">&nbsp;                            ? TargetType.DESCRIPTION</b>
+<b class="fc">&nbsp;                            : nestHost,</b>
+<b class="fc">&nbsp;                    Collections.&lt;TypeDescription&gt;emptyList());</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public WithFlexibleName withNestMembers(TypeList nestMembers) {
+<b class="fc">&nbsp;            return new Default(name,</b>
+&nbsp;                    modifiers,
+&nbsp;                    superClass,
+&nbsp;                    typeVariables,
+&nbsp;                    interfaceTypes,
+&nbsp;                    fieldTokens,
+&nbsp;                    auxiliaryFields,
+&nbsp;                    methodTokens,
+&nbsp;                    recordComponentTokens,
+&nbsp;                    annotationDescriptions,
+&nbsp;                    typeInitializer,
+&nbsp;                    loadedTypeInitializer,
+&nbsp;                    declaringType,
+&nbsp;                    enclosingMethod,
+&nbsp;                    enclosingType,
+&nbsp;                    declaredTypes,
+&nbsp;                    permittedSubclasses,
+&nbsp;                    anonymousClass,
+&nbsp;                    localClass,
+&nbsp;                    record,
+&nbsp;                    TargetType.DESCRIPTION,
+<b class="fc">&nbsp;                    CompoundList.of(this.nestMembers, nestMembers));</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public WithFlexibleName withEnclosingType(@MaybeNull TypeDescription enclosingType) {
+<b class="fc">&nbsp;            return new Default(name,</b>
+&nbsp;                    modifiers,
+&nbsp;                    superClass,
+&nbsp;                    typeVariables,
+&nbsp;                    interfaceTypes,
+&nbsp;                    fieldTokens,
+&nbsp;                    auxiliaryFields,
+&nbsp;                    methodTokens,
+&nbsp;                    recordComponentTokens,
+&nbsp;                    annotationDescriptions,
+&nbsp;                    typeInitializer,
+&nbsp;                    loadedTypeInitializer,
+&nbsp;                    declaringType,
+&nbsp;                    MethodDescription.UNDEFINED,
+&nbsp;                    enclosingType,
+&nbsp;                    declaredTypes,
+&nbsp;                    permittedSubclasses,
+&nbsp;                    anonymousClass,
+&nbsp;                    localClass,
+&nbsp;                    record,
+&nbsp;                    nestHost,
+&nbsp;                    nestMembers);
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public WithFlexibleName withEnclosingMethod(MethodDescription.InDefinedShape enclosingMethod) {
+<b class="fc">&nbsp;            return new Default(name,</b>
+&nbsp;                    modifiers,
+&nbsp;                    superClass,
+&nbsp;                    typeVariables,
+&nbsp;                    interfaceTypes,
+&nbsp;                    fieldTokens,
+&nbsp;                    auxiliaryFields,
+&nbsp;                    methodTokens,
+&nbsp;                    recordComponentTokens,
+&nbsp;                    annotationDescriptions,
+&nbsp;                    typeInitializer,
+&nbsp;                    loadedTypeInitializer,
+&nbsp;                    declaringType,
+&nbsp;                    enclosingMethod,
+<b class="fc">&nbsp;                    enclosingMethod.getDeclaringType(),</b>
+&nbsp;                    declaredTypes,
+&nbsp;                    permittedSubclasses,
+&nbsp;                    anonymousClass,
+&nbsp;                    localClass,
+&nbsp;                    record,
+&nbsp;                    nestHost,
+&nbsp;                    nestMembers);
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public WithFlexibleName withDeclaringType(@MaybeNull TypeDescription declaringType) {
+<b class="fc">&nbsp;            return new Default(name,</b>
+&nbsp;                    modifiers,
+&nbsp;                    superClass,
+&nbsp;                    typeVariables,
+&nbsp;                    interfaceTypes,
+&nbsp;                    fieldTokens,
+&nbsp;                    auxiliaryFields,
+&nbsp;                    methodTokens,
+&nbsp;                    recordComponentTokens,
+&nbsp;                    annotationDescriptions,
+&nbsp;                    typeInitializer,
+&nbsp;                    loadedTypeInitializer,
+&nbsp;                    declaringType,
+&nbsp;                    enclosingMethod,
+&nbsp;                    enclosingType,
+&nbsp;                    declaredTypes,
+&nbsp;                    permittedSubclasses,
+&nbsp;                    anonymousClass,
+&nbsp;                    localClass,
+&nbsp;                    record,
+&nbsp;                    nestHost,
+&nbsp;                    nestMembers);
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public WithFlexibleName withDeclaredTypes(TypeList declaredTypes) {
+<b class="fc">&nbsp;            return new Default(name,</b>
+&nbsp;                    modifiers,
+&nbsp;                    superClass,
+&nbsp;                    typeVariables,
+&nbsp;                    interfaceTypes,
+&nbsp;                    fieldTokens,
+&nbsp;                    auxiliaryFields,
+&nbsp;                    methodTokens,
+&nbsp;                    recordComponentTokens,
+&nbsp;                    annotationDescriptions,
+&nbsp;                    typeInitializer,
+&nbsp;                    loadedTypeInitializer,
+&nbsp;                    declaringType,
+&nbsp;                    enclosingMethod,
+&nbsp;                    enclosingType,
+<b class="fc">&nbsp;                    CompoundList.of(this.declaredTypes, declaredTypes),</b>
+&nbsp;                    permittedSubclasses,
+&nbsp;                    anonymousClass,
+&nbsp;                    localClass,
+&nbsp;                    record,
+&nbsp;                    nestHost,
+&nbsp;                    nestMembers);
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public WithFlexibleName withPermittedSubclasses(@MaybeNull TypeList permittedSubclasses) {
+<b class="fc">&nbsp;            return new Default(name,</b>
+&nbsp;                    modifiers,
+&nbsp;                    superClass,
+&nbsp;                    typeVariables,
+&nbsp;                    interfaceTypes,
+&nbsp;                    fieldTokens,
+&nbsp;                    auxiliaryFields,
+&nbsp;                    methodTokens,
+&nbsp;                    recordComponentTokens,
+&nbsp;                    annotationDescriptions,
+&nbsp;                    typeInitializer,
+&nbsp;                    loadedTypeInitializer,
+&nbsp;                    declaringType,
+&nbsp;                    enclosingMethod,
+&nbsp;                    enclosingType,
+&nbsp;                    declaredTypes,
+<b class="fc">&nbsp;                    permittedSubclasses == null || this.permittedSubclasses == null</b>
+<b class="fc">&nbsp;                            ? permittedSubclasses</b>
+<b class="nc">&nbsp;                            : CompoundList.of(this.permittedSubclasses, permittedSubclasses),</b>
+&nbsp;                    anonymousClass,
+&nbsp;                    localClass,
+&nbsp;                    record,
+&nbsp;                    nestHost,
+&nbsp;                    nestMembers);
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public WithFlexibleName withTypeVariable(TypeVariableToken typeVariable) {
+<b class="fc">&nbsp;            return new Default(name,</b>
+&nbsp;                    modifiers,
+&nbsp;                    superClass,
+<b class="fc">&nbsp;                    CompoundList.of(typeVariables, typeVariable.accept(Generic.Visitor.Substitutor.ForDetachment.of(this))),</b>
+&nbsp;                    interfaceTypes,
+&nbsp;                    fieldTokens,
+&nbsp;                    auxiliaryFields,
+&nbsp;                    methodTokens,
+&nbsp;                    recordComponentTokens,
+&nbsp;                    annotationDescriptions,
+&nbsp;                    typeInitializer,
+&nbsp;                    loadedTypeInitializer,
+&nbsp;                    declaringType,
+&nbsp;                    enclosingMethod,
+&nbsp;                    enclosingType,
+&nbsp;                    declaredTypes,
+&nbsp;                    permittedSubclasses,
+&nbsp;                    anonymousClass,
+&nbsp;                    localClass,
+&nbsp;                    record,
+&nbsp;                    nestHost,
+&nbsp;                    nestMembers);
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public WithFlexibleName withName(String name) {
+<b class="fc">&nbsp;            return new Default(name,</b>
+&nbsp;                    modifiers,
+&nbsp;                    superClass,
+&nbsp;                    typeVariables,
+&nbsp;                    interfaceTypes,
+&nbsp;                    fieldTokens,
+&nbsp;                    auxiliaryFields,
+&nbsp;                    methodTokens,
+&nbsp;                    recordComponentTokens,
+&nbsp;                    annotationDescriptions,
+&nbsp;                    typeInitializer,
+&nbsp;                    loadedTypeInitializer,
+&nbsp;                    declaringType,
+&nbsp;                    enclosingMethod,
+&nbsp;                    enclosingType,
+&nbsp;                    declaredTypes,
+&nbsp;                    permittedSubclasses,
+&nbsp;                    anonymousClass,
+&nbsp;                    localClass,
+&nbsp;                    record,
+&nbsp;                    nestHost,
+&nbsp;                    nestMembers);
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public WithFlexibleName withTypeVariables(ElementMatcher&lt;? super Generic&gt; matcher, Transformer&lt;TypeVariableToken&gt; transformer) {
+<b class="fc">&nbsp;            List&lt;TypeVariableToken&gt; typeVariables = new ArrayList&lt;TypeVariableToken&gt;(this.typeVariables.size());</b>
+<b class="fc">&nbsp;            int index = 0;</b>
+<b class="fc">&nbsp;            for (TypeVariableToken typeVariableToken : this.typeVariables) {</b>
+<b class="fc">&nbsp;                typeVariables.add(matcher.matches(getTypeVariables().get(index++))</b>
+<b class="fc">&nbsp;                        ? transformer.transform(this, typeVariableToken)</b>
+<b class="fc">&nbsp;                        : typeVariableToken);</b>
+<b class="fc">&nbsp;            }</b>
+<b class="fc">&nbsp;            return new Default(name,</b>
+&nbsp;                    modifiers,
+&nbsp;                    superClass,
+&nbsp;                    typeVariables,
+&nbsp;                    interfaceTypes,
+&nbsp;                    fieldTokens,
+&nbsp;                    auxiliaryFields,
+&nbsp;                    methodTokens,
+&nbsp;                    recordComponentTokens,
+&nbsp;                    annotationDescriptions,
+&nbsp;                    typeInitializer,
+&nbsp;                    loadedTypeInitializer,
+&nbsp;                    declaringType,
+&nbsp;                    enclosingMethod,
+&nbsp;                    enclosingType,
+&nbsp;                    declaredTypes,
+&nbsp;                    permittedSubclasses,
+&nbsp;                    anonymousClass,
+&nbsp;                    localClass,
+&nbsp;                    record,
+&nbsp;                    nestHost,
+&nbsp;                    nestMembers);
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public WithFlexibleName withLocalClass(boolean localClass) {
+<b class="fc">&nbsp;            return new Default(name,</b>
+&nbsp;                    modifiers,
+&nbsp;                    superClass,
+&nbsp;                    typeVariables,
+&nbsp;                    interfaceTypes,
+&nbsp;                    fieldTokens,
+&nbsp;                    auxiliaryFields,
+&nbsp;                    methodTokens,
+&nbsp;                    recordComponentTokens,
+&nbsp;                    annotationDescriptions,
+&nbsp;                    typeInitializer,
+&nbsp;                    loadedTypeInitializer,
+&nbsp;                    declaringType,
+&nbsp;                    enclosingMethod,
+&nbsp;                    enclosingType,
+&nbsp;                    declaredTypes,
+&nbsp;                    permittedSubclasses,
+&nbsp;                    false,
+&nbsp;                    localClass,
+&nbsp;                    record,
+&nbsp;                    nestHost,
+&nbsp;                    nestMembers);
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public WithFlexibleName withAnonymousClass(boolean anonymousClass) {
+<b class="fc">&nbsp;            return new Default(name,</b>
+&nbsp;                    modifiers,
+&nbsp;                    superClass,
+&nbsp;                    typeVariables,
+&nbsp;                    interfaceTypes,
+&nbsp;                    fieldTokens,
+&nbsp;                    auxiliaryFields,
+&nbsp;                    methodTokens,
+&nbsp;                    recordComponentTokens,
+&nbsp;                    annotationDescriptions,
+&nbsp;                    typeInitializer,
+&nbsp;                    loadedTypeInitializer,
+&nbsp;                    declaringType,
+&nbsp;                    enclosingMethod,
+&nbsp;                    enclosingType,
+&nbsp;                    declaredTypes,
+&nbsp;                    permittedSubclasses,
+&nbsp;                    anonymousClass,
+&nbsp;                    false,
+&nbsp;                    record,
+&nbsp;                    nestHost,
+&nbsp;                    nestMembers);
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public WithFlexibleName withRecord(boolean record) {
+<b class="fc">&nbsp;            return new Default(name,</b>
+&nbsp;                    modifiers,
+&nbsp;                    superClass,
+&nbsp;                    typeVariables,
+&nbsp;                    interfaceTypes,
+&nbsp;                    fieldTokens,
+&nbsp;                    auxiliaryFields,
+&nbsp;                    methodTokens,
+<b class="fc">&nbsp;                    record</b>
+<b class="fc">&nbsp;                            ? recordComponentTokens</b>
+<b class="nc">&nbsp;                            : Collections.&lt;RecordComponentDescription.Token&gt;emptyList(),</b>
+&nbsp;                    annotationDescriptions,
+&nbsp;                    typeInitializer,
+&nbsp;                    loadedTypeInitializer,
+&nbsp;                    declaringType,
+&nbsp;                    enclosingMethod,
+&nbsp;                    enclosingType,
+&nbsp;                    declaredTypes,
+&nbsp;                    permittedSubclasses,
+&nbsp;                    anonymousClass,
+&nbsp;                    localClass,
+&nbsp;                    record,
+&nbsp;                    nestHost,
+&nbsp;                    nestMembers);
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public WithFlexibleName withInitializer(LoadedTypeInitializer loadedTypeInitializer) {
+<b class="fc">&nbsp;            return new Default(name,</b>
+&nbsp;                    modifiers,
+&nbsp;                    superClass,
+&nbsp;                    typeVariables,
+&nbsp;                    interfaceTypes,
+&nbsp;                    fieldTokens,
+&nbsp;                    auxiliaryFields,
+&nbsp;                    methodTokens,
+&nbsp;                    recordComponentTokens,
+&nbsp;                    annotationDescriptions,
+&nbsp;                    typeInitializer,
+&nbsp;                    new LoadedTypeInitializer.Compound(this.loadedTypeInitializer, loadedTypeInitializer),
+&nbsp;                    declaringType,
+&nbsp;                    enclosingMethod,
+&nbsp;                    enclosingType,
+&nbsp;                    declaredTypes,
+&nbsp;                    permittedSubclasses,
+&nbsp;                    anonymousClass,
+&nbsp;                    localClass,
+&nbsp;                    record,
+&nbsp;                    nestHost,
+&nbsp;                    nestMembers);
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public WithFlexibleName withInitializer(ByteCodeAppender byteCodeAppender) {
+<b class="fc">&nbsp;            return new Default(name,</b>
+&nbsp;                    modifiers,
+&nbsp;                    superClass,
+&nbsp;                    typeVariables,
+&nbsp;                    interfaceTypes,
+&nbsp;                    fieldTokens,
+&nbsp;                    auxiliaryFields,
+&nbsp;                    methodTokens,
+&nbsp;                    recordComponentTokens,
+&nbsp;                    annotationDescriptions,
+<b class="fc">&nbsp;                    typeInitializer.expandWith(byteCodeAppender),</b>
+&nbsp;                    loadedTypeInitializer,
+&nbsp;                    declaringType,
+&nbsp;                    enclosingMethod,
+&nbsp;                    enclosingType,
+&nbsp;                    declaredTypes,
+&nbsp;                    permittedSubclasses,
+&nbsp;                    anonymousClass,
+&nbsp;                    localClass,
+&nbsp;                    record,
+&nbsp;                    nestHost,
+&nbsp;                    nestMembers);
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public LoadedTypeInitializer getLoadedTypeInitializer() {
+<b class="fc">&nbsp;            return loadedTypeInitializer;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public TypeInitializer getTypeInitializer() {
+<b class="fc">&nbsp;            return typeInitializer;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        @MaybeNull
+&nbsp;        public MethodDescription.InDefinedShape getEnclosingMethod() {
+<b class="fc">&nbsp;            return enclosingMethod;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        @MaybeNull
+&nbsp;        public TypeDescription getEnclosingType() {
+<b class="fc">&nbsp;            return enclosingType;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public TypeList getDeclaredTypes() {
+<b class="fc">&nbsp;            return new TypeList.Explicit(declaredTypes);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public boolean isAnonymousType() {
+<b class="fc">&nbsp;            return anonymousClass;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public boolean isLocalType() {
+<b class="fc">&nbsp;            return localClass;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        @MaybeNull
+&nbsp;        public PackageDescription getPackage() {
+<b class="fc">&nbsp;            int packageIndex = name.lastIndexOf(&#39;.&#39;);</b>
+<b class="fc">&nbsp;            return packageIndex == -1</b>
+<b class="fc">&nbsp;                    ? PackageDescription.DEFAULT</b>
+<b class="fc">&nbsp;                    : new PackageDescription.Simple(name.substring(0, packageIndex));</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public AnnotationList getDeclaredAnnotations() {
+<b class="fc">&nbsp;            return new AnnotationList.Explicit(annotationDescriptions);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        @MaybeNull
+&nbsp;        public TypeDescription getDeclaringType() {
+<b class="fc">&nbsp;            return declaringType;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        @MaybeNull
+&nbsp;        public Generic getSuperClass() {
+<b class="fc">&nbsp;            return superClass == null</b>
+<b class="fc">&nbsp;                    ? Generic.UNDEFINED</b>
+<b class="fc">&nbsp;                    : new Generic.LazyProjection.WithResolvedErasure(superClass, Generic.Visitor.Substitutor.ForAttachment.of(this));</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public TypeList.Generic getInterfaces() {
+<b class="fc">&nbsp;            return new TypeList.Generic.ForDetachedTypes.WithResolvedErasure(interfaceTypes, TypeDescription.Generic.Visitor.Substitutor.ForAttachment.of(this));</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public FieldList&lt;FieldDescription.InDefinedShape&gt; getDeclaredFields() {
+<b class="fc">&nbsp;            return new FieldList.ForTokens(this, fieldTokens);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public MethodList&lt;MethodDescription.InDefinedShape&gt; getDeclaredMethods() {
+<b class="fc">&nbsp;            return new MethodList.ForTokens(this, methodTokens);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public TypeList.Generic getTypeVariables() {
+<b class="fc">&nbsp;            return TypeList.Generic.ForDetachedTypes.attachVariables(this, typeVariables);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public int getModifiers() {
+<b class="fc">&nbsp;            return modifiers;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public String getName() {
+<b class="fc">&nbsp;            return name;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public TypeDescription getNestHost() {
+<b class="fc">&nbsp;            return nestHost.represents(TargetType.class)</b>
+<b class="fc">&nbsp;                    ? this</b>
+<b class="fc">&nbsp;                    : nestHost;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public TypeList getNestMembers() {
+<b class="fc">&nbsp;            return nestHost.represents(TargetType.class)</b>
+<b class="fc">&nbsp;                    ? new TypeList.Explicit(CompoundList.of(this, nestMembers))</b>
+<b class="nc">&nbsp;                    : nestHost.getNestMembers();</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public RecordComponentList&lt;RecordComponentDescription.InDefinedShape&gt; getRecordComponents() {
+<b class="fc">&nbsp;            return new RecordComponentList.ForTokens(this, recordComponentTokens);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        @SuppressFBWarnings(value = &quot;NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE&quot;, justification = &quot;Assuming super class for given instance.&quot;)
+&nbsp;        public boolean isRecord() {
+<b class="fc">&nbsp;            return record</b>
+&nbsp;                    &amp;&amp; superClass != null
+<b class="fc">&nbsp;                    &amp;&amp; getSuperClass().asErasure().equals(JavaType.RECORD.getTypeStub());</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public boolean isSealed() {
+<b class="fc">&nbsp;            return permittedSubclasses != null;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public TypeList getPermittedSubtypes() {
+<b class="fc">&nbsp;            return permittedSubclasses == null</b>
+<b class="fc">&nbsp;                    ? new TypeList.Empty()</b>
+<b class="fc">&nbsp;                    : new TypeList.Explicit(permittedSubclasses);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public TypeDescription validated() {
+<b class="fc">&nbsp;            if (!isValidIdentifier(getName().split(&quot;\\.&quot;))) {</b>
+<b class="fc">&nbsp;                throw new IllegalStateException(&quot;Illegal type name: &quot; + getName() + &quot; for &quot; + this);</b>
+<b class="fc">&nbsp;            } else if ((getModifiers() &amp; ~ModifierContributor.ForType.MASK) != EMPTY_MASK) {</b>
+<b class="fc">&nbsp;                throw new IllegalStateException(&quot;Illegal modifiers &quot; + getModifiers() + &quot; for &quot; + this);</b>
+<b class="fc">&nbsp;            } else if (isPackageType() &amp;&amp; getModifiers() != PackageDescription.PACKAGE_MODIFIERS) {</b>
+<b class="fc">&nbsp;                throw new IllegalStateException(&quot;Illegal modifiers &quot; + getModifiers() + &quot; for package &quot; + this);</b>
+&nbsp;            }
+<b class="fc">&nbsp;            TypeDescription.Generic superClass = getSuperClass();</b>
+<b class="fc">&nbsp;            if (superClass != null) {</b>
+<b class="fc">&nbsp;                if (!superClass.accept(Generic.Visitor.Validator.SUPER_CLASS)) {</b>
+<b class="fc">&nbsp;                    throw new IllegalStateException(&quot;Illegal super class &quot; + superClass + &quot; for &quot; + this);</b>
+<b class="fc">&nbsp;                } else if (!superClass.accept(Generic.Visitor.Validator.ForTypeAnnotations.INSTANCE)) {</b>
+<b class="fc">&nbsp;                    throw new IllegalStateException(&quot;Illegal type annotations on super class &quot; + superClass + &quot; for &quot; + this);</b>
+<b class="fc">&nbsp;                } else if (!superClass.asErasure().isVisibleTo(this)) {</b>
+<b class="fc">&nbsp;                    throw new IllegalStateException(&quot;Invisible super type &quot; + superClass + &quot; for &quot; + this);</b>
+&nbsp;                }
+&nbsp;            }
+<b class="fc">&nbsp;            Set&lt;TypeDescription&gt; interfaceErasures = new HashSet&lt;TypeDescription&gt;();</b>
+<b class="fc">&nbsp;            for (TypeDescription.Generic interfaceType : getInterfaces()) {</b>
+<b class="fc">&nbsp;                if (!interfaceType.accept(Generic.Visitor.Validator.INTERFACE)) {</b>
+<b class="fc">&nbsp;                    throw new IllegalStateException(&quot;Illegal interface &quot; + interfaceType + &quot; for &quot; + this);</b>
+<b class="fc">&nbsp;                } else if (!interfaceType.accept(Generic.Visitor.Validator.ForTypeAnnotations.INSTANCE)) {</b>
+<b class="fc">&nbsp;                    throw new IllegalStateException(&quot;Illegal type annotations on interface &quot; + interfaceType + &quot; for &quot; + this);</b>
+<b class="fc">&nbsp;                } else if (!interfaceErasures.add(interfaceType.asErasure())) {</b>
+<b class="fc">&nbsp;                    throw new IllegalStateException(&quot;Already implemented interface &quot; + interfaceType + &quot; for &quot; + this);</b>
+<b class="fc">&nbsp;                } else if (!interfaceType.asErasure().isVisibleTo(this)) {</b>
+<b class="fc">&nbsp;                    throw new IllegalStateException(&quot;Invisible interface type &quot; + interfaceType + &quot; for &quot; + this);</b>
+&nbsp;                }
+<b class="fc">&nbsp;            }</b>
+<b class="fc">&nbsp;            TypeList.Generic typeVariables = getTypeVariables();</b>
+<b class="fc">&nbsp;            if (!typeVariables.isEmpty() &amp;&amp; isAssignableTo(Throwable.class)) {</b>
+<b class="fc">&nbsp;                throw new IllegalStateException(&quot;Cannot define throwable &quot; + this + &quot; to be generic&quot;);</b>
+&nbsp;            }
+<b class="fc">&nbsp;            Set&lt;String&gt; typeVariableNames = new HashSet&lt;String&gt;();</b>
+<b class="fc">&nbsp;            for (TypeDescription.Generic typeVariable : typeVariables) {</b>
+<b class="fc">&nbsp;                String variableSymbol = typeVariable.getSymbol();</b>
+<b class="fc">&nbsp;                if (!typeVariableNames.add(variableSymbol)) {</b>
+<b class="fc">&nbsp;                    throw new IllegalStateException(&quot;Duplicate type variable symbol &#39;&quot; + typeVariable + &quot;&#39; for &quot; + this);</b>
+<b class="fc">&nbsp;                } else if (!isValidIdentifier(variableSymbol)) {</b>
+<b class="fc">&nbsp;                    throw new IllegalStateException(&quot;Illegal type variable name &#39;&quot; + typeVariable + &quot;&#39; for &quot; + this);</b>
+<b class="fc">&nbsp;                } else if (!Generic.Visitor.Validator.ForTypeAnnotations.ofFormalTypeVariable(typeVariable)) {</b>
+<b class="fc">&nbsp;                    throw new IllegalStateException(&quot;Illegal type annotation on &#39;&quot; + typeVariable + &quot;&#39; for &quot; + this);</b>
+&nbsp;                }
+<b class="fc">&nbsp;                boolean interfaceBound = false;</b>
+<b class="fc">&nbsp;                Set&lt;TypeDescription.Generic&gt; bounds = new HashSet&lt;Generic&gt;();</b>
+<b class="fc">&nbsp;                for (TypeDescription.Generic bound : typeVariable.getUpperBounds()) {</b>
+<b class="fc">&nbsp;                    if (!bound.accept(Generic.Visitor.Validator.TYPE_VARIABLE)) {</b>
+<b class="fc">&nbsp;                        throw new IllegalStateException(&quot;Illegal type variable bound &quot; + bound + &quot; of &quot; + typeVariable + &quot; for &quot; + this);</b>
+<b class="fc">&nbsp;                    } else if (!bound.accept(Generic.Visitor.Validator.ForTypeAnnotations.INSTANCE)) {</b>
+<b class="fc">&nbsp;                        throw new IllegalStateException(&quot;Illegal type annotations on type variable &quot; + bound + &quot; for &quot; + this);</b>
+<b class="fc">&nbsp;                    } else if (!bounds.add(bound)) {</b>
+<b class="fc">&nbsp;                        throw new IllegalStateException(&quot;Duplicate bound &quot; + bound + &quot; of &quot; + typeVariable + &quot; for &quot; + this);</b>
+<b class="fc">&nbsp;                    } else if (interfaceBound &amp;&amp; (bound.getSort().isTypeVariable() || !bound.isInterface())) {</b>
+<b class="fc">&nbsp;                        throw new IllegalStateException(&quot;Illegal interface bound &quot; + bound + &quot; of &quot; + typeVariable + &quot; for &quot; + this);</b>
+&nbsp;                    }
+<b class="fc">&nbsp;                    interfaceBound = true;</b>
+<b class="fc">&nbsp;                }</b>
+<b class="fc">&nbsp;                if (!interfaceBound) {</b>
+<b class="fc">&nbsp;                    throw new IllegalStateException(&quot;Type variable &quot; + typeVariable + &quot; for &quot; + this + &quot; does not define at least one bound&quot;);</b>
+&nbsp;                }
+<b class="fc">&nbsp;            }</b>
+<b class="fc">&nbsp;            TypeDescription enclosingType = getEnclosingType();</b>
+<b class="fc">&nbsp;            if (enclosingType != null &amp;&amp; (enclosingType.isArray() || enclosingType.isPrimitive())) {</b>
+<b class="fc">&nbsp;                throw new IllegalStateException(&quot;Cannot define array type or primitive type &quot; + enclosingType + &quot; + as enclosing type for &quot; + this);</b>
+&nbsp;            }
+<b class="fc">&nbsp;            MethodDescription.InDefinedShape enclosingMethod = getEnclosingMethod();</b>
+<b class="fc">&nbsp;            if (enclosingMethod != null &amp;&amp; enclosingMethod.isTypeInitializer()) {</b>
+<b class="nc">&nbsp;                throw new IllegalStateException(&quot;Cannot enclose type declaration in class initializer &quot; + enclosingMethod);</b>
+&nbsp;            }
+<b class="fc">&nbsp;            TypeDescription declaringType = getDeclaringType();</b>
+<b class="fc">&nbsp;            if (declaringType != null) {</b>
+<b class="fc">&nbsp;                if (declaringType.isPrimitive() || declaringType.isArray()) {</b>
+<b class="fc">&nbsp;                    throw new IllegalStateException(&quot;Cannot define array type or primitive type &quot; + declaringType + &quot; as declaring type for &quot; + this);</b>
+&nbsp;                }
+<b class="fc">&nbsp;            } else if (enclosingType == null &amp;&amp; enclosingMethod == null &amp;&amp; (isLocalType() || isAnonymousType())) {</b>
+<b class="fc">&nbsp;                throw new IllegalStateException(&quot;Cannot define an anonymous or local class without a declaring type for &quot; + this);</b>
+&nbsp;            }
+<b class="fc">&nbsp;            Set&lt;TypeDescription&gt; declaredTypes = new HashSet&lt;TypeDescription&gt;();</b>
+<b class="fc">&nbsp;            for (TypeDescription declaredType : getDeclaredTypes()) {</b>
+<b class="fc">&nbsp;                if (declaredType.isArray() || declaredType.isPrimitive()) {</b>
+<b class="fc">&nbsp;                    throw new IllegalStateException(&quot;Cannot define array type or primitive type &quot; + declaredType + &quot; + as declared type for &quot; + this);</b>
+<b class="fc">&nbsp;                } else if (!declaredTypes.add(declaredType)) {</b>
+<b class="fc">&nbsp;                    throw new IllegalStateException(&quot;Duplicate definition of declared type &quot; + declaredType);</b>
+&nbsp;                }
+<b class="fc">&nbsp;            }</b>
+<b class="fc">&nbsp;            TypeDescription nestHost = getNestHost();</b>
+<b class="fc">&nbsp;            if (nestHost.equals(this)) {</b>
+<b class="fc">&nbsp;                Set&lt;TypeDescription&gt; nestMembers = new HashSet&lt;TypeDescription&gt;();</b>
+<b class="fc">&nbsp;                for (TypeDescription nestMember : getNestMembers()) {</b>
+<b class="fc">&nbsp;                    if (nestMember.isArray() || nestMember.isPrimitive()) {</b>
+<b class="fc">&nbsp;                        throw new IllegalStateException(&quot;Cannot define array type or primitive type &quot; + nestMember + &quot; + as nest member of &quot; + this);</b>
+<b class="fc">&nbsp;                    } else if (!nestMember.isSamePackage(this)) {</b>
+<b class="fc">&nbsp;                        throw new IllegalStateException(&quot;Cannot define nest member &quot; + nestMember + &quot; + within different package then &quot; + this);</b>
+<b class="fc">&nbsp;                    } else if (!nestMembers.add(nestMember)) {</b>
+<b class="fc">&nbsp;                        throw new IllegalStateException(&quot;Duplicate definition of nest member &quot; + nestMember);</b>
+&nbsp;                    }
+<b class="fc">&nbsp;                }</b>
+<b class="fc">&nbsp;            } else if (nestHost.isArray() || nestHost.isPrimitive()) {</b>
+<b class="fc">&nbsp;                throw new IllegalStateException(&quot;Cannot define array type or primitive type &quot; + nestHost + &quot; + as nest host for &quot; + this);</b>
+<b class="fc">&nbsp;            } else if (!nestHost.isSamePackage(this)) {</b>
+<b class="fc">&nbsp;                throw new IllegalStateException(&quot;Cannot define nest host &quot; + nestHost + &quot; + within different package then &quot; + this);</b>
+&nbsp;            }
+<b class="fc">&nbsp;            for (TypeDescription permittedSubclass : getPermittedSubtypes()) {</b>
+<b class="fc">&nbsp;                if (!permittedSubclass.isAssignableTo(this) || permittedSubclass.equals(this)) {</b>
+<b class="fc">&nbsp;                    throw new IllegalStateException(&quot;Cannot assign permitted subclass &quot; + permittedSubclass + &quot; to &quot; + this);</b>
+&nbsp;                }
+<b class="fc">&nbsp;            }</b>
+<b class="fc">&nbsp;            Set&lt;TypeDescription&gt; typeAnnotationTypes = new HashSet&lt;TypeDescription&gt;();</b>
+<b class="fc">&nbsp;            for (AnnotationDescription annotationDescription : getDeclaredAnnotations()) {</b>
+<b class="fc">&nbsp;                if (!annotationDescription.isSupportedOn(ElementType.TYPE)</b>
+<b class="fc">&nbsp;                        &amp;&amp; !(isAnnotation() &amp;&amp; annotationDescription.isSupportedOn(ElementType.ANNOTATION_TYPE))</b>
+<b class="fc">&nbsp;                        &amp;&amp; !(isPackageType() &amp;&amp; annotationDescription.isSupportedOn(ElementType.PACKAGE))) {</b>
+<b class="fc">&nbsp;                    throw new IllegalStateException(&quot;Cannot add &quot; + annotationDescription + &quot; on &quot; + this);</b>
+<b class="fc">&nbsp;                } else if (!typeAnnotationTypes.add(annotationDescription.getAnnotationType())) {</b>
+<b class="fc">&nbsp;                    throw new IllegalStateException(&quot;Duplicate annotation &quot; + annotationDescription + &quot; for &quot; + this);</b>
+&nbsp;                }
+<b class="fc">&nbsp;            }</b>
+<b class="fc">&nbsp;            Set&lt;FieldDescription.SignatureToken&gt; fieldSignatureTokens = new HashSet&lt;FieldDescription.SignatureToken&gt;();</b>
+<b class="fc">&nbsp;            for (FieldDescription.InDefinedShape fieldDescription : getDeclaredFields()) {</b>
+<b class="fc">&nbsp;                String fieldName = fieldDescription.getName();</b>
+<b class="fc">&nbsp;                if (!fieldSignatureTokens.add(fieldDescription.asSignatureToken())) {</b>
+<b class="fc">&nbsp;                    throw new IllegalStateException(&quot;Duplicate field definition for &quot; + fieldDescription);</b>
+<b class="fc">&nbsp;                } else if (!isValidIdentifier(fieldName)) {</b>
+<b class="fc">&nbsp;                    throw new IllegalStateException(&quot;Illegal field name for &quot; + fieldDescription);</b>
+<b class="fc">&nbsp;                } else if ((fieldDescription.getModifiers() &amp; ~ModifierContributor.ForField.MASK) != EMPTY_MASK) {</b>
+<b class="fc">&nbsp;                    throw new IllegalStateException(&quot;Illegal field modifiers &quot; + fieldDescription.getModifiers() + &quot; for &quot; + fieldDescription);</b>
+&nbsp;                }
+<b class="fc">&nbsp;                Generic fieldType = fieldDescription.getType();</b>
+<b class="fc">&nbsp;                if (!fieldType.accept(Generic.Visitor.Validator.FIELD)) {</b>
+<b class="nc">&nbsp;                    throw new IllegalStateException(&quot;Illegal field type &quot; + fieldType + &quot; for &quot; + fieldDescription);</b>
+<b class="fc">&nbsp;                } else if (!fieldType.accept(Generic.Visitor.Validator.ForTypeAnnotations.INSTANCE)) {</b>
+<b class="fc">&nbsp;                    throw new IllegalStateException(&quot;Illegal type annotations on &quot; + fieldType + &quot; for &quot; + this);</b>
+<b class="fc">&nbsp;                } else if (!fieldDescription.isSynthetic() &amp;&amp; !fieldType.asErasure().isVisibleTo(this)) {</b>
+<b class="fc">&nbsp;                    throw new IllegalStateException(&quot;Invisible field type &quot; + fieldDescription.getType() + &quot; for &quot; + fieldDescription);</b>
+&nbsp;                }
+<b class="fc">&nbsp;                Set&lt;TypeDescription&gt; fieldAnnotationTypes = new HashSet&lt;TypeDescription&gt;();</b>
+<b class="fc">&nbsp;                for (AnnotationDescription annotationDescription : fieldDescription.getDeclaredAnnotations()) {</b>
+<b class="fc">&nbsp;                    if (!annotationDescription.isSupportedOn(ElementType.FIELD)) {</b>
+<b class="fc">&nbsp;                        throw new IllegalStateException(&quot;Cannot add &quot; + annotationDescription + &quot; on &quot; + fieldDescription);</b>
+<b class="fc">&nbsp;                    } else if (!fieldAnnotationTypes.add(annotationDescription.getAnnotationType())) {</b>
+<b class="fc">&nbsp;                        throw new IllegalStateException(&quot;Duplicate annotation &quot; + annotationDescription + &quot; for &quot; + fieldDescription);</b>
+&nbsp;                    }
+<b class="fc">&nbsp;                }</b>
+<b class="fc">&nbsp;            }</b>
+<b class="fc">&nbsp;            Set&lt;MethodDescription.SignatureToken&gt; methodSignatureTokens = new HashSet&lt;MethodDescription.SignatureToken&gt;();</b>
+<b class="fc">&nbsp;            for (MethodDescription.InDefinedShape methodDescription : getDeclaredMethods()) {</b>
+<b class="fc">&nbsp;                if (!methodSignatureTokens.add(methodDescription.asSignatureToken())) {</b>
+<b class="fc">&nbsp;                    throw new IllegalStateException(&quot;Duplicate method signature for &quot; + methodDescription);</b>
+<b class="fc">&nbsp;                } else if ((methodDescription.getModifiers() &amp; ~ModifierContributor.ForMethod.MASK) != 0) {</b>
+<b class="fc">&nbsp;                    throw new IllegalStateException(&quot;Illegal modifiers &quot; + methodDescription.getModifiers() + &quot; for &quot; + methodDescription);</b>
+<b class="fc">&nbsp;                } else if (isInterface() &amp;&amp; !methodDescription.isPublic() &amp;&amp; !methodDescription.isPrivate()) {</b>
+<b class="fc">&nbsp;                    throw new IllegalStateException(&quot;Methods declared by an interface must be public or private &quot; + methodDescription);</b>
+&nbsp;                }
+<b class="fc">&nbsp;                Set&lt;String&gt; methodTypeVariableNames = new HashSet&lt;String&gt;();</b>
+<b class="fc">&nbsp;                for (TypeDescription.Generic typeVariable : methodDescription.getTypeVariables()) {</b>
+<b class="fc">&nbsp;                    String variableSymbol = typeVariable.getSymbol();</b>
+<b class="fc">&nbsp;                    if (!methodTypeVariableNames.add(variableSymbol)) {</b>
+<b class="fc">&nbsp;                        throw new IllegalStateException(&quot;Duplicate type variable symbol &#39;&quot; + typeVariable + &quot;&#39; for &quot; + methodDescription);</b>
+<b class="fc">&nbsp;                    } else if (!isValidIdentifier(variableSymbol)) {</b>
+<b class="fc">&nbsp;                        throw new IllegalStateException(&quot;Illegal type variable name &#39;&quot; + typeVariable + &quot;&#39; for &quot; + methodDescription);</b>
+<b class="fc">&nbsp;                    } else if (!Generic.Visitor.Validator.ForTypeAnnotations.ofFormalTypeVariable(typeVariable)) {</b>
+<b class="fc">&nbsp;                        throw new IllegalStateException(&quot;Illegal type annotation on &#39;&quot; + typeVariable + &quot;&#39; for &quot; + methodDescription);</b>
+&nbsp;                    }
+<b class="fc">&nbsp;                    boolean interfaceBound = false;</b>
+<b class="fc">&nbsp;                    Set&lt;TypeDescription.Generic&gt; bounds = new HashSet&lt;Generic&gt;();</b>
+<b class="fc">&nbsp;                    for (TypeDescription.Generic bound : typeVariable.getUpperBounds()) {</b>
+<b class="fc">&nbsp;                        if (!bound.accept(Generic.Visitor.Validator.TYPE_VARIABLE)) {</b>
+<b class="fc">&nbsp;                            throw new IllegalStateException(&quot;Illegal type variable bound &quot; + bound + &quot; of &quot; + typeVariable + &quot; for &quot; + methodDescription);</b>
+<b class="fc">&nbsp;                        } else if (!bound.accept(Generic.Visitor.Validator.ForTypeAnnotations.INSTANCE)) {</b>
+<b class="fc">&nbsp;                            throw new IllegalStateException(&quot;Illegal type annotations on bound &quot; + bound + &quot; of &quot; + typeVariable + &quot; for &quot; + this);</b>
+<b class="fc">&nbsp;                        } else if (!bounds.add(bound)) {</b>
+<b class="fc">&nbsp;                            throw new IllegalStateException(&quot;Duplicate bound &quot; + bound + &quot; of &quot; + typeVariable + &quot; for &quot; + methodDescription);</b>
+<b class="fc">&nbsp;                        } else if (interfaceBound &amp;&amp; (bound.getSort().isTypeVariable() || !bound.isInterface())) {</b>
+<b class="fc">&nbsp;                            throw new IllegalStateException(&quot;Illegal interface bound &quot; + bound + &quot; of &quot; + typeVariable + &quot; for &quot; + methodDescription);</b>
+&nbsp;                        }
+<b class="fc">&nbsp;                        interfaceBound = true;</b>
+<b class="fc">&nbsp;                    }</b>
+<b class="fc">&nbsp;                    if (!interfaceBound) {</b>
+<b class="fc">&nbsp;                        throw new IllegalStateException(&quot;Type variable &quot; + typeVariable + &quot; for &quot; + methodDescription + &quot; does not define at least one bound&quot;);</b>
+&nbsp;                    }
+<b class="fc">&nbsp;                }</b>
+<b class="fc">&nbsp;                Generic returnType = methodDescription.getReturnType();</b>
+<b class="fc">&nbsp;                if (methodDescription.isTypeInitializer()) {</b>
+<b class="fc">&nbsp;                    throw new IllegalStateException(&quot;Illegal explicit declaration of a type initializer by &quot; + this);</b>
+<b class="fc">&nbsp;                } else if (methodDescription.isConstructor()) {</b>
+<b class="fc">&nbsp;                    if (!returnType.represents(void.class)) {</b>
+<b class="fc">&nbsp;                        throw new IllegalStateException(&quot;A constructor must return void &quot; + methodDescription);</b>
+<b class="fc">&nbsp;                    } else if (!returnType.getDeclaredAnnotations().isEmpty()) {</b>
+<b class="nc">&nbsp;                        throw new IllegalStateException(&quot;The void non-type must not be annotated for &quot; + methodDescription);</b>
+&nbsp;                    }
+<b class="fc">&nbsp;                } else if (!isValidIdentifier(methodDescription.getInternalName())) {</b>
+<b class="fc">&nbsp;                    throw new IllegalStateException(&quot;Illegal method name &quot; + returnType + &quot; for &quot; + methodDescription);</b>
+<b class="fc">&nbsp;                } else if (!returnType.accept(Generic.Visitor.Validator.METHOD_RETURN)) {</b>
+<b class="nc">&nbsp;                    throw new IllegalStateException(&quot;Illegal return type &quot; + returnType + &quot; for &quot; + methodDescription);</b>
+<b class="fc">&nbsp;                } else if (!returnType.accept(Generic.Visitor.Validator.ForTypeAnnotations.INSTANCE)) {</b>
+<b class="fc">&nbsp;                    throw new IllegalStateException(&quot;Illegal type annotations on return type &quot; + returnType + &quot; for &quot; + methodDescription);</b>
+<b class="fc">&nbsp;                } else if (!methodDescription.isSynthetic() &amp;&amp; !methodDescription.getReturnType().asErasure().isVisibleTo(this)) {</b>
+<b class="fc">&nbsp;                    throw new IllegalStateException(&quot;Invisible return type &quot; + methodDescription.getReturnType() + &quot; for &quot; + methodDescription);</b>
+&nbsp;                }
+<b class="fc">&nbsp;                Set&lt;String&gt; parameterNames = new HashSet&lt;String&gt;();</b>
+<b class="fc">&nbsp;                for (ParameterDescription.InDefinedShape parameterDescription : methodDescription.getParameters()) {</b>
+<b class="fc">&nbsp;                    Generic parameterType = parameterDescription.getType();</b>
+<b class="fc">&nbsp;                    if (!parameterType.accept(Generic.Visitor.Validator.METHOD_PARAMETER)) {</b>
+<b class="fc">&nbsp;                        throw new IllegalStateException(&quot;Illegal parameter type of &quot; + parameterDescription + &quot; for &quot; + methodDescription);</b>
+<b class="fc">&nbsp;                    } else if (!parameterType.accept(Generic.Visitor.Validator.ForTypeAnnotations.INSTANCE)) {</b>
+<b class="nc">&nbsp;                        throw new IllegalStateException(&quot;Illegal type annotations on parameter &quot; + parameterDescription + &quot; for &quot; + methodDescription);</b>
+<b class="fc">&nbsp;                    } else if (!methodDescription.isSynthetic() &amp;&amp; !parameterType.asErasure().isVisibleTo(this)) {</b>
+<b class="fc">&nbsp;                        throw new IllegalStateException(&quot;Invisible parameter type of &quot; + parameterDescription + &quot; for &quot; + methodDescription);</b>
+&nbsp;                    }
+<b class="fc">&nbsp;                    if (parameterDescription.isNamed()) {</b>
+<b class="fc">&nbsp;                        String parameterName = parameterDescription.getName();</b>
+<b class="fc">&nbsp;                        if (!parameterNames.add(parameterName)) {</b>
+<b class="fc">&nbsp;                            throw new IllegalStateException(&quot;Duplicate parameter name of &quot; + parameterDescription + &quot; for &quot; + methodDescription);</b>
+<b class="fc">&nbsp;                        } else if (!isValidIdentifier(parameterName)) {</b>
+<b class="fc">&nbsp;                            throw new IllegalStateException(&quot;Illegal parameter name of &quot; + parameterDescription + &quot; for &quot; + methodDescription);</b>
+&nbsp;                        }
+&nbsp;                    }
+<b class="fc">&nbsp;                    if (parameterDescription.hasModifiers() &amp;&amp; (parameterDescription.getModifiers() &amp; ~ModifierContributor.ForParameter.MASK) != EMPTY_MASK) {</b>
+<b class="fc">&nbsp;                        throw new IllegalStateException(&quot;Illegal modifiers of &quot; + parameterDescription + &quot; for &quot; + methodDescription);</b>
+&nbsp;                    }
+<b class="fc">&nbsp;                    Set&lt;TypeDescription&gt; parameterAnnotationTypes = new HashSet&lt;TypeDescription&gt;();</b>
+<b class="fc">&nbsp;                    for (AnnotationDescription annotationDescription : parameterDescription.getDeclaredAnnotations()) {</b>
+<b class="fc">&nbsp;                        if (!annotationDescription.isSupportedOn(ElementType.PARAMETER)) {</b>
+<b class="fc">&nbsp;                            throw new IllegalStateException(&quot;Cannot add &quot; + annotationDescription + &quot; on &quot; + parameterDescription);</b>
+<b class="fc">&nbsp;                        } else if (!parameterAnnotationTypes.add(annotationDescription.getAnnotationType())) {</b>
+<b class="fc">&nbsp;                            throw new IllegalStateException(&quot;Duplicate annotation &quot; + annotationDescription + &quot; of &quot; + parameterDescription + &quot; for &quot; + methodDescription);</b>
+&nbsp;                        }
+<b class="fc">&nbsp;                    }</b>
+<b class="fc">&nbsp;                }</b>
+<b class="fc">&nbsp;                for (TypeDescription.Generic exceptionType : methodDescription.getExceptionTypes()) {</b>
+<b class="fc">&nbsp;                    if (!exceptionType.accept(Generic.Visitor.Validator.EXCEPTION)) {</b>
+<b class="fc">&nbsp;                        throw new IllegalStateException(&quot;Illegal exception type &quot; + exceptionType + &quot; for &quot; + methodDescription);</b>
+<b class="fc">&nbsp;                    } else if (!exceptionType.accept(Generic.Visitor.Validator.ForTypeAnnotations.INSTANCE)) {</b>
+<b class="fc">&nbsp;                        throw new IllegalStateException(&quot;Illegal type annotations on &quot; + exceptionType + &quot; for &quot; + methodDescription);</b>
+<b class="fc">&nbsp;                    } else if (!methodDescription.isSynthetic() &amp;&amp; !exceptionType.asErasure().isVisibleTo(this)) {</b>
+<b class="fc">&nbsp;                        throw new IllegalStateException(&quot;Invisible exception type &quot; + exceptionType + &quot; for &quot; + methodDescription);</b>
+&nbsp;                    }
+<b class="fc">&nbsp;                }</b>
+<b class="fc">&nbsp;                Set&lt;TypeDescription&gt; methodAnnotationTypes = new HashSet&lt;TypeDescription&gt;();</b>
+<b class="fc">&nbsp;                for (AnnotationDescription annotationDescription : methodDescription.getDeclaredAnnotations()) {</b>
+<b class="fc">&nbsp;                    if (!annotationDescription.isSupportedOn(methodDescription.isMethod() ? ElementType.METHOD : ElementType.CONSTRUCTOR)) {</b>
+<b class="fc">&nbsp;                        throw new IllegalStateException(&quot;Cannot add &quot; + annotationDescription + &quot; on &quot; + methodDescription);</b>
+<b class="fc">&nbsp;                    } else if (!methodAnnotationTypes.add(annotationDescription.getAnnotationType())) {</b>
+<b class="fc">&nbsp;                        throw new IllegalStateException(&quot;Duplicate annotation &quot; + annotationDescription + &quot; for &quot; + methodDescription);</b>
+&nbsp;                    }
+<b class="fc">&nbsp;                }</b>
+<b class="fc">&nbsp;                AnnotationValue&lt;?, ?&gt; defaultValue = methodDescription.getDefaultValue();</b>
+<b class="fc">&nbsp;                if (defaultValue != null &amp;&amp; !methodDescription.isDefaultValue(defaultValue)) {</b>
+<b class="fc">&nbsp;                    throw new IllegalStateException(&quot;Illegal default value &quot; + defaultValue + &quot;for &quot; + methodDescription);</b>
+&nbsp;                }
+<b class="fc">&nbsp;                Generic receiverType = methodDescription.getReceiverType();</b>
+<b class="fc">&nbsp;                if (receiverType != null &amp;&amp; !receiverType.accept(Generic.Visitor.Validator.RECEIVER)) {</b>
+<b class="nc">&nbsp;                    throw new IllegalStateException(&quot;Illegal receiver type &quot; + receiverType + &quot; for &quot; + methodDescription);</b>
+<b class="fc">&nbsp;                } else if (methodDescription.isStatic()) {</b>
+<b class="fc">&nbsp;                    if (receiverType != null) {</b>
+<b class="fc">&nbsp;                        throw new IllegalStateException(&quot;Static method &quot; + methodDescription + &quot; defines a non-null receiver &quot; + receiverType);</b>
+&nbsp;                    }
+<b class="fc">&nbsp;                } else if (methodDescription.isConstructor()) {</b>
+<b class="fc">&nbsp;                    if (receiverType == null || !receiverType.asErasure().equals(enclosingType == null ? this : enclosingType)) {</b>
+<b class="nc">&nbsp;                        throw new IllegalStateException(&quot;Constructor &quot; + methodDescription + &quot; defines an illegal receiver &quot; + receiverType);</b>
+&nbsp;                    }
+<b class="fc">&nbsp;                } else if (/* methodDescription.isMethod() */ receiverType == null || !equals(receiverType.asErasure())) {</b>
+<b class="fc">&nbsp;                    throw new IllegalStateException(&quot;Method &quot; + methodDescription + &quot; defines an illegal receiver &quot; + receiverType);</b>
+&nbsp;                }
+<b class="fc">&nbsp;            }</b>
+<b class="fc">&nbsp;            return this;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Checks if an array of identifiers is a valid compound Java identifier.
+&nbsp;         *
+&nbsp;         * @param identifier an array of potentially invalid Java identifiers.
+&nbsp;         * @return {@code true} if all identifiers are valid and the array is not empty.
+&nbsp;         */
+&nbsp;        private static boolean isValidIdentifier(String[] identifier) {
+<b class="fc">&nbsp;            if (identifier.length == 0) {</b>
+<b class="nc">&nbsp;                return false;</b>
+&nbsp;            }
+<b class="fc">&nbsp;            for (String part : identifier) {</b>
+<b class="fc">&nbsp;                if (!isValidIdentifier(part)) {</b>
+<b class="fc">&nbsp;                    return false;</b>
+&nbsp;                }
+&nbsp;            }
+<b class="fc">&nbsp;            return true;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Checks if a Java identifier is valid.
+&nbsp;         *
+&nbsp;         * @param identifier The identifier to check for validity.
+&nbsp;         * @return {@code true} if the given identifier is valid.
+&nbsp;         */
+&nbsp;        private static boolean isValidIdentifier(String identifier) {
+<b class="fc">&nbsp;            if (KEYWORDS.contains(identifier) || identifier.length() == 0 || !Character.isJavaIdentifierStart(identifier.charAt(0))) {</b>
+<b class="fc">&nbsp;                return false;</b>
+<b class="fc">&nbsp;            } else if (identifier.equals(PackageDescription.PACKAGE_CLASS_NAME)) {</b>
+<b class="fc">&nbsp;                return true;</b>
+&nbsp;            }
+<b class="fc">&nbsp;            for (int index = 1; index &lt; identifier.length(); index++) {</b>
+<b class="fc">&nbsp;                if (!Character.isJavaIdentifierPart(identifier.charAt(index))) {</b>
+<b class="fc">&nbsp;                    return false;</b>
+&nbsp;                }
+&nbsp;            }
+<b class="fc">&nbsp;            return true;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A frozen representation of an instrumented type of which the structure must not be modified.
+&nbsp;     */
+&nbsp;    class Frozen extends AbstractBase.OfSimpleType implements InstrumentedType.WithFlexibleName {
+&nbsp;
+&nbsp;        /**
+&nbsp;         * The represented type description.
+&nbsp;         */
+&nbsp;        private final TypeDescription typeDescription;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * The type&#39;s loaded type initializer.
+&nbsp;         */
+&nbsp;        private final LoadedTypeInitializer loadedTypeInitializer;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Creates a new frozen representation of an instrumented type.
+&nbsp;         *
+&nbsp;         * @param typeDescription       The represented type description.
+&nbsp;         * @param loadedTypeInitializer The type&#39;s loaded type initializer.
+&nbsp;         */
+<b class="fc">&nbsp;        protected Frozen(TypeDescription typeDescription, LoadedTypeInitializer loadedTypeInitializer) {</b>
+<b class="fc">&nbsp;            this.typeDescription = typeDescription;</b>
+<b class="fc">&nbsp;            this.loadedTypeInitializer = loadedTypeInitializer;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public AnnotationList getDeclaredAnnotations() {
+<b class="fc">&nbsp;            return typeDescription.getDeclaredAnnotations();</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public int getModifiers() {
+<b class="fc">&nbsp;            return typeDescription.getModifiers();</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public TypeList.Generic getTypeVariables() {
+<b class="fc">&nbsp;            return typeDescription.getTypeVariables();</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public String getName() {
+<b class="fc">&nbsp;            return typeDescription.getName();</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        @MaybeNull
+&nbsp;        public Generic getSuperClass() {
+<b class="fc">&nbsp;            return typeDescription.getSuperClass();</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public TypeList.Generic getInterfaces() {
+<b class="fc">&nbsp;            return typeDescription.getInterfaces();</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public FieldList&lt;FieldDescription.InDefinedShape&gt; getDeclaredFields() {
+<b class="fc">&nbsp;            return typeDescription.getDeclaredFields();</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public MethodList&lt;MethodDescription.InDefinedShape&gt; getDeclaredMethods() {
+<b class="fc">&nbsp;            return typeDescription.getDeclaredMethods();</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public boolean isAnonymousType() {
+<b class="fc">&nbsp;            return typeDescription.isAnonymousType();</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public boolean isLocalType() {
+<b class="fc">&nbsp;            return typeDescription.isLocalType();</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        @MaybeNull
+&nbsp;        public PackageDescription getPackage() {
+<b class="fc">&nbsp;            return typeDescription.getPackage();</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        @MaybeNull
+&nbsp;        public TypeDescription getEnclosingType() {
+<b class="fc">&nbsp;            return typeDescription.getEnclosingType();</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        @MaybeNull
+&nbsp;        public TypeDescription getDeclaringType() {
+<b class="fc">&nbsp;            return typeDescription.getDeclaringType();</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public TypeList getDeclaredTypes() {
+<b class="fc">&nbsp;            return typeDescription.getDeclaredTypes();</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        @MaybeNull
+&nbsp;        public MethodDescription.InDefinedShape getEnclosingMethod() {
+<b class="fc">&nbsp;            return typeDescription.getEnclosingMethod();</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        @MaybeNull
+&nbsp;        public String getGenericSignature() {
+&nbsp;            // Embrace use of native generic signature by direct delegation.
+<b class="fc">&nbsp;            return typeDescription.getGenericSignature();</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public int getActualModifiers(boolean superFlag) {
+&nbsp;            // Embrace use of native actual modifiers by direct delegation.
+<b class="fc">&nbsp;            return typeDescription.getActualModifiers(superFlag);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public TypeDescription getNestHost() {
+<b class="fc">&nbsp;            return typeDescription.getNestHost();</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public TypeList getNestMembers() {
+<b class="fc">&nbsp;            return typeDescription.getNestMembers();</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public RecordComponentList&lt;RecordComponentDescription.InDefinedShape&gt; getRecordComponents() {
+<b class="fc">&nbsp;            return typeDescription.getRecordComponents();</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public boolean isRecord() {
+<b class="nc">&nbsp;            return typeDescription.isRecord();</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public boolean isSealed() {
+<b class="fc">&nbsp;            return typeDescription.isSealed();</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public TypeList getPermittedSubtypes() {
+<b class="fc">&nbsp;            return typeDescription.getPermittedSubtypes();</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public WithFlexibleName withField(FieldDescription.Token token) {
+<b class="fc">&nbsp;            throw new IllegalStateException(&quot;Cannot define field for frozen type: &quot; + typeDescription);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public WithFlexibleName withAuxiliaryField(FieldDescription.Token token, Object value) {
+<b class="fc">&nbsp;            throw new IllegalStateException(&quot;Cannot define auxiliary field for frozen type: &quot; + typeDescription);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public WithFlexibleName withMethod(MethodDescription.Token token) {
+<b class="fc">&nbsp;            throw new IllegalStateException(&quot;Cannot define method for frozen type: &quot; + typeDescription);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public WithFlexibleName withRecordComponent(RecordComponentDescription.Token token) {
+<b class="fc">&nbsp;            throw new IllegalStateException(&quot;Cannot define record component for frozen type: &quot; + typeDescription);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public WithFlexibleName withModifiers(int modifiers) {
+<b class="nc">&nbsp;            throw new IllegalStateException(&quot;Cannot change modifiers for frozen type: &quot; + typeDescription);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public WithFlexibleName withInterfaces(TypeList.Generic interfaceTypes) {
+<b class="nc">&nbsp;            throw new IllegalStateException(&quot;Cannot add interfaces for frozen type: &quot; + typeDescription);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public WithFlexibleName withTypeVariable(TypeVariableToken typeVariable) {
+<b class="fc">&nbsp;            throw new IllegalStateException(&quot;Cannot define type variable for frozen type: &quot; + typeDescription);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public WithFlexibleName withAnnotations(List&lt;? extends AnnotationDescription&gt; annotationDescriptions) {
+<b class="fc">&nbsp;            throw new IllegalStateException(&quot;Cannot add annotation to frozen type: &quot; + typeDescription);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public WithFlexibleName withNestHost(TypeDescription nestHost) {
+<b class="fc">&nbsp;            throw new IllegalStateException(&quot;Cannot set nest host of frozen type: &quot; + typeDescription);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public WithFlexibleName withNestMembers(TypeList nestMembers) {
+<b class="fc">&nbsp;            throw new IllegalStateException(&quot;Cannot add nest members to frozen type: &quot; + typeDescription);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public WithFlexibleName withEnclosingType(@MaybeNull TypeDescription enclosingType) {
+<b class="fc">&nbsp;            throw new IllegalStateException(&quot;Cannot set enclosing type of frozen type: &quot; + typeDescription);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public WithFlexibleName withEnclosingMethod(MethodDescription.InDefinedShape enclosingMethod) {
+<b class="fc">&nbsp;            throw new IllegalStateException(&quot;Cannot set enclosing method of frozen type: &quot; + typeDescription);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public WithFlexibleName withDeclaringType(@MaybeNull TypeDescription declaringType) {
+<b class="fc">&nbsp;            throw new IllegalStateException(&quot;Cannot add declaring type to frozen type: &quot; + typeDescription);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public WithFlexibleName withDeclaredTypes(TypeList declaredTypes) {
+<b class="fc">&nbsp;            throw new IllegalStateException(&quot;Cannot add declared types to frozen type: &quot; + typeDescription);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public WithFlexibleName withPermittedSubclasses(@MaybeNull TypeList permittedSubclasses) {
+<b class="fc">&nbsp;            throw new IllegalStateException(&quot;Cannot add permitted subclasses to frozen type: &quot; + typeDescription);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public WithFlexibleName withLocalClass(boolean localClass) {
+<b class="fc">&nbsp;            throw new IllegalStateException(&quot;Cannot define local class state for frozen type: &quot; + typeDescription);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public WithFlexibleName withAnonymousClass(boolean anonymousClass) {
+<b class="fc">&nbsp;            throw new IllegalStateException(&quot;Cannot define anonymous class state for frozen type: &quot; + typeDescription);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public WithFlexibleName withRecord(boolean record) {
+<b class="fc">&nbsp;            throw new IllegalStateException(&quot;Cannot define record state for frozen type: &quot; + typeDescription);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public WithFlexibleName withInitializer(LoadedTypeInitializer loadedTypeInitializer) {
+<b class="nc">&nbsp;            return new Frozen(typeDescription, new LoadedTypeInitializer.Compound(this.loadedTypeInitializer, loadedTypeInitializer));</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public WithFlexibleName withInitializer(ByteCodeAppender byteCodeAppender) {
+<b class="fc">&nbsp;            throw new IllegalStateException(&quot;Cannot add initializer to frozen type: &quot; + typeDescription);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public WithFlexibleName withName(String name) {
+<b class="fc">&nbsp;            throw new IllegalStateException(&quot;Cannot change name of frozen type: &quot; + typeDescription);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public WithFlexibleName withTypeVariables(ElementMatcher&lt;? super Generic&gt; matcher, Transformer&lt;TypeVariableToken&gt; transformer) {
+<b class="fc">&nbsp;            throw new IllegalStateException(&quot;Cannot add type variables of frozen type: &quot; + typeDescription);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public LoadedTypeInitializer getLoadedTypeInitializer() {
+<b class="fc">&nbsp;            return loadedTypeInitializer;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public TypeInitializer getTypeInitializer() {
+<b class="fc">&nbsp;            return TypeInitializer.None.INSTANCE;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        @MaybeNull
+&nbsp;        @Override
+&nbsp;        public ClassFileVersion getClassFileVersion() {
+<b class="fc">&nbsp;            return typeDescription.getClassFileVersion();</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public TypeDescription validated() {
+<b class="fc">&nbsp;            return typeDescription;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-03 11:00</div>
+</div>
+</body>
+</html>

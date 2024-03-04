@@ -1,0 +1,622 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > DecoratingDynamicTypeBuilder</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">net.bytebuddy.dynamic.scaffold.inline</a>
+</div>
+
+<h1>Coverage Summary for Class: DecoratingDynamicTypeBuilder (net.bytebuddy.dynamic.scaffold.inline)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">DecoratingDynamicTypeBuilder</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    76.5%
+  </span>
+  <span class="absValue">
+    (26/34)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    86.2%
+  </span>
+  <span class="absValue">
+    (50/58)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Copyright 2014 - Present Rafael Winterhalter
+&nbsp; *
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;package net.bytebuddy.dynamic.scaffold.inline;
+&nbsp;
+&nbsp;import net.bytebuddy.ClassFileVersion;
+&nbsp;import net.bytebuddy.asm.AsmVisitorWrapper;
+&nbsp;import net.bytebuddy.build.HashCodeAndEqualsPlugin;
+&nbsp;import net.bytebuddy.description.annotation.AnnotationDescription;
+&nbsp;import net.bytebuddy.description.field.FieldDescription;
+&nbsp;import net.bytebuddy.description.method.MethodDescription;
+&nbsp;import net.bytebuddy.description.modifier.ModifierContributor;
+&nbsp;import net.bytebuddy.description.type.RecordComponentDescription;
+&nbsp;import net.bytebuddy.description.type.TypeDefinition;
+&nbsp;import net.bytebuddy.description.type.TypeDescription;
+&nbsp;import net.bytebuddy.description.type.TypeVariableToken;
+&nbsp;import net.bytebuddy.dynamic.ClassFileLocator;
+&nbsp;import net.bytebuddy.dynamic.DynamicType;
+&nbsp;import net.bytebuddy.dynamic.Transformer;
+&nbsp;import net.bytebuddy.dynamic.scaffold.ClassWriterStrategy;
+&nbsp;import net.bytebuddy.dynamic.scaffold.MethodGraph;
+&nbsp;import net.bytebuddy.dynamic.scaffold.TypeValidation;
+&nbsp;import net.bytebuddy.dynamic.scaffold.TypeWriter;
+&nbsp;import net.bytebuddy.implementation.Implementation;
+&nbsp;import net.bytebuddy.implementation.LoadedTypeInitializer;
+&nbsp;import net.bytebuddy.implementation.attribute.AnnotationRetention;
+&nbsp;import net.bytebuddy.implementation.attribute.AnnotationValueFilter;
+&nbsp;import net.bytebuddy.implementation.attribute.TypeAttributeAppender;
+&nbsp;import net.bytebuddy.implementation.auxiliary.AuxiliaryType;
+&nbsp;import net.bytebuddy.implementation.bytecode.ByteCodeAppender;
+&nbsp;import net.bytebuddy.matcher.ElementMatcher;
+&nbsp;import net.bytebuddy.matcher.LatentMatcher;
+&nbsp;import net.bytebuddy.pool.TypePool;
+&nbsp;import net.bytebuddy.utility.CompoundList;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.Collection;
+&nbsp;import java.util.Collections;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;import static net.bytebuddy.matcher.ElementMatchers.isVirtual;
+&nbsp;import static net.bytebuddy.matcher.ElementMatchers.not;
+&nbsp;
+&nbsp;/**
+&nbsp; * A type builder that decorates a type by allowing for the application of attribute changes and ASM visitor wrappers.
+&nbsp; *
+&nbsp; * @param &lt;T&gt; A loaded type that the built type is guaranteed to be a subclass of.
+&nbsp; */
+&nbsp;@HashCodeAndEqualsPlugin.Enhance
+&nbsp;public class DecoratingDynamicTypeBuilder&lt;T&gt; extends DynamicType.Builder.AbstractBase.UsingTypeWriter&lt;T&gt; {
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The instrumented type to decorate.
+&nbsp;     */
+&nbsp;    private final TypeDescription instrumentedType;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The type attribute appender to apply onto the instrumented type.
+&nbsp;     */
+&nbsp;    private final TypeAttributeAppender typeAttributeAppender;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The ASM visitor wrapper to apply onto the class writer.
+&nbsp;     */
+&nbsp;    private final AsmVisitorWrapper asmVisitorWrapper;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The class file version to define auxiliary types in.
+&nbsp;     */
+&nbsp;    private final ClassFileVersion classFileVersion;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The naming strategy for auxiliary types to apply.
+&nbsp;     */
+&nbsp;    private final AuxiliaryType.NamingStrategy auxiliaryTypeNamingStrategy;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The annotation value filter factory to apply.
+&nbsp;     */
+&nbsp;    private final AnnotationValueFilter.Factory annotationValueFilterFactory;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The annotation retention to apply.
+&nbsp;     */
+&nbsp;    private final AnnotationRetention annotationRetention;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The implementation context factory to apply.
+&nbsp;     */
+&nbsp;    private final Implementation.Context.Factory implementationContextFactory;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The method graph compiler to use.
+&nbsp;     */
+&nbsp;    private final MethodGraph.Compiler methodGraphCompiler;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Determines if a type should be explicitly validated.
+&nbsp;     */
+&nbsp;    private final TypeValidation typeValidation;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The class writer strategy to use.
+&nbsp;     */
+&nbsp;    private final ClassWriterStrategy classWriterStrategy;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A matcher for identifying methods that should be excluded from instrumentation.
+&nbsp;     */
+&nbsp;    private final LatentMatcher&lt;? super MethodDescription&gt; ignoredMethods;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A list of explicitly required auxiliary types.
+&nbsp;     */
+&nbsp;    private final List&lt;DynamicType&gt; auxiliaryTypes;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The class file locator for locating the original type&#39;s class file.
+&nbsp;     */
+&nbsp;    private final ClassFileLocator classFileLocator;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a new decorating dynamic type builder.
+&nbsp;     *
+&nbsp;     * @param instrumentedType             The instrumented type to decorate.
+&nbsp;     * @param classFileVersion             The class file version to define auxiliary types in.
+&nbsp;     * @param auxiliaryTypeNamingStrategy  The naming strategy for auxiliary types to apply.
+&nbsp;     * @param annotationValueFilterFactory The annotation value filter factory to apply.
+&nbsp;     * @param annotationRetention          The annotation retention to apply.
+&nbsp;     * @param implementationContextFactory The implementation context factory to apply.
+&nbsp;     * @param methodGraphCompiler          The method graph compiler to use.
+&nbsp;     * @param typeValidation               Determines if a type should be explicitly validated.
+&nbsp;     * @param classWriterStrategy          The class writer strategy to use.
+&nbsp;     * @param ignoredMethods               A matcher for identifying methods that should be excluded from instrumentation.
+&nbsp;     * @param classFileLocator             The class file locator for locating the original type&#39;s class file.
+&nbsp;     */
+&nbsp;    public DecoratingDynamicTypeBuilder(TypeDescription instrumentedType,
+&nbsp;                                        ClassFileVersion classFileVersion,
+&nbsp;                                        AuxiliaryType.NamingStrategy auxiliaryTypeNamingStrategy,
+&nbsp;                                        AnnotationValueFilter.Factory annotationValueFilterFactory,
+&nbsp;                                        AnnotationRetention annotationRetention,
+&nbsp;                                        Implementation.Context.Factory implementationContextFactory,
+&nbsp;                                        MethodGraph.Compiler methodGraphCompiler,
+&nbsp;                                        TypeValidation typeValidation,
+&nbsp;                                        ClassWriterStrategy classWriterStrategy,
+&nbsp;                                        LatentMatcher&lt;? super MethodDescription&gt; ignoredMethods,
+&nbsp;                                        ClassFileLocator classFileLocator) {
+<b class="fc">&nbsp;        this(instrumentedType,</b>
+<b class="fc">&nbsp;                annotationRetention.isEnabled()</b>
+<b class="fc">&nbsp;                        ? new TypeAttributeAppender.ForInstrumentedType.Differentiating(instrumentedType)</b>
+<b class="fc">&nbsp;                        : TypeAttributeAppender.ForInstrumentedType.INSTANCE,</b>
+&nbsp;                AsmVisitorWrapper.NoOp.INSTANCE,
+&nbsp;                classFileVersion,
+&nbsp;                auxiliaryTypeNamingStrategy,
+&nbsp;                annotationValueFilterFactory,
+&nbsp;                annotationRetention,
+&nbsp;                implementationContextFactory,
+&nbsp;                methodGraphCompiler,
+&nbsp;                typeValidation,
+&nbsp;                classWriterStrategy,
+&nbsp;                ignoredMethods,
+<b class="fc">&nbsp;                Collections.&lt;DynamicType&gt;emptyList(),</b>
+&nbsp;                classFileLocator);
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a new decorating dynamic type builder.
+&nbsp;     *
+&nbsp;     * @param instrumentedType             The instrumented type to decorate.
+&nbsp;     * @param typeAttributeAppender        The type attribute appender to apply onto the instrumented type.
+&nbsp;     * @param asmVisitorWrapper            The ASM visitor wrapper to apply onto the class writer.
+&nbsp;     * @param classFileVersion             The class file version to define auxiliary types in.
+&nbsp;     * @param auxiliaryTypeNamingStrategy  The naming strategy for auxiliary types to apply.
+&nbsp;     * @param annotationValueFilterFactory The annotation value filter factory to apply.
+&nbsp;     * @param annotationRetention          The annotation retention to apply.
+&nbsp;     * @param implementationContextFactory The implementation context factory to apply.
+&nbsp;     * @param methodGraphCompiler          The method graph compiler to use.
+&nbsp;     * @param typeValidation               Determines if a type should be explicitly validated.
+&nbsp;     * @param classWriterStrategy          The class writer strategy to use.
+&nbsp;     * @param ignoredMethods               A matcher for identifying methods that should be excluded from instrumentation.
+&nbsp;     * @param auxiliaryTypes               A list of explicitly required auxiliary types.
+&nbsp;     * @param classFileLocator             The class file locator for locating the original type&#39;s class file.
+&nbsp;     */
+&nbsp;    protected DecoratingDynamicTypeBuilder(TypeDescription instrumentedType,
+&nbsp;                                           TypeAttributeAppender typeAttributeAppender,
+&nbsp;                                           AsmVisitorWrapper asmVisitorWrapper,
+&nbsp;                                           ClassFileVersion classFileVersion,
+&nbsp;                                           AuxiliaryType.NamingStrategy auxiliaryTypeNamingStrategy,
+&nbsp;                                           AnnotationValueFilter.Factory annotationValueFilterFactory,
+&nbsp;                                           AnnotationRetention annotationRetention,
+&nbsp;                                           Implementation.Context.Factory implementationContextFactory,
+&nbsp;                                           MethodGraph.Compiler methodGraphCompiler,
+&nbsp;                                           TypeValidation typeValidation,
+&nbsp;                                           ClassWriterStrategy classWriterStrategy,
+&nbsp;                                           LatentMatcher&lt;? super MethodDescription&gt; ignoredMethods,
+&nbsp;                                           List&lt;DynamicType&gt; auxiliaryTypes,
+<b class="fc">&nbsp;                                           ClassFileLocator classFileLocator) {</b>
+<b class="fc">&nbsp;        this.instrumentedType = instrumentedType;</b>
+<b class="fc">&nbsp;        this.typeAttributeAppender = typeAttributeAppender;</b>
+<b class="fc">&nbsp;        this.asmVisitorWrapper = asmVisitorWrapper;</b>
+<b class="fc">&nbsp;        this.classFileVersion = classFileVersion;</b>
+<b class="fc">&nbsp;        this.auxiliaryTypeNamingStrategy = auxiliaryTypeNamingStrategy;</b>
+<b class="fc">&nbsp;        this.annotationValueFilterFactory = annotationValueFilterFactory;</b>
+<b class="fc">&nbsp;        this.annotationRetention = annotationRetention;</b>
+<b class="fc">&nbsp;        this.implementationContextFactory = implementationContextFactory;</b>
+<b class="fc">&nbsp;        this.methodGraphCompiler = methodGraphCompiler;</b>
+<b class="fc">&nbsp;        this.typeValidation = typeValidation;</b>
+<b class="fc">&nbsp;        this.classWriterStrategy = classWriterStrategy;</b>
+<b class="fc">&nbsp;        this.ignoredMethods = ignoredMethods;</b>
+<b class="fc">&nbsp;        this.auxiliaryTypes = auxiliaryTypes;</b>
+<b class="fc">&nbsp;        this.classFileLocator = classFileLocator;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public DynamicType.Builder&lt;T&gt; visit(AsmVisitorWrapper asmVisitorWrapper) {
+<b class="fc">&nbsp;        return new DecoratingDynamicTypeBuilder&lt;T&gt;(instrumentedType,</b>
+&nbsp;                typeAttributeAppender,
+&nbsp;                new AsmVisitorWrapper.Compound(this.asmVisitorWrapper, asmVisitorWrapper),
+&nbsp;                classFileVersion,
+&nbsp;                auxiliaryTypeNamingStrategy,
+&nbsp;                annotationValueFilterFactory,
+&nbsp;                annotationRetention,
+&nbsp;                implementationContextFactory,
+&nbsp;                methodGraphCompiler,
+&nbsp;                typeValidation,
+&nbsp;                classWriterStrategy,
+&nbsp;                ignoredMethods,
+&nbsp;                auxiliaryTypes,
+&nbsp;                classFileLocator);
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public DynamicType.Builder&lt;T&gt; suffix(String suffix) {
+<b class="nc">&nbsp;        throw new UnsupportedOperationException(&quot;Cannot change name of decorated type: &quot; + instrumentedType);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public DynamicType.Builder&lt;T&gt; name(String name) {
+<b class="fc">&nbsp;        throw new UnsupportedOperationException(&quot;Cannot change name of decorated type: &quot; + instrumentedType);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public DynamicType.Builder&lt;T&gt; modifiers(int modifiers) {
+<b class="fc">&nbsp;        throw new UnsupportedOperationException(&quot;Cannot change modifiers of decorated type: &quot; + instrumentedType);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public DynamicType.Builder&lt;T&gt; merge(Collection&lt;? extends ModifierContributor.ForType&gt; modifierContributors) {
+<b class="fc">&nbsp;        throw new UnsupportedOperationException(&quot;Cannot change modifiers of decorated type: &quot; + instrumentedType);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public DynamicType.Builder&lt;T&gt; topLevelType() {
+<b class="fc">&nbsp;        throw new UnsupportedOperationException(&quot;Cannot change type declaration of decorated type: &quot; + instrumentedType);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public InnerTypeDefinition.ForType&lt;T&gt; innerTypeOf(TypeDescription type) {
+<b class="fc">&nbsp;        throw new UnsupportedOperationException(&quot;Cannot change type declaration of decorated type: &quot; + instrumentedType);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public InnerTypeDefinition&lt;T&gt; innerTypeOf(MethodDescription.InDefinedShape methodDescription) {
+<b class="fc">&nbsp;        throw new UnsupportedOperationException(&quot;Cannot change type declaration of decorated type: &quot; + instrumentedType);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public DynamicType.Builder&lt;T&gt; declaredTypes(Collection&lt;? extends TypeDescription&gt; types) {
+<b class="nc">&nbsp;        throw new UnsupportedOperationException(&quot;Cannot change type declaration of decorated type: &quot; + instrumentedType);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public DynamicType.Builder&lt;T&gt; nestHost(TypeDescription type) {
+<b class="fc">&nbsp;        throw new UnsupportedOperationException(&quot;Cannot change type declaration of decorated type: &quot; + instrumentedType);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public DynamicType.Builder&lt;T&gt; nestMembers(Collection&lt;? extends TypeDescription&gt; types) {
+<b class="fc">&nbsp;        throw new UnsupportedOperationException(&quot;Cannot change type declaration of decorated type: &quot; + instrumentedType);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public DynamicType.Builder&lt;T&gt; permittedSubclass(Collection&lt;? extends TypeDescription&gt; types) {
+<b class="nc">&nbsp;        throw new UnsupportedOperationException(&quot;Cannot change permitted subclasses of decorated type: &quot; + instrumentedType);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public DynamicType.Builder&lt;T&gt; unsealed() {
+<b class="nc">&nbsp;        throw new UnsupportedOperationException(&quot;Cannot unseal decorated type: &quot; + instrumentedType);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public DynamicType.Builder&lt;T&gt; attribute(TypeAttributeAppender typeAttributeAppender) {
+<b class="fc">&nbsp;        return new DecoratingDynamicTypeBuilder&lt;T&gt;(instrumentedType,</b>
+&nbsp;                new TypeAttributeAppender.Compound(this.typeAttributeAppender, typeAttributeAppender),
+&nbsp;                asmVisitorWrapper,
+&nbsp;                classFileVersion,
+&nbsp;                auxiliaryTypeNamingStrategy,
+&nbsp;                annotationValueFilterFactory,
+&nbsp;                annotationRetention,
+&nbsp;                implementationContextFactory,
+&nbsp;                methodGraphCompiler,
+&nbsp;                typeValidation,
+&nbsp;                classWriterStrategy,
+&nbsp;                ignoredMethods,
+&nbsp;                auxiliaryTypes,
+&nbsp;                classFileLocator);
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public DynamicType.Builder&lt;T&gt; annotateType(Collection&lt;? extends AnnotationDescription&gt; annotations) {
+<b class="fc">&nbsp;        return attribute(new TypeAttributeAppender.Explicit(new ArrayList&lt;AnnotationDescription&gt;(annotations)));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public MethodDefinition.ImplementationDefinition.Optional&lt;T&gt; implement(Collection&lt;? extends TypeDefinition&gt; interfaceTypes) {
+<b class="fc">&nbsp;        throw new UnsupportedOperationException(&quot;Cannot implement interface for decorated type: &quot; + instrumentedType);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public DynamicType.Builder&lt;T&gt; initializer(ByteCodeAppender byteCodeAppender) {
+<b class="fc">&nbsp;        throw new UnsupportedOperationException(&quot;Cannot add initializer of decorated type: &quot; + instrumentedType);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public DynamicType.Builder&lt;T&gt; initializer(LoadedTypeInitializer loadedTypeInitializer) {
+<b class="fc">&nbsp;        throw new UnsupportedOperationException(&quot;Cannot add initializer of decorated type: &quot; + instrumentedType);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public TypeVariableDefinition&lt;T&gt; typeVariable(String symbol, Collection&lt;? extends TypeDefinition&gt; bounds) {
+<b class="fc">&nbsp;        throw new UnsupportedOperationException(&quot;Cannot add type variable to decorated type: &quot; + instrumentedType);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public DynamicType.Builder&lt;T&gt; transform(ElementMatcher&lt;? super TypeDescription.Generic&gt; matcher, Transformer&lt;TypeVariableToken&gt; transformer) {
+<b class="nc">&nbsp;        throw new UnsupportedOperationException(&quot;Cannot transform decorated type: &quot; + instrumentedType);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public FieldDefinition.Optional.Valuable&lt;T&gt; defineField(String name, TypeDefinition type, int modifiers) {
+<b class="fc">&nbsp;        throw new UnsupportedOperationException(&quot;Cannot define field for decorated type: &quot; + instrumentedType);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public FieldDefinition.Valuable&lt;T&gt; field(LatentMatcher&lt;? super FieldDescription&gt; matcher) {
+<b class="fc">&nbsp;        throw new UnsupportedOperationException(&quot;Cannot change field for decorated type: &quot; + instrumentedType);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    @SuppressWarnings(&quot;unchecked&quot;)
+&nbsp;    public DynamicType.Builder&lt;T&gt; ignoreAlso(LatentMatcher&lt;? super MethodDescription&gt; ignoredMethods) {
+<b class="fc">&nbsp;        return new DecoratingDynamicTypeBuilder&lt;T&gt;(instrumentedType,</b>
+&nbsp;                typeAttributeAppender,
+&nbsp;                asmVisitorWrapper,
+&nbsp;                classFileVersion,
+&nbsp;                auxiliaryTypeNamingStrategy,
+&nbsp;                annotationValueFilterFactory,
+&nbsp;                annotationRetention,
+&nbsp;                implementationContextFactory,
+&nbsp;                methodGraphCompiler,
+&nbsp;                typeValidation,
+&nbsp;                classWriterStrategy,
+&nbsp;                new LatentMatcher.Disjunction&lt;MethodDescription&gt;(this.ignoredMethods, ignoredMethods),
+&nbsp;                auxiliaryTypes,
+&nbsp;                classFileLocator);
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public MethodDefinition.ParameterDefinition.Initial&lt;T&gt; defineMethod(String name, TypeDefinition returnType, int modifiers) {
+<b class="fc">&nbsp;        throw new UnsupportedOperationException(&quot;Cannot define method for decorated type: &quot; + instrumentedType);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public MethodDefinition.ParameterDefinition.Initial&lt;T&gt; defineConstructor(int modifiers) {
+<b class="fc">&nbsp;        throw new UnsupportedOperationException(&quot;Cannot define constructor for decorated type: &quot; + instrumentedType);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public MethodDefinition.ImplementationDefinition&lt;T&gt; invokable(LatentMatcher&lt;? super MethodDescription&gt; matcher) {
+<b class="fc">&nbsp;        throw new UnsupportedOperationException(&quot;Cannot intercept method for decorated type: &quot; + instrumentedType);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public RecordComponentDefinition.Optional&lt;T&gt; defineRecordComponent(String name, TypeDefinition type) {
+<b class="nc">&nbsp;        throw new UnsupportedOperationException(&quot;Cannot define record component for decorated type: &quot; + instrumentedType);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public RecordComponentDefinition&lt;T&gt; recordComponent(LatentMatcher&lt;? super RecordComponentDescription&gt; matcher) {
+<b class="nc">&nbsp;        throw new UnsupportedOperationException(&quot;Cannot change record component for decorated type: &quot; + instrumentedType);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public DynamicType.Builder&lt;T&gt; require(Collection&lt;DynamicType&gt; auxiliaryTypes) {
+<b class="fc">&nbsp;        return new DecoratingDynamicTypeBuilder&lt;T&gt;(instrumentedType,</b>
+&nbsp;                typeAttributeAppender,
+&nbsp;                asmVisitorWrapper,
+&nbsp;                classFileVersion,
+&nbsp;                auxiliaryTypeNamingStrategy,
+&nbsp;                annotationValueFilterFactory,
+&nbsp;                annotationRetention,
+&nbsp;                implementationContextFactory,
+&nbsp;                methodGraphCompiler,
+&nbsp;                typeValidation,
+&nbsp;                classWriterStrategy,
+&nbsp;                ignoredMethods,
+<b class="fc">&nbsp;                CompoundList.of(this.auxiliaryTypes, new ArrayList&lt;DynamicType&gt;(auxiliaryTypes)),</b>
+&nbsp;                classFileLocator);
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    protected TypeWriter&lt;T&gt; toTypeWriter() {
+<b class="fc">&nbsp;        return toTypeWriter(TypePool.Empty.INSTANCE);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    protected TypeWriter&lt;T&gt; toTypeWriter(TypePool typePool) {
+<b class="fc">&nbsp;        return TypeWriter.Default.&lt;T&gt;forDecoration(instrumentedType,</b>
+&nbsp;                classFileVersion,
+&nbsp;                auxiliaryTypes,
+<b class="fc">&nbsp;                CompoundList.of(methodGraphCompiler.compile((TypeDefinition) instrumentedType)</b>
+<b class="fc">&nbsp;                        .listNodes()</b>
+<b class="fc">&nbsp;                        .asMethodList()</b>
+<b class="fc">&nbsp;                        .filter(not(ignoredMethods.resolve(instrumentedType))), instrumentedType.getDeclaredMethods().filter(not(isVirtual()))),</b>
+&nbsp;                typeAttributeAppender,
+&nbsp;                asmVisitorWrapper,
+&nbsp;                annotationValueFilterFactory,
+&nbsp;                annotationRetention,
+&nbsp;                auxiliaryTypeNamingStrategy,
+&nbsp;                implementationContextFactory,
+&nbsp;                typeValidation,
+&nbsp;                classWriterStrategy,
+<b class="fc">&nbsp;                TypePool.Explicit.wrap(instrumentedType, auxiliaryTypes, typePool),</b>
+&nbsp;                classFileLocator);
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public TypeDescription toTypeDescription() {
+<b class="nc">&nbsp;        return instrumentedType;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-03 11:00</div>
+</div>
+</body>
+</html>

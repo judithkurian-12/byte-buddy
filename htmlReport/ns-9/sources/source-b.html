@@ -1,0 +1,311 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > ToStringPlugin</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">net.bytebuddy.build</a>
+</div>
+
+<h1>Coverage Summary for Class: ToStringPlugin (net.bytebuddy.build)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ToStringPlugin</td>
+<td class="coverageStat">
+  <span class="percent">
+    66.7%
+  </span>
+  <span class="absValue">
+    (4/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    83.3%
+  </span>
+  <span class="absValue">
+    (15/18)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">ToStringPlugin$Enhance</td>
+  </tr>
+  <tr>
+    <td class="name">ToStringPlugin$Enhance$Prefix</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/7)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">ToStringPlugin$Exclude</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    80%
+  </span>
+  <span class="absValue">
+    (8/10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    88%
+  </span>
+  <span class="absValue">
+    (22/25)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Copyright 2014 - Present Rafael Winterhalter
+&nbsp; *
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;package net.bytebuddy.build;
+&nbsp;
+&nbsp;import net.bytebuddy.description.annotation.AnnotationDescription;
+&nbsp;import net.bytebuddy.description.field.FieldDescription;
+&nbsp;import net.bytebuddy.description.method.MethodDescription;
+&nbsp;import net.bytebuddy.description.method.MethodList;
+&nbsp;import net.bytebuddy.description.type.TypeDescription;
+&nbsp;import net.bytebuddy.dynamic.ClassFileLocator;
+&nbsp;import net.bytebuddy.dynamic.DynamicType;
+&nbsp;import net.bytebuddy.implementation.ToStringMethod;
+&nbsp;import net.bytebuddy.matcher.ElementMatchers;
+&nbsp;import net.bytebuddy.utility.nullability.MaybeNull;
+&nbsp;
+&nbsp;import java.lang.annotation.*;
+&nbsp;
+&nbsp;import static net.bytebuddy.matcher.ElementMatchers.*;
+&nbsp;
+&nbsp;/**
+&nbsp; * A build tool plugin that adds a {@link Object#toString()} and method to a class if the {@link Enhance} annotation is present and no
+&nbsp; * explicit method declaration was added. This plugin does not need to be closed.
+&nbsp; */
+&nbsp;@HashCodeAndEqualsPlugin.Enhance
+<b class="fc">&nbsp;public class ToStringPlugin implements Plugin, Plugin.Factory {</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A description of the {@link Enhance#prefix()} method.
+&nbsp;     */
+&nbsp;    private static final MethodDescription.InDefinedShape ENHANCE_PREFIX;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A description of the {@link Enhance#includeSyntheticFields()} method.
+&nbsp;     */
+&nbsp;    private static final MethodDescription.InDefinedShape ENHANCE_INCLUDE_SYNTHETIC_FIELDS;
+&nbsp;
+&nbsp;    /*
+&nbsp;     * Resolves annotation properties.
+&nbsp;     */
+&nbsp;    static {
+<b class="fc">&nbsp;        MethodList&lt;MethodDescription.InDefinedShape&gt; enhanceMethods = TypeDescription.ForLoadedType.of(Enhance.class).getDeclaredMethods();</b>
+<b class="fc">&nbsp;        ENHANCE_PREFIX = enhanceMethods.filter(named(&quot;prefix&quot;)).getOnly();</b>
+<b class="fc">&nbsp;        ENHANCE_INCLUDE_SYNTHETIC_FIELDS = enhanceMethods.filter(named(&quot;includeSyntheticFields&quot;)).getOnly();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public Plugin make() {
+<b class="nc">&nbsp;        return this;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public boolean matches(@MaybeNull TypeDescription target) {
+<b class="fc">&nbsp;        return target != null &amp;&amp; target.getDeclaredAnnotations().isAnnotationPresent(Enhance.class);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public DynamicType.Builder&lt;?&gt; apply(DynamicType.Builder&lt;?&gt; builder, TypeDescription typeDescription, ClassFileLocator classFileLocator) {
+<b class="fc">&nbsp;        AnnotationDescription.Loadable&lt;Enhance&gt; enhance = typeDescription.getDeclaredAnnotations().ofType(Enhance.class);</b>
+<b class="fc">&nbsp;        if (typeDescription.getDeclaredMethods().filter(isToString()).isEmpty()) {</b>
+<b class="fc">&nbsp;            builder = builder.method(isToString()).intercept(ToStringMethod.prefixedBy(enhance.getValue(ENHANCE_PREFIX)</b>
+<b class="fc">&nbsp;                            .load(Enhance.class.getClassLoader())</b>
+<b class="fc">&nbsp;                            .resolve(Enhance.Prefix.class)</b>
+<b class="fc">&nbsp;                            .getPrefixResolver())</b>
+<b class="fc">&nbsp;                    .withIgnoredFields(enhance.getValue(ENHANCE_INCLUDE_SYNTHETIC_FIELDS).resolve(Boolean.class)</b>
+<b class="nc">&nbsp;                            ? ElementMatchers.&lt;FieldDescription&gt;none()</b>
+<b class="fc">&nbsp;                            : ElementMatchers.&lt;FieldDescription&gt;isSynthetic())</b>
+<b class="fc">&nbsp;                    .withIgnoredFields(isAnnotatedWith(Exclude.class)));</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return builder;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public void close() {
+&nbsp;        /* do nothing */
+<b class="nc">&nbsp;    }</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Instructs the {@link ToStringPlugin} to generate a {@link Object#toString()} method for the annotated class unless this method
+&nbsp;     * is already declared explicitly.
+&nbsp;     */
+&nbsp;    @Documented
+&nbsp;    @Target(ElementType.TYPE)
+&nbsp;    @Retention(RetentionPolicy.RUNTIME)
+&nbsp;    public @interface Enhance {
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Determines the prefix to be used for the string representation prior to adding field values.
+&nbsp;         *
+&nbsp;         * @return The prefix to use.
+&nbsp;         */
+&nbsp;        Prefix prefix() default Prefix.SIMPLE;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Determines if synthetic fields should be included in the string representation.
+&nbsp;         *
+&nbsp;         * @return {@code true} if synthetic fields should be included.
+&nbsp;         */
+&nbsp;        boolean includeSyntheticFields() default false;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * A strategy for defining a prefix.
+&nbsp;         */
+<b class="fc">&nbsp;        enum Prefix {</b>
+&nbsp;
+&nbsp;            /**
+&nbsp;             * Determines the use of a fully qualified class name as a prefix.
+&nbsp;             */
+<b class="fc">&nbsp;            FULLY_QUALIFIED(ToStringMethod.PrefixResolver.Default.FULLY_QUALIFIED_CLASS_NAME),</b>
+&nbsp;
+&nbsp;            /**
+&nbsp;             * Determines the use of the canonical class name as a prefix.
+&nbsp;             */
+<b class="fc">&nbsp;            CANONICAL(ToStringMethod.PrefixResolver.Default.CANONICAL_CLASS_NAME),</b>
+&nbsp;
+&nbsp;            /**
+&nbsp;             * Determines the use of the simple class name as a prefix.
+&nbsp;             */
+<b class="fc">&nbsp;            SIMPLE(ToStringMethod.PrefixResolver.Default.SIMPLE_CLASS_NAME);</b>
+&nbsp;
+&nbsp;            /**
+&nbsp;             * The prefix resolver to use.
+&nbsp;             */
+&nbsp;            private final ToStringMethod.PrefixResolver.Default prefixResolver;
+&nbsp;
+&nbsp;            /**
+&nbsp;             * Creates a new prefix.
+&nbsp;             *
+&nbsp;             * @param prefixResolver The prefix resolver to use.
+&nbsp;             */
+<b class="fc">&nbsp;            Prefix(ToStringMethod.PrefixResolver.Default prefixResolver) {</b>
+<b class="fc">&nbsp;                this.prefixResolver = prefixResolver;</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            /**
+&nbsp;             * Returns the prefix resolver to use.
+&nbsp;             *
+&nbsp;             * @return The prefix resolver to use.
+&nbsp;             */
+&nbsp;            protected ToStringMethod.PrefixResolver.Default getPrefixResolver() {
+<b class="fc">&nbsp;                return prefixResolver;</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Determines that the annotated field is excluded from a string representation of the {@link ToStringPlugin}.
+&nbsp;     */
+&nbsp;    @Documented
+&nbsp;    @Target(ElementType.FIELD)
+&nbsp;    @Retention(RetentionPolicy.RUNTIME)
+&nbsp;    public @interface Exclude {
+&nbsp;        /* does not declare any properties */
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-03 11:00</div>
+</div>
+</body>
+</html>

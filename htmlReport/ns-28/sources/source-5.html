@@ -1,0 +1,438 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > MetadataAwareClassVisitor</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">net.bytebuddy.utility.visitor</a>
+</div>
+
+<h1>Coverage Summary for Class: MetadataAwareClassVisitor (net.bytebuddy.utility.visitor)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">MetadataAwareClassVisitor</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    96.8%
+  </span>
+  <span class="absValue">
+    (30/31)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    98.6%
+  </span>
+  <span class="absValue">
+    (69/70)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Copyright 2014 - Present Rafael Winterhalter
+&nbsp; *
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;package net.bytebuddy.utility.visitor;
+&nbsp;
+&nbsp;import net.bytebuddy.utility.nullability.MaybeNull;
+&nbsp;import org.objectweb.asm.*;
+&nbsp;
+&nbsp;/**
+&nbsp; * A class visitor that traces invocations of visitation methods and notifies if a nest host or outer class was not visited.
+&nbsp; */
+&nbsp;public abstract class MetadataAwareClassVisitor extends ClassVisitor {
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@code true} if the nest host was not yet visited.
+&nbsp;     */
+&nbsp;    private boolean triggerNestHost;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@code true} if the outer class was not yet visited.
+&nbsp;     */
+&nbsp;    private boolean triggerOuterClass;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@code true} if the attribute visitation is not yet completed.
+&nbsp;     */
+&nbsp;    private boolean triggerAttributes;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a metadata aware class visitor.
+&nbsp;     *
+&nbsp;     * @param api          The API version.
+&nbsp;     * @param classVisitor The class visitor to delegate to.
+&nbsp;     */
+&nbsp;    protected MetadataAwareClassVisitor(int api, ClassVisitor classVisitor) {
+<b class="fc">&nbsp;        super(api, classVisitor);</b>
+<b class="fc">&nbsp;        triggerNestHost = true;</b>
+<b class="fc">&nbsp;        triggerOuterClass = true;</b>
+<b class="fc">&nbsp;        triggerAttributes = true;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Invoked if the nest host was not visited.
+&nbsp;     */
+&nbsp;    protected void onNestHost() {
+&nbsp;        /* do nothing */
+<b class="fc">&nbsp;    }</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Invoked if the outer class was not visited.
+&nbsp;     */
+&nbsp;    protected void onOuterType() {
+&nbsp;        /* do nothing */
+<b class="fc">&nbsp;    }</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Invoked if the attribute visitation is about to complete.
+&nbsp;     */
+&nbsp;    protected void onAfterAttributes() {
+&nbsp;        /* do nothing */
+<b class="nc">&nbsp;    }</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Considers triggering a nest host visitation.
+&nbsp;     */
+&nbsp;    private void considerTriggerNestHost() {
+<b class="fc">&nbsp;        if (triggerNestHost) {</b>
+<b class="fc">&nbsp;            triggerNestHost = false;</b>
+<b class="fc">&nbsp;            onNestHost();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Considers triggering an outer class visitation.
+&nbsp;     */
+&nbsp;    private void considerTriggerOuterClass() {
+<b class="fc">&nbsp;        if (triggerOuterClass) {</b>
+<b class="fc">&nbsp;            triggerOuterClass = false;</b>
+<b class="fc">&nbsp;            onOuterType();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Considers triggering the after attribute visitation.
+&nbsp;     */
+&nbsp;    private void considerTriggerAfterAttributes() {
+<b class="fc">&nbsp;        if (triggerAttributes) {</b>
+<b class="fc">&nbsp;            triggerAttributes = false;</b>
+<b class="fc">&nbsp;            onAfterAttributes();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public final void visitNestHost(String nestHost) {
+<b class="fc">&nbsp;        triggerNestHost = false;</b>
+<b class="fc">&nbsp;        onVisitNestHost(nestHost);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * An order-sensitive invocation of {@link ClassVisitor#visitNestHost(String)}.
+&nbsp;     *
+&nbsp;     * @param nestHost The internal name of the nest host.
+&nbsp;     */
+&nbsp;    protected void onVisitNestHost(String nestHost) {
+<b class="fc">&nbsp;        super.visitNestHost(nestHost);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public final void visitOuterClass(String owner, @MaybeNull String name, @MaybeNull String descriptor) {
+<b class="fc">&nbsp;        considerTriggerNestHost();</b>
+<b class="fc">&nbsp;        triggerOuterClass = false;</b>
+<b class="fc">&nbsp;        onVisitOuterClass(owner, name, descriptor);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * An order-sensitive invocation of {@link ClassVisitor#visitOuterClass(String, String, String)}.
+&nbsp;     *
+&nbsp;     * @param owner      The outer class&#39;s internal name.
+&nbsp;     * @param name       The outer method&#39;s name or {@code null} if it does not exist.
+&nbsp;     * @param descriptor The outer method&#39;s descriptor or {@code null} if it does not exist.
+&nbsp;     */
+&nbsp;    protected void onVisitOuterClass(String owner, @MaybeNull String name, @MaybeNull String descriptor) {
+<b class="fc">&nbsp;        super.visitOuterClass(owner, name, descriptor);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public final void visitPermittedSubclass(String permittedSubclass) {
+<b class="fc">&nbsp;        considerTriggerNestHost();</b>
+<b class="fc">&nbsp;        considerTriggerOuterClass();</b>
+<b class="fc">&nbsp;        considerTriggerAfterAttributes();</b>
+<b class="fc">&nbsp;        onVisitPermittedSubclass(permittedSubclass);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * An order-sensitive invocation of {@code ClassVisitor#visitPermittedSubclass}.
+&nbsp;     *
+&nbsp;     * @param permittedSubclass The internal name of the permitted subclass.
+&nbsp;     */
+&nbsp;    protected void onVisitPermittedSubclass(String permittedSubclass) {
+<b class="fc">&nbsp;        super.visitPermittedSubclass(permittedSubclass);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    @MaybeNull
+&nbsp;    public RecordComponentVisitor visitRecordComponent(String name, String descriptor, @MaybeNull String signature) {
+<b class="fc">&nbsp;        considerTriggerNestHost();</b>
+<b class="fc">&nbsp;        considerTriggerOuterClass();</b>
+<b class="fc">&nbsp;        considerTriggerAfterAttributes();</b>
+<b class="fc">&nbsp;        return onVisitRecordComponent(name, descriptor, signature);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * An order-sensitive invocation of {@link ClassVisitor#visitRecordComponent(String, String, String)}.
+&nbsp;     *
+&nbsp;     * @param name       The record component&#39;s name.
+&nbsp;     * @param descriptor The record component&#39;s descriptor.
+&nbsp;     * @param signature  The record component&#39;s generic signature or {@code null} if the record component&#39;s type is non-generic.
+&nbsp;     * @return The record component visitor or {@code null} if the component should not be visited.
+&nbsp;     */
+&nbsp;    @MaybeNull
+&nbsp;    protected RecordComponentVisitor onVisitRecordComponent(String name, String descriptor, @MaybeNull String signature) {
+<b class="fc">&nbsp;        return super.visitRecordComponent(name, descriptor, signature);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    @MaybeNull
+&nbsp;    public final AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
+<b class="fc">&nbsp;        considerTriggerNestHost();</b>
+<b class="fc">&nbsp;        considerTriggerOuterClass();</b>
+<b class="fc">&nbsp;        return onVisitAnnotation(descriptor, visible);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * An order-sensitive invocation of {@link ClassVisitor#visitAnnotation(String, boolean)}.
+&nbsp;     *
+&nbsp;     * @param descriptor The annotation type&#39;s descriptor.
+&nbsp;     * @param visible    {@code true} if the annotation is visible at runtime.
+&nbsp;     * @return An annotation visitor or {@code null} if the annotation should be ignored.
+&nbsp;     */
+&nbsp;    @MaybeNull
+&nbsp;    protected AnnotationVisitor onVisitAnnotation(String descriptor, boolean visible) {
+<b class="fc">&nbsp;        return super.visitAnnotation(descriptor, visible);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    @MaybeNull
+&nbsp;    public final AnnotationVisitor visitTypeAnnotation(int typeReference, TypePath typePath, String descriptor, boolean visible) {
+<b class="fc">&nbsp;        considerTriggerNestHost();</b>
+<b class="fc">&nbsp;        considerTriggerOuterClass();</b>
+<b class="fc">&nbsp;        return onVisitTypeAnnotation(typeReference, typePath, descriptor, visible);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * An order-sensitive invocation of {@link ClassVisitor#visitTypeAnnotation(int, TypePath, String, boolean)}.
+&nbsp;     *
+&nbsp;     * @param typeReference The type reference of the type annotation.
+&nbsp;     * @param typePath      The type path of the type annotation.
+&nbsp;     * @param descriptor    The descriptor of the annotation type.
+&nbsp;     * @param visible       {@code true} if the annotation is visible at runtime.
+&nbsp;     * @return An annotation visitor or {@code null} if the annotation should be ignored.
+&nbsp;     */
+&nbsp;    @MaybeNull
+&nbsp;    protected AnnotationVisitor onVisitTypeAnnotation(int typeReference, TypePath typePath, String descriptor, boolean visible) {
+<b class="fc">&nbsp;        return super.visitTypeAnnotation(typeReference, typePath, descriptor, visible);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public final void visitAttribute(Attribute attribute) {
+<b class="fc">&nbsp;        considerTriggerNestHost();</b>
+<b class="fc">&nbsp;        considerTriggerOuterClass();</b>
+<b class="fc">&nbsp;        onVisitAttribute(attribute);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * An order-sensitive invocation of {@link ClassVisitor#visitAttribute(Attribute)}.
+&nbsp;     *
+&nbsp;     * @param attribute The attribute to visit.
+&nbsp;     */
+&nbsp;    protected void onVisitAttribute(Attribute attribute) {
+<b class="fc">&nbsp;        super.visitAttribute(attribute);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public final void visitNestMember(String nestMember) {
+<b class="fc">&nbsp;        considerTriggerNestHost();</b>
+<b class="fc">&nbsp;        considerTriggerOuterClass();</b>
+<b class="fc">&nbsp;        considerTriggerAfterAttributes();</b>
+<b class="fc">&nbsp;        onVisitNestMember(nestMember);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * An order-sensitive invocation of {@link ClassVisitor#visitNestMember(String)}.
+&nbsp;     *
+&nbsp;     * @param nestMember The internal name of the nest member.
+&nbsp;     */
+&nbsp;    protected void onVisitNestMember(String nestMember) {
+<b class="fc">&nbsp;        super.visitNestMember(nestMember);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public final void visitInnerClass(String name, @MaybeNull String outerName, @MaybeNull String innerName, int modifiers) {
+<b class="fc">&nbsp;        considerTriggerNestHost();</b>
+<b class="fc">&nbsp;        considerTriggerOuterClass();</b>
+<b class="fc">&nbsp;        considerTriggerAfterAttributes();</b>
+<b class="fc">&nbsp;        onVisitInnerClass(name, outerName, innerName, modifiers);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * An order-sensitive invocation of {@link ClassVisitor#visitInnerClass(String, String, String, int)}.
+&nbsp;     *
+&nbsp;     * @param internalName      The internal name of the inner class.
+&nbsp;     * @param outerName The internal name of the outer class or {@code null} for a member class.
+&nbsp;     * @param innerName The inner class&#39;s simple name or {@code null} for an anonymous class.
+&nbsp;     * @param modifiers The inner class&#39;s source code modifiers.
+&nbsp;     */
+&nbsp;    protected void onVisitInnerClass(String internalName, @MaybeNull String outerName, @MaybeNull String innerName, int modifiers) {
+<b class="fc">&nbsp;        super.visitInnerClass(internalName, outerName, innerName, modifiers);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    @MaybeNull
+&nbsp;    public final FieldVisitor visitField(int modifiers, String internalName, String descriptor, @MaybeNull String signature, @MaybeNull Object value) {
+<b class="fc">&nbsp;        considerTriggerNestHost();</b>
+<b class="fc">&nbsp;        considerTriggerOuterClass();</b>
+<b class="fc">&nbsp;        considerTriggerAfterAttributes();</b>
+<b class="fc">&nbsp;        return onVisitField(modifiers, internalName, descriptor, signature, value);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * An order-sensitive invocation of {@link ClassVisitor#visitField(int, String, String, String, Object)}.
+&nbsp;     *
+&nbsp;     * @param modifiers    The field&#39;s modifiers.
+&nbsp;     * @param internalName The field&#39;s internal name.
+&nbsp;     * @param descriptor   The field type&#39;s descriptor.
+&nbsp;     * @param signature    The field&#39;s generic signature or {@code null} if the field is not generic.
+&nbsp;     * @param value        The field&#39;s default value or {@code null} if no such value exists.
+&nbsp;     * @return A field visitor to visit the field or {@code null} to ignore it.
+&nbsp;     */
+&nbsp;    @MaybeNull
+&nbsp;    protected FieldVisitor onVisitField(int modifiers, String internalName, String descriptor, @MaybeNull String signature, @MaybeNull Object value) {
+<b class="fc">&nbsp;        return super.visitField(modifiers, internalName, descriptor, signature, value);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    @MaybeNull
+&nbsp;    public final MethodVisitor visitMethod(int modifiers, String internalName, String descriptor, @MaybeNull String signature, @MaybeNull String[] exception) {
+<b class="fc">&nbsp;        considerTriggerNestHost();</b>
+<b class="fc">&nbsp;        considerTriggerOuterClass();</b>
+<b class="fc">&nbsp;        considerTriggerAfterAttributes();</b>
+<b class="fc">&nbsp;        return onVisitMethod(modifiers, internalName, descriptor, signature, exception);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * An order-sensitive invocation of {@link ClassVisitor#visitMethod(int, String, String, String, String[])}.
+&nbsp;     *
+&nbsp;     * @param modifiers    The method&#39;s modifiers.
+&nbsp;     * @param internalName The method&#39;s internal name.
+&nbsp;     * @param descriptor   The field type&#39;s descriptor.
+&nbsp;     * @param signature    The method&#39;s generic signature or {@code null} if the method is not generic.
+&nbsp;     * @param exception    The method&#39;s declared exceptions or {@code null} if no exceptions are declared.
+&nbsp;     * @return A method visitor to visit the method or {@code null} to ignore it.
+&nbsp;     */
+&nbsp;    @MaybeNull
+&nbsp;    protected MethodVisitor onVisitMethod(int modifiers, String internalName, String descriptor, @MaybeNull String signature, @MaybeNull String[] exception) {
+<b class="fc">&nbsp;        return super.visitMethod(modifiers, internalName, descriptor, signature, exception);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public final void visitEnd() {
+<b class="fc">&nbsp;        considerTriggerNestHost();</b>
+<b class="fc">&nbsp;        considerTriggerOuterClass();</b>
+<b class="fc">&nbsp;        considerTriggerAfterAttributes();</b>
+<b class="fc">&nbsp;        onVisitEnd();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * An order-sensitive invocation of {@link ClassVisitor#visitEnd()}.
+&nbsp;     */
+&nbsp;    protected void onVisitEnd() {
+<b class="fc">&nbsp;        super.visitEnd();</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-03 11:00</div>
+</div>
+</body>
+</html>

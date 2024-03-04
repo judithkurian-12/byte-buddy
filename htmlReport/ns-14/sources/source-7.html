@@ -1,0 +1,488 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > RecordComponentRegistry</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">net.bytebuddy.dynamic.scaffold</a>
+</div>
+
+<h1>Coverage Summary for Class: RecordComponentRegistry (net.bytebuddy.dynamic.scaffold)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+  <tr>
+    <td class="name">RecordComponentRegistry$Compiled</td>
+  </tr>
+  <tr>
+    <td class="name">RecordComponentRegistry$Compiled$NoOp</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">RecordComponentRegistry$Default</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (17/17)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">RecordComponentRegistry$Default$Compiled</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    75%
+  </span>
+  <span class="absValue">
+    (6/8)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">RecordComponentRegistry$Default$Compiled$Entry</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/6)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">RecordComponentRegistry$Default$Entry</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/7)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    81.2%
+  </span>
+  <span class="absValue">
+    (13/16)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    87.8%
+  </span>
+  <span class="absValue">
+    (36/41)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Copyright 2014 - Present Rafael Winterhalter
+&nbsp; *
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;package net.bytebuddy.dynamic.scaffold;
+&nbsp;
+&nbsp;import net.bytebuddy.build.HashCodeAndEqualsPlugin;
+&nbsp;import net.bytebuddy.description.type.RecordComponentDescription;
+&nbsp;import net.bytebuddy.description.type.TypeDescription;
+&nbsp;import net.bytebuddy.dynamic.Transformer;
+&nbsp;import net.bytebuddy.implementation.attribute.RecordComponentAttributeAppender;
+&nbsp;import net.bytebuddy.matcher.ElementMatcher;
+&nbsp;import net.bytebuddy.matcher.LatentMatcher;
+&nbsp;import net.bytebuddy.utility.nullability.MaybeNull;
+&nbsp;
+&nbsp;import java.util.*;
+&nbsp;
+&nbsp;/**
+&nbsp; * A record component registry represents an extendable collection of record components which are identified by their names that are mapped
+&nbsp; * to a given {@link RecordComponentAttributeAppender}. Record components
+&nbsp; * can be uniquely identified by their name for a given type since record components are never inherited.
+&nbsp; * &lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&nbsp; * This registry is the counterpart of a {@link MethodRegistry}.
+&nbsp; * However, a record component registry is implemented simpler since it does not have to deal with complex signatures or
+&nbsp; * inheritance. For the sake of consistency, the record component registry follows however a similar pattern without introducing
+&nbsp; * unnecessary complexity.
+&nbsp; */
+&nbsp;public interface RecordComponentRegistry {
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Prepends the given record component definition to this record component registry, i.e. this configuration is applied first.
+&nbsp;     *
+&nbsp;     * @param matcher                                 The matcher to identify any record component that this definition concerns.
+&nbsp;     * @param recordComponentAttributeAppenderFactory The record component attribute appender factory to apply on any matched record component.
+&nbsp;     * @param transformer                             The record component transformer to apply to any matched record component.
+&nbsp;     * @return An adapted version of this method registry.
+&nbsp;     */
+&nbsp;    RecordComponentRegistry prepend(LatentMatcher&lt;? super RecordComponentDescription&gt; matcher,
+&nbsp;                                    RecordComponentAttributeAppender.Factory recordComponentAttributeAppenderFactory,
+&nbsp;                                    Transformer&lt;RecordComponentDescription&gt; transformer);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Prepares the record component registry for a given instrumented type.
+&nbsp;     *
+&nbsp;     * @param instrumentedType The instrumented type.
+&nbsp;     * @return A prepared record component registry.
+&nbsp;     */
+&nbsp;    Compiled compile(TypeDescription instrumentedType);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Represents a compiled record component registry.
+&nbsp;     */
+&nbsp;    interface Compiled extends TypeWriter.RecordComponentPool {
+&nbsp;
+&nbsp;        /**
+&nbsp;         * A no-op record component registry that does not register annotations for any record component.
+&nbsp;         */
+<b class="nc">&nbsp;        enum NoOp implements Compiled {</b>
+&nbsp;
+&nbsp;            /**
+&nbsp;             * The singleton instance.
+&nbsp;             */
+<b class="nc">&nbsp;            INSTANCE;</b>
+&nbsp;
+&nbsp;            /**
+&nbsp;             * {@inheritDoc}
+&nbsp;             */
+&nbsp;            public Record target(RecordComponentDescription recordComponentDescription) {
+<b class="nc">&nbsp;                return new Record.ForImplicitRecordComponent(recordComponentDescription);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * An immutable default implementation of a record component registry.
+&nbsp;     */
+&nbsp;    @HashCodeAndEqualsPlugin.Enhance
+&nbsp;    class Default implements RecordComponentRegistry {
+&nbsp;
+&nbsp;        /**
+&nbsp;         * This registries entries.
+&nbsp;         */
+&nbsp;        private final List&lt;Entry&gt; entries;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Creates a new empty default record component registry.
+&nbsp;         */
+&nbsp;        public Default() {
+<b class="fc">&nbsp;            this(Collections.&lt;Entry&gt;emptyList());</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Creates a new default record component registry.
+&nbsp;         *
+&nbsp;         * @param entries The entries of the record component registry.
+&nbsp;         */
+<b class="fc">&nbsp;        private Default(List&lt;Entry&gt; entries) {</b>
+<b class="fc">&nbsp;            this.entries = entries;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public RecordComponentRegistry prepend(LatentMatcher&lt;? super RecordComponentDescription&gt; matcher,
+&nbsp;                                               RecordComponentAttributeAppender.Factory recordComponentAttributeAppenderFactory,
+&nbsp;                                               Transformer&lt;RecordComponentDescription&gt; transformer) {
+<b class="fc">&nbsp;            List&lt;Entry&gt; entries = new ArrayList&lt;Entry&gt;(this.entries.size() + 1);</b>
+<b class="fc">&nbsp;            entries.add(new Entry(matcher, recordComponentAttributeAppenderFactory, transformer));</b>
+<b class="fc">&nbsp;            entries.addAll(this.entries);</b>
+<b class="fc">&nbsp;            return new Default(entries);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public RecordComponentRegistry.Compiled compile(TypeDescription instrumentedType) {
+<b class="fc">&nbsp;            List&lt;Compiled.Entry&gt; entries = new ArrayList&lt;Compiled.Entry&gt;(this.entries.size());</b>
+<b class="fc">&nbsp;            Map&lt;RecordComponentAttributeAppender.Factory, RecordComponentAttributeAppender&gt; recordComponentAttributeAppenders = new HashMap&lt;RecordComponentAttributeAppender.Factory, RecordComponentAttributeAppender&gt;();</b>
+<b class="fc">&nbsp;            for (Entry entry : this.entries) {</b>
+<b class="fc">&nbsp;                RecordComponentAttributeAppender recordComponentAttributeAppender = recordComponentAttributeAppenders.get(entry.getRecordComponentAttributeAppender());</b>
+<b class="fc">&nbsp;                if (recordComponentAttributeAppender == null) {</b>
+<b class="fc">&nbsp;                    recordComponentAttributeAppender = entry.getRecordComponentAttributeAppender().make(instrumentedType);</b>
+<b class="fc">&nbsp;                    recordComponentAttributeAppenders.put(entry.getRecordComponentAttributeAppender(), recordComponentAttributeAppender);</b>
+&nbsp;                }
+<b class="fc">&nbsp;                entries.add(new Compiled.Entry(entry.resolve(instrumentedType), recordComponentAttributeAppender, entry.getTransformer()));</b>
+<b class="fc">&nbsp;            }</b>
+<b class="fc">&nbsp;            return new Compiled(instrumentedType, entries);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * An entry of the default record component registry.
+&nbsp;         */
+&nbsp;        @HashCodeAndEqualsPlugin.Enhance
+&nbsp;        protected static class Entry implements LatentMatcher&lt;RecordComponentDescription&gt; {
+&nbsp;
+&nbsp;            /**
+&nbsp;             * The matcher to identify any record component that this definition concerns.
+&nbsp;             */
+&nbsp;            private final LatentMatcher&lt;? super RecordComponentDescription&gt; matcher;
+&nbsp;
+&nbsp;            /**
+&nbsp;             * The record component attribute appender factory to apply on any matched record component.
+&nbsp;             */
+&nbsp;            private final RecordComponentAttributeAppender.Factory recordComponentAttributeAppender;
+&nbsp;
+&nbsp;            /**
+&nbsp;             * The record component transformer to apply to any matched record component.
+&nbsp;             */
+&nbsp;            private final Transformer&lt;RecordComponentDescription&gt; transformer;
+&nbsp;
+&nbsp;            /**
+&nbsp;             * Creates a new entry.
+&nbsp;             *
+&nbsp;             * @param matcher                          The matcher to identify any record component that this definition concerns.
+&nbsp;             * @param recordComponentAttributeAppender The record component attribute appender factory to apply on any matched record component.
+&nbsp;             * @param transformer                      The record component transformer to apply to any matched record component.
+&nbsp;             */
+&nbsp;            protected Entry(LatentMatcher&lt;? super RecordComponentDescription&gt; matcher,
+&nbsp;                            RecordComponentAttributeAppender.Factory recordComponentAttributeAppender,
+<b class="fc">&nbsp;                            Transformer&lt;RecordComponentDescription&gt; transformer) {</b>
+<b class="fc">&nbsp;                this.matcher = matcher;</b>
+<b class="fc">&nbsp;                this.recordComponentAttributeAppender = recordComponentAttributeAppender;</b>
+<b class="fc">&nbsp;                this.transformer = transformer;</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            /**
+&nbsp;             * Returns the record component attribute appender factory to apply on any matched record component.
+&nbsp;             *
+&nbsp;             * @return The record component attribute appender factory to apply on any matched record component.
+&nbsp;             */
+&nbsp;            protected RecordComponentAttributeAppender.Factory getRecordComponentAttributeAppender() {
+<b class="fc">&nbsp;                return recordComponentAttributeAppender;</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            /**
+&nbsp;             * Returns the record component transformer to apply to any matched record component.
+&nbsp;             *
+&nbsp;             * @return The record component transformer to apply to any matched record component.
+&nbsp;             */
+&nbsp;            protected Transformer&lt;RecordComponentDescription&gt; getTransformer() {
+<b class="fc">&nbsp;                return transformer;</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            /**
+&nbsp;             * {@inheritDoc}
+&nbsp;             */
+&nbsp;            public ElementMatcher&lt;? super RecordComponentDescription&gt; resolve(TypeDescription typeDescription) {
+<b class="fc">&nbsp;                return matcher.resolve(typeDescription);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * A compiled default record component registry.
+&nbsp;         */
+&nbsp;        @HashCodeAndEqualsPlugin.Enhance
+&nbsp;        protected static class Compiled implements RecordComponentRegistry.Compiled {
+&nbsp;
+&nbsp;            /**
+&nbsp;             * The instrumented type for which this registry was compiled for.
+&nbsp;             */
+&nbsp;            private final TypeDescription instrumentedType;
+&nbsp;
+&nbsp;            /**
+&nbsp;             * The entries of this compiled record component registry.
+&nbsp;             */
+&nbsp;            private final List&lt;Entry&gt; entries;
+&nbsp;
+&nbsp;            /**
+&nbsp;             * Creates a new compiled record component registry.
+&nbsp;             *
+&nbsp;             * @param instrumentedType The instrumented type for which this registry was compiled for.
+&nbsp;             * @param entries          The entries of this compiled record component registry.
+&nbsp;             */
+<b class="fc">&nbsp;            protected Compiled(TypeDescription instrumentedType, List&lt;Entry&gt; entries) {</b>
+<b class="fc">&nbsp;                this.instrumentedType = instrumentedType;</b>
+<b class="fc">&nbsp;                this.entries = entries;</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            /**
+&nbsp;             * {@inheritDoc}
+&nbsp;             */
+&nbsp;            public Record target(RecordComponentDescription recordComponentDescription) {
+<b class="fc">&nbsp;                for (Entry entry : entries) {</b>
+<b class="fc">&nbsp;                    if (entry.matches(recordComponentDescription)) {</b>
+<b class="fc">&nbsp;                        return entry.bind(instrumentedType, recordComponentDescription);</b>
+&nbsp;                    }
+<b class="nc">&nbsp;                }</b>
+<b class="nc">&nbsp;                return new Record.ForImplicitRecordComponent(recordComponentDescription);</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            /**
+&nbsp;             * An entry of a compiled record component registry.
+&nbsp;             */
+&nbsp;            @HashCodeAndEqualsPlugin.Enhance
+&nbsp;            protected static class Entry implements ElementMatcher&lt;RecordComponentDescription&gt; {
+&nbsp;
+&nbsp;                /**
+&nbsp;                 * The matcher to identify any record component that this definition concerns.
+&nbsp;                 */
+&nbsp;                private final ElementMatcher&lt;? super RecordComponentDescription&gt; matcher;
+&nbsp;
+&nbsp;                /**
+&nbsp;                 * The record component attribute appender to apply on any matched record component.
+&nbsp;                 */
+&nbsp;                private final RecordComponentAttributeAppender recordComponentAttributeAppender;
+&nbsp;
+&nbsp;                /**
+&nbsp;                 * The record component transformer to apply to any matched record component.
+&nbsp;                 */
+&nbsp;                private final Transformer&lt;RecordComponentDescription&gt; transformer;
+&nbsp;
+&nbsp;                /**
+&nbsp;                 * Creates a new entry.
+&nbsp;                 *
+&nbsp;                 * @param matcher                          The matcher to identify any record component that this definition concerns.
+&nbsp;                 * @param recordComponentAttributeAppender The record component attribute appender to apply on any matched record component.
+&nbsp;                 * @param transformer                      The record component transformer to apply to any matched record component.
+&nbsp;                 */
+&nbsp;                protected Entry(ElementMatcher&lt;? super RecordComponentDescription&gt; matcher,
+&nbsp;                                RecordComponentAttributeAppender recordComponentAttributeAppender,
+<b class="fc">&nbsp;                                Transformer&lt;RecordComponentDescription&gt; transformer) {</b>
+<b class="fc">&nbsp;                    this.matcher = matcher;</b>
+<b class="fc">&nbsp;                    this.recordComponentAttributeAppender = recordComponentAttributeAppender;</b>
+<b class="fc">&nbsp;                    this.transformer = transformer;</b>
+&nbsp;                }
+&nbsp;
+&nbsp;                /**
+&nbsp;                 * Binds this entry to the provided record component description.
+&nbsp;                 *
+&nbsp;                 * @param instrumentedType           The instrumented type for which this entry applies.
+&nbsp;                 * @param recordComponentDescription The record component description to be bound to this entry.
+&nbsp;                 * @return A record representing the binding of this entry to the provided record component.
+&nbsp;                 */
+&nbsp;                protected Record bind(TypeDescription instrumentedType, RecordComponentDescription recordComponentDescription) {
+<b class="fc">&nbsp;                    return new Record.ForExplicitRecordComponent(recordComponentAttributeAppender, transformer.transform(instrumentedType, recordComponentDescription));</b>
+&nbsp;                }
+&nbsp;
+&nbsp;                /**
+&nbsp;                 * {@inheritDoc}
+&nbsp;                 */
+&nbsp;                public boolean matches(@MaybeNull RecordComponentDescription target) {
+<b class="fc">&nbsp;                    return matcher.matches(target);</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-03 11:00</div>
+</div>
+</body>
+</html>

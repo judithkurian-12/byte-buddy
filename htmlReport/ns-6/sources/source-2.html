@@ -1,0 +1,750 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > ClassByImplementationBenchmark</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">net.bytebuddy.benchmark</a>
+</div>
+
+<h1>Coverage Summary for Class: ClassByImplementationBenchmark (net.bytebuddy.benchmark)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ClassByImplementationBenchmark</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (10/10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    83.6%
+  </span>
+  <span class="absValue">
+    (46/55)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">ClassByImplementationBenchmark$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (19/19)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (19/19)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">ClassByImplementationBenchmark$2</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/4)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">ClassByImplementationBenchmark$2$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">ClassByImplementationBenchmark$3</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">ClassByImplementationBenchmark$4</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">ClassByImplementationBenchmark$5</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/19)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">ClassByImplementationBenchmark$6</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (19/19)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    85.4%
+  </span>
+  <span class="absValue">
+    (35/41)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    72.1%
+  </span>
+  <span class="absValue">
+    (88/122)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Copyright 2014 - Present Rafael Winterhalter
+&nbsp; *
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;package net.bytebuddy.benchmark;
+&nbsp;
+&nbsp;import javassist.util.proxy.MethodFilter;
+&nbsp;import javassist.util.proxy.MethodHandler;
+&nbsp;import javassist.util.proxy.ProxyFactory;
+&nbsp;import net.bytebuddy.ByteBuddy;
+&nbsp;import net.bytebuddy.benchmark.specimen.ExampleInterface;
+&nbsp;import net.bytebuddy.description.type.TypeDescription;
+&nbsp;import net.bytebuddy.dynamic.loading.ClassLoadingStrategy;
+&nbsp;import net.bytebuddy.dynamic.scaffold.TypeValidation;
+&nbsp;import net.bytebuddy.implementation.StubMethod;
+&nbsp;import net.bytebuddy.pool.TypePool;
+&nbsp;import net.bytebuddy.utility.nullability.AlwaysNull;
+&nbsp;import net.bytebuddy.utility.nullability.MaybeNull;
+&nbsp;import net.sf.cglib.proxy.CallbackHelper;
+&nbsp;import net.sf.cglib.proxy.Enhancer;
+&nbsp;import net.sf.cglib.proxy.FixedValue;
+&nbsp;import net.sf.cglib.proxy.NoOp;
+&nbsp;import org.openjdk.jmh.annotations.*;
+&nbsp;
+&nbsp;import java.lang.reflect.InvocationHandler;
+&nbsp;import java.lang.reflect.Method;
+&nbsp;import java.lang.reflect.Proxy;
+&nbsp;import java.net.URL;
+&nbsp;import java.net.URLClassLoader;
+&nbsp;import java.util.concurrent.TimeUnit;
+&nbsp;
+&nbsp;import static net.bytebuddy.matcher.ElementMatchers.isDeclaredBy;
+&nbsp;import static net.bytebuddy.matcher.ElementMatchers.none;
+&nbsp;
+&nbsp;/**
+&nbsp; * &lt;p&gt;
+&nbsp; * This benchmark dynamically creates a class which implements {@link net.bytebuddy.benchmark.specimen.ExampleInterface}
+&nbsp; * which overrides all methods to invoke the direct super class&#39;s implementation. The benchmark furthermore creates an
+&nbsp; * instance of this class since some code generation frameworks rely on this property.
+&nbsp; * &lt;/p&gt;
+&nbsp; * &lt;p&gt;
+&nbsp; * Note that this class defines all values that are accessed by benchmark methods as instance fields. This way, the JIT
+&nbsp; * compiler&#39;s capability of constant folding is limited in order to produce more comparable test results.
+&nbsp; * &lt;/p&gt;
+&nbsp; */
+&nbsp;@State(Scope.Thread)
+&nbsp;@BenchmarkMode(Mode.AverageTime)
+&nbsp;@OutputTimeUnit(TimeUnit.MICROSECONDS)
+<b class="fc">&nbsp;public class ClassByImplementationBenchmark {</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The base class to be subclassed in all benchmarks.
+&nbsp;     */
+<b class="fc">&nbsp;    public static final Class&lt;? extends ExampleInterface&gt; BASE_CLASS = ExampleInterface.class;</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The default reference value. By defining the default reference value as a string type instead of as an object
+&nbsp;     * type, the field is inlined by the compiler, similar to the primitive values.
+&nbsp;     */
+&nbsp;    @AlwaysNull
+<b class="fc">&nbsp;    public static final String DEFAULT_REFERENCE_VALUE = null;</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The default {@code boolean} value.
+&nbsp;     */
+&nbsp;    public static final boolean DEFAULT_BOOLEAN_VALUE = false;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The default {@code byte} value.
+&nbsp;     */
+&nbsp;    public static final byte DEFAULT_BYTE_VALUE = 0;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The default {@code short} value.
+&nbsp;     */
+&nbsp;    public static final short DEFAULT_SHORT_VALUE = 0;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The default {@code char} value.
+&nbsp;     */
+&nbsp;    public static final char DEFAULT_CHAR_VALUE = 0;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The default {@code int} value.
+&nbsp;     */
+&nbsp;    public static final int DEFAULT_INT_VALUE = 0;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The default {@code long} value.
+&nbsp;     */
+&nbsp;    public static final long DEFAULT_LONG_VALUE = 0L;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The default {@code float} value.
+&nbsp;     */
+&nbsp;    public static final float DEFAULT_FLOAT_VALUE = 0f;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The default {@code double} value.
+&nbsp;     */
+&nbsp;    public static final double DEFAULT_DOUBLE_VALUE = 0d;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The base class to be subclassed in all benchmarks.
+&nbsp;     */
+<b class="fc">&nbsp;    private Class&lt;? extends ExampleInterface&gt; baseClass = BASE_CLASS;</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The default reference value. By defining the default reference value as a string type instead of as an object
+&nbsp;     * type, the field is inlined by the compiler, similar to the primitive values.
+&nbsp;     */
+<b class="fc">&nbsp;    private String defaultReferenceValue = DEFAULT_REFERENCE_VALUE;</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The default {@code boolean} value.
+&nbsp;     */
+<b class="fc">&nbsp;    private boolean defaultBooleanValue = DEFAULT_BOOLEAN_VALUE;</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The default {@code byte} value.
+&nbsp;     */
+<b class="fc">&nbsp;    private byte defaultByteValue = DEFAULT_BYTE_VALUE;</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The default {@code short} value.
+&nbsp;     */
+<b class="fc">&nbsp;    private short defaultShortValue = DEFAULT_SHORT_VALUE;</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The default {@code char} value.
+&nbsp;     */
+<b class="fc">&nbsp;    private char defaultCharValue = DEFAULT_CHAR_VALUE;</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The default {@code int} value.
+&nbsp;     */
+<b class="fc">&nbsp;    private int defaultIntValue = DEFAULT_INT_VALUE;</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The default {@code long} value.
+&nbsp;     */
+<b class="fc">&nbsp;    private long defaultLongValue = DEFAULT_LONG_VALUE;</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The default {@code float} value.
+&nbsp;     */
+<b class="fc">&nbsp;    private float defaultFloatValue = DEFAULT_FLOAT_VALUE;</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The default {@code double} value.
+&nbsp;     */
+<b class="fc">&nbsp;    private double defaultDoubleValue = DEFAULT_DOUBLE_VALUE;</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The zero-length of the class loader&#39;s URL.
+&nbsp;     */
+<b class="fc">&nbsp;    private int urlLength = 0;</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a new class loader. By using a fresh class loader for each creation, we avoid name space issues.
+&nbsp;     * A class loader&#39;s creation is part of the benchmark but since any test creates a class loader exactly once,
+&nbsp;     * the benchmark remains valid.
+&nbsp;     *
+&nbsp;     * @return A new class loader.
+&nbsp;     */
+&nbsp;    private ClassLoader newClassLoader() {
+<b class="fc">&nbsp;        return new URLClassLoader(new URL[urlLength]);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A description of {@link ClassByExtensionBenchmark#baseClass}.
+&nbsp;     */
+&nbsp;    @MaybeNull
+&nbsp;    private TypeDescription baseClassDescription;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Sets up this benchmark.
+&nbsp;     */
+&nbsp;    @Setup
+&nbsp;    public void setup() {
+<b class="fc">&nbsp;        baseClassDescription = TypePool.Default.ofSystemLoader().describe(baseClass.getName()).resolve();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a baseline for the benchmark.
+&nbsp;     *
+&nbsp;     * @return A simple object that is not transformed.
+&nbsp;     */
+&nbsp;    @Benchmark
+&nbsp;    public ExampleInterface baseline() {
+<b class="fc">&nbsp;        return new ExampleInterface() {</b>
+&nbsp;            /**
+&nbsp;             * {@inheritDoc}
+&nbsp;             */
+&nbsp;            public boolean method(boolean arg) {
+<b class="fc">&nbsp;                return false;</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            /**
+&nbsp;             * {@inheritDoc}
+&nbsp;             */
+&nbsp;            public byte method(byte arg) {
+<b class="fc">&nbsp;                return 0;</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            /**
+&nbsp;             * {@inheritDoc}
+&nbsp;             */
+&nbsp;            public short method(short arg) {
+<b class="fc">&nbsp;                return 0;</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            /**
+&nbsp;             * {@inheritDoc}
+&nbsp;             */
+&nbsp;            public int method(int arg) {
+<b class="fc">&nbsp;                return 0;</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            /**
+&nbsp;             * {@inheritDoc}
+&nbsp;             */
+&nbsp;            public char method(char arg) {
+<b class="fc">&nbsp;                return 0;</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            /**
+&nbsp;             * {@inheritDoc}
+&nbsp;             */
+&nbsp;            public long method(long arg) {
+<b class="fc">&nbsp;                return 0;</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            /**
+&nbsp;             * {@inheritDoc}
+&nbsp;             */
+&nbsp;            public float method(float arg) {
+<b class="fc">&nbsp;                return 0;</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            /**
+&nbsp;             * {@inheritDoc}
+&nbsp;             */
+&nbsp;            public double method(double arg) {
+<b class="fc">&nbsp;                return 0;</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            /**
+&nbsp;             * {@inheritDoc}
+&nbsp;             */
+&nbsp;            @AlwaysNull
+&nbsp;            public Object method(Object arg) {
+<b class="fc">&nbsp;                return null;</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            /**
+&nbsp;             * {@inheritDoc}
+&nbsp;             */
+&nbsp;            @AlwaysNull
+&nbsp;            public boolean[] method(boolean arg1, boolean arg2, boolean arg3) {
+<b class="fc">&nbsp;                return null;</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            /**
+&nbsp;             * {@inheritDoc}
+&nbsp;             */
+&nbsp;            @AlwaysNull
+&nbsp;            public byte[] method(byte arg1, byte arg2, byte arg3) {
+<b class="fc">&nbsp;                return null;</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            /**
+&nbsp;             * {@inheritDoc}
+&nbsp;             */
+&nbsp;            @AlwaysNull
+&nbsp;            public short[] method(short arg1, short arg2, short arg3) {
+<b class="fc">&nbsp;                return null;</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            /**
+&nbsp;             * {@inheritDoc}
+&nbsp;             */
+&nbsp;            @AlwaysNull
+&nbsp;            public int[] method(int arg1, int arg2, int arg3) {
+<b class="fc">&nbsp;                return null;</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            /**
+&nbsp;             * {@inheritDoc}
+&nbsp;             */
+&nbsp;            @AlwaysNull
+&nbsp;            public char[] method(char arg1, char arg2, char arg3) {
+<b class="fc">&nbsp;                return null;</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            /**
+&nbsp;             * {@inheritDoc}
+&nbsp;             */
+&nbsp;            @AlwaysNull
+&nbsp;            public long[] method(long arg1, long arg2, long arg3) {
+<b class="fc">&nbsp;                return null;</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            /**
+&nbsp;             * {@inheritDoc}
+&nbsp;             */
+&nbsp;            @AlwaysNull
+&nbsp;            public float[] method(float arg1, float arg2, float arg3) {
+<b class="fc">&nbsp;                return null;</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            /**
+&nbsp;             * {@inheritDoc}
+&nbsp;             */
+&nbsp;            @AlwaysNull
+&nbsp;            public double[] method(double arg1, double arg2, double arg3) {
+<b class="fc">&nbsp;                return null;</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            /**
+&nbsp;             * {@inheritDoc}
+&nbsp;             */
+&nbsp;            @AlwaysNull
+&nbsp;            public Object[] method(Object arg1, Object arg2, Object arg3) {
+<b class="fc">&nbsp;                return null;</b>
+&nbsp;            }
+&nbsp;        };
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Performs a benchmark of an interface implementation using Byte Buddy.
+&nbsp;     *
+&nbsp;     * @return The created instance, in order to avoid JIT removal.
+&nbsp;     * @throws java.lang.Exception If the reflective invocation causes an exception.
+&nbsp;     */
+&nbsp;    @Benchmark
+&nbsp;    public ExampleInterface benchmarkByteBuddy() throws Exception {
+<b class="fc">&nbsp;        return new ByteBuddy()</b>
+<b class="fc">&nbsp;                .with(TypeValidation.DISABLED)</b>
+<b class="fc">&nbsp;                .ignore(none())</b>
+<b class="fc">&nbsp;                .subclass(baseClass)</b>
+<b class="fc">&nbsp;                .method(isDeclaredBy(baseClass)).intercept(StubMethod.INSTANCE)</b>
+<b class="fc">&nbsp;                .make()</b>
+<b class="fc">&nbsp;                .load(newClassLoader(), ClassLoadingStrategy.Default.INJECTION)</b>
+<b class="fc">&nbsp;                .getLoaded()</b>
+<b class="fc">&nbsp;                .getDeclaredConstructor()</b>
+<b class="fc">&nbsp;                .newInstance();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Performs a benchmark of an interface implementation using Byte Buddy. This benchmark uses a type pool to compare against
+&nbsp;     * usage of the reflection API.
+&nbsp;     *
+&nbsp;     * @return The created instance, in order to avoid JIT removal.
+&nbsp;     * @throws java.lang.Exception If the reflective invocation causes an exception.
+&nbsp;     */
+&nbsp;    @Benchmark
+&nbsp;    public ExampleInterface benchmarkByteBuddyWithTypePool() throws Exception {
+<b class="fc">&nbsp;        return (ExampleInterface) new ByteBuddy()</b>
+<b class="fc">&nbsp;                .with(TypeValidation.DISABLED)</b>
+<b class="fc">&nbsp;                .ignore(none())</b>
+<b class="fc">&nbsp;                .subclass(baseClassDescription)</b>
+<b class="fc">&nbsp;                .method(isDeclaredBy(baseClassDescription)).intercept(StubMethod.INSTANCE)</b>
+<b class="fc">&nbsp;                .make()</b>
+<b class="fc">&nbsp;                .load(newClassLoader(), ClassLoadingStrategy.Default.INJECTION)</b>
+<b class="fc">&nbsp;                .getLoaded()</b>
+<b class="fc">&nbsp;                .getDeclaredConstructor()</b>
+<b class="fc">&nbsp;                .newInstance();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Performs a benchmark of an interface implementation using cglib.
+&nbsp;     *
+&nbsp;     * @return The created instance, in order to avoid JIT removal.
+&nbsp;     */
+&nbsp;    @Benchmark
+&nbsp;    public ExampleInterface benchmarkCglib() {
+<b class="fc">&nbsp;        Enhancer enhancer = new Enhancer();</b>
+<b class="nc">&nbsp;        enhancer.setUseCache(false);</b>
+<b class="nc">&nbsp;        enhancer.setClassLoader(newClassLoader());</b>
+<b class="nc">&nbsp;        enhancer.setSuperclass(baseClass);</b>
+<b class="nc">&nbsp;        CallbackHelper callbackHelper = new CallbackHelper(Object.class, new Class&lt;?&gt;[]{baseClass}) {</b>
+&nbsp;            protected Object getCallback(Method method) {
+<b class="nc">&nbsp;                if (method.getDeclaringClass() == baseClass) {</b>
+<b class="nc">&nbsp;                    return new FixedValue() {</b>
+&nbsp;                        public Object loadObject() {
+<b class="nc">&nbsp;                            return null;</b>
+&nbsp;                        }
+&nbsp;                    };
+&nbsp;                } else {
+<b class="nc">&nbsp;                    return NoOp.INSTANCE;</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;        };
+<b class="nc">&nbsp;        enhancer.setCallbackFilter(callbackHelper);</b>
+<b class="nc">&nbsp;        enhancer.setCallbacks(callbackHelper.getCallbacks());</b>
+<b class="nc">&nbsp;        return (ExampleInterface) enhancer.create();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Performs a benchmark of an interface implementation using javassist proxies.
+&nbsp;     *
+&nbsp;     * @return The created instance, in order to avoid JIT removal.
+&nbsp;     * @throws java.lang.Exception If the reflective invocation causes an exception.
+&nbsp;     */
+&nbsp;    @Benchmark
+&nbsp;    public ExampleInterface benchmarkJavassist() throws Exception {
+<b class="fc">&nbsp;        ProxyFactory proxyFactory = new ProxyFactory() {</b>
+&nbsp;            protected ClassLoader getClassLoader() {
+<b class="fc">&nbsp;                return newClassLoader();</b>
+&nbsp;            }
+&nbsp;        };
+<b class="fc">&nbsp;        proxyFactory.setUseCache(false);</b>
+<b class="fc">&nbsp;        proxyFactory.setUseWriteReplace(false);</b>
+<b class="fc">&nbsp;        proxyFactory.setSuperclass(Object.class);</b>
+<b class="fc">&nbsp;        proxyFactory.setInterfaces(new Class&lt;?&gt;[]{baseClass});</b>
+<b class="fc">&nbsp;        proxyFactory.setFilter(new MethodFilter() {</b>
+&nbsp;            public boolean isHandled(Method method) {
+<b class="fc">&nbsp;                return true;</b>
+&nbsp;            }
+&nbsp;        });
+&nbsp;        @SuppressWarnings(&quot;unchecked&quot;)
+<b class="fc">&nbsp;        Object instance = proxyFactory.createClass().getDeclaredConstructor().newInstance();</b>
+<b class="nc">&nbsp;        ((javassist.util.proxy.Proxy) instance).setHandler(new MethodHandler() {</b>
+&nbsp;            public Object invoke(Object self,
+&nbsp;                                 Method thisMethod,
+&nbsp;                                 Method proceed,
+&nbsp;                                 Object[] args) throws Throwable {
+<b class="nc">&nbsp;                Class&lt;?&gt; returnType = thisMethod.getReturnType();</b>
+<b class="nc">&nbsp;                if (returnType.isPrimitive()) {</b>
+<b class="nc">&nbsp;                    if (returnType == boolean.class) {</b>
+<b class="nc">&nbsp;                        return defaultBooleanValue;</b>
+<b class="nc">&nbsp;                    } else if (returnType == byte.class) {</b>
+<b class="nc">&nbsp;                        return defaultByteValue;</b>
+<b class="nc">&nbsp;                    } else if (returnType == short.class) {</b>
+<b class="nc">&nbsp;                        return defaultShortValue;</b>
+<b class="nc">&nbsp;                    } else if (returnType == char.class) {</b>
+<b class="nc">&nbsp;                        return defaultCharValue;</b>
+<b class="nc">&nbsp;                    } else if (returnType == int.class) {</b>
+<b class="nc">&nbsp;                        return defaultIntValue;</b>
+<b class="nc">&nbsp;                    } else if (returnType == long.class) {</b>
+<b class="nc">&nbsp;                        return defaultLongValue;</b>
+<b class="nc">&nbsp;                    } else if (returnType == float.class) {</b>
+<b class="nc">&nbsp;                        return defaultFloatValue;</b>
+&nbsp;                    } else {
+<b class="nc">&nbsp;                        return defaultDoubleValue;</b>
+&nbsp;                    }
+&nbsp;                } else {
+<b class="nc">&nbsp;                    return defaultReferenceValue;</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;        });
+<b class="nc">&nbsp;        return (ExampleInterface) instance;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Performs a benchmark of an interface implementation using the Java Class Library&#39;s utilities.
+&nbsp;     *
+&nbsp;     * @return The created instance, in order to avoid JIT removal.
+&nbsp;     * @throws java.lang.Exception If the reflective invocation causes an exception.
+&nbsp;     */
+&nbsp;    @Benchmark
+&nbsp;    public ExampleInterface benchmarkJdkProxy() throws Exception {
+<b class="fc">&nbsp;        return (ExampleInterface) Proxy.newProxyInstance(newClassLoader(),</b>
+&nbsp;                new Class&lt;?&gt;[]{baseClass},
+<b class="fc">&nbsp;                new InvocationHandler() {</b>
+&nbsp;                    @MaybeNull
+&nbsp;                    public Object invoke(Object proxy, Method method, @MaybeNull Object[] argument) {
+<b class="fc">&nbsp;                        Class&lt;?&gt; returnType = method.getReturnType();</b>
+<b class="fc">&nbsp;                        if (returnType.isPrimitive()) {</b>
+<b class="fc">&nbsp;                            if (returnType == boolean.class) {</b>
+<b class="fc">&nbsp;                                return defaultBooleanValue;</b>
+<b class="fc">&nbsp;                            } else if (returnType == byte.class) {</b>
+<b class="fc">&nbsp;                                return defaultByteValue;</b>
+<b class="fc">&nbsp;                            } else if (returnType == short.class) {</b>
+<b class="fc">&nbsp;                                return defaultShortValue;</b>
+<b class="fc">&nbsp;                            } else if (returnType == char.class) {</b>
+<b class="fc">&nbsp;                                return defaultCharValue;</b>
+<b class="fc">&nbsp;                            } else if (returnType == int.class) {</b>
+<b class="fc">&nbsp;                                return defaultIntValue;</b>
+<b class="fc">&nbsp;                            } else if (returnType == long.class) {</b>
+<b class="fc">&nbsp;                                return defaultLongValue;</b>
+<b class="fc">&nbsp;                            } else if (returnType == float.class) {</b>
+<b class="fc">&nbsp;                                return defaultFloatValue;</b>
+&nbsp;                            } else {
+<b class="fc">&nbsp;                                return defaultDoubleValue;</b>
+&nbsp;                            }
+&nbsp;                        } else {
+<b class="fc">&nbsp;                            return defaultReferenceValue;</b>
+&nbsp;                        }
+&nbsp;                    }
+&nbsp;                }
+&nbsp;        );
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-03 11:00</div>
+</div>
+</body>
+</html>

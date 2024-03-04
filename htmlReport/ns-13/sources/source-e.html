@@ -1,0 +1,188 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > StubMethod</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">net.bytebuddy.implementation</a>
+</div>
+
+<h1>Coverage Summary for Class: StubMethod (net.bytebuddy.implementation)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">StubMethod</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    85.7%
+  </span>
+  <span class="absValue">
+    (6/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    90.9%
+  </span>
+  <span class="absValue">
+    (10/11)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Copyright 2014 - Present Rafael Winterhalter
+&nbsp; *
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;package net.bytebuddy.implementation;
+&nbsp;
+&nbsp;import net.bytebuddy.description.method.MethodDescription;
+&nbsp;import net.bytebuddy.dynamic.scaffold.InstrumentedType;
+&nbsp;import net.bytebuddy.implementation.bytecode.ByteCodeAppender;
+&nbsp;import net.bytebuddy.implementation.bytecode.StackManipulation;
+&nbsp;import net.bytebuddy.implementation.bytecode.constant.DefaultValue;
+&nbsp;import net.bytebuddy.implementation.bytecode.member.MethodReturn;
+&nbsp;import org.objectweb.asm.MethodVisitor;
+&nbsp;
+&nbsp;/**
+&nbsp; * This implementation creates a method stub which does nothing but returning the default value of the return
+&nbsp; * type of the method. These default values are:
+&nbsp; * &lt;ol&gt;
+&nbsp; * &lt;li&gt;The value {@code 0} for all numeric type.&lt;/li&gt;
+&nbsp; * &lt;li&gt;The null character for the {@code char} type.&lt;/li&gt;
+&nbsp; * &lt;li&gt;{@code false} for the {@code boolean} type.&lt;/li&gt;
+&nbsp; * &lt;li&gt;Nothing for {@code void} types.&lt;/li&gt;
+&nbsp; * &lt;li&gt;A {@code null} reference for any reference types. Note that this includes primitive wrapper types.&lt;/li&gt;
+&nbsp; * &lt;/ol&gt;
+&nbsp; */
+<b class="fc">&nbsp;public enum StubMethod implements Implementation.Composable, ByteCodeAppender {</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The singleton instance.
+&nbsp;     */
+<b class="fc">&nbsp;    INSTANCE;</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public InstrumentedType prepare(InstrumentedType instrumentedType) {
+<b class="fc">&nbsp;        return instrumentedType;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public ByteCodeAppender appender(Target implementationTarget) {
+<b class="fc">&nbsp;        return this;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public Implementation andThen(Implementation implementation) {
+<b class="fc">&nbsp;        return implementation;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public Composable andThen(Composable implementation) {
+<b class="nc">&nbsp;        return implementation;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public Size apply(MethodVisitor methodVisitor,
+&nbsp;                      Context implementationContext,
+&nbsp;                      MethodDescription instrumentedMethod) {
+<b class="fc">&nbsp;        StackManipulation.Size stackSize = new StackManipulation.Compound(</b>
+<b class="fc">&nbsp;                DefaultValue.of(instrumentedMethod.getReturnType()),</b>
+<b class="fc">&nbsp;                MethodReturn.of(instrumentedMethod.getReturnType())</b>
+<b class="fc">&nbsp;        ).apply(methodVisitor, implementationContext);</b>
+<b class="fc">&nbsp;        return new Size(stackSize.getMaximalSize(), instrumentedMethod.getStackSize());</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-02 16:00</div>
+</div>
+</body>
+</html>

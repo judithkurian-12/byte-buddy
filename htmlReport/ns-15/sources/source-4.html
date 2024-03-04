@@ -1,0 +1,258 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > MethodNameTransformer</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">net.bytebuddy.dynamic.scaffold.inline</a>
+</div>
+
+<h1>Coverage Summary for Class: MethodNameTransformer (net.bytebuddy.dynamic.scaffold.inline)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+  <tr>
+    <td class="name">MethodNameTransformer$MockitoMock$213533019</td>
+  </tr>
+  <tr>
+    <td class="name">MethodNameTransformer$MockitoMock$213533019$auxiliary$ELsSXUIr</td>
+  </tr>
+  <tr>
+    <td class="name">MethodNameTransformer$MockitoMock$213533019$auxiliary$znUtDpx3</td>
+  </tr>
+  <tr>
+    <td class="name">MethodNameTransformer$Prefixing</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/4)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">MethodNameTransformer$Suffixing</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/4)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (8/8)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Copyright 2014 - Present Rafael Winterhalter
+&nbsp; *
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;package net.bytebuddy.dynamic.scaffold.inline;
+&nbsp;
+&nbsp;import net.bytebuddy.build.HashCodeAndEqualsPlugin;
+&nbsp;import net.bytebuddy.description.method.MethodDescription;
+&nbsp;import net.bytebuddy.utility.RandomString;
+&nbsp;
+&nbsp;/**
+&nbsp; * A method name transformer provides a unique mapping of a method&#39;s name to an alternative name.
+&nbsp; *
+&nbsp; * @see MethodRebaseResolver
+&nbsp; */
+&nbsp;public interface MethodNameTransformer {
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Transforms a method&#39;s name to an alternative name. This name must not be equal to any existing method of the
+&nbsp;     * created class.
+&nbsp;     *
+&nbsp;     * @param methodDescription The original method.
+&nbsp;     * @return The alternative name.
+&nbsp;     */
+&nbsp;    String transform(MethodDescription methodDescription);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A method name transformer that adds a fixed suffix to an original method name, separated by a {@code $}.
+&nbsp;     */
+&nbsp;    @HashCodeAndEqualsPlugin.Enhance
+&nbsp;    class Suffixing implements MethodNameTransformer {
+&nbsp;
+&nbsp;        /**
+&nbsp;         * The default suffix to add to an original method name.
+&nbsp;         */
+&nbsp;        private static final String DEFAULT_SUFFIX = &quot;original$&quot;;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * The suffix to append to a method name.
+&nbsp;         */
+&nbsp;        private final String suffix;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Creates a new suffixing method name transformer which adds a default suffix with a random name component.
+&nbsp;         *
+&nbsp;         * @return A method name transformer that adds a randomized suffix to the original method name.
+&nbsp;         */
+&nbsp;        public static MethodNameTransformer withRandomSuffix() {
+<b class="fc">&nbsp;            return new Suffixing(DEFAULT_SUFFIX + RandomString.make());</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Creates a new suffixing method name transformer.
+&nbsp;         *
+&nbsp;         * @param suffix The suffix to add to the method name before the seed.
+&nbsp;         */
+<b class="fc">&nbsp;        public Suffixing(String suffix) {</b>
+<b class="fc">&nbsp;            this.suffix = suffix;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public String transform(MethodDescription methodDescription) {
+<b class="fc">&nbsp;            return methodDescription.getInternalName() + &quot;$&quot; + suffix;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A method name transformer that adds a fixed prefix to an original method name.
+&nbsp;     */
+&nbsp;    @HashCodeAndEqualsPlugin.Enhance
+&nbsp;    class Prefixing implements MethodNameTransformer {
+&nbsp;
+&nbsp;        /**
+&nbsp;         * The default prefix to add to an original method name.
+&nbsp;         */
+&nbsp;        private static final String DEFAULT_PREFIX = &quot;original&quot;;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * The prefix that is appended.
+&nbsp;         */
+&nbsp;        private final String prefix;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Creates a new prefixing method name transformer using a default prefix.
+&nbsp;         */
+&nbsp;        public Prefixing() {
+<b class="fc">&nbsp;            this(DEFAULT_PREFIX);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Creates a new prefixing method name transformer.
+&nbsp;         *
+&nbsp;         * @param prefix The prefix being used.
+&nbsp;         */
+<b class="fc">&nbsp;        public Prefixing(String prefix) {</b>
+<b class="fc">&nbsp;            this.prefix = prefix;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public String transform(MethodDescription methodDescription) {
+<b class="fc">&nbsp;            return prefix + methodDescription.getInternalName();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-03 11:00</div>
+</div>
+</body>
+</html>

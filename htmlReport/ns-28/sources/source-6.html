@@ -1,0 +1,610 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > StackAwareMethodVisitor</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">net.bytebuddy.utility.visitor</a>
+</div>
+
+<h1>Coverage Summary for Class: StackAwareMethodVisitor (net.bytebuddy.utility.visitor)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">StackAwareMethodVisitor</td>
+<td class="coverageStat">
+  <span class="percent">
+    88.5%
+  </span>
+  <span class="absValue">
+    (23/26)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    83.5%
+  </span>
+  <span class="absValue">
+    (132/158)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">StackAwareMethodVisitor$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    88.9%
+  </span>
+  <span class="absValue">
+    (24/27)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    83.6%
+  </span>
+  <span class="absValue">
+    (133/159)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Copyright 2014 - Present Rafael Winterhalter
+&nbsp; *
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;package net.bytebuddy.utility.visitor;
+&nbsp;
+&nbsp;import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+&nbsp;import net.bytebuddy.build.AccessControllerPlugin;
+&nbsp;import net.bytebuddy.description.method.MethodDescription;
+&nbsp;import net.bytebuddy.implementation.bytecode.StackSize;
+&nbsp;import net.bytebuddy.utility.CompoundList;
+&nbsp;import net.bytebuddy.utility.OpenedClassReader;
+&nbsp;import net.bytebuddy.utility.nullability.MaybeNull;
+&nbsp;import net.bytebuddy.utility.privilege.GetSystemPropertyAction;
+&nbsp;import org.objectweb.asm.*;
+&nbsp;
+&nbsp;import java.security.PrivilegedAction;
+&nbsp;import java.util.*;
+&nbsp;
+&nbsp;/**
+&nbsp; * &lt;p&gt;
+&nbsp; * A method visitor that is aware of the current size of the operand stack at all times. Additionally, this method takes
+&nbsp; * care of maintaining an index for the next currently unused index of the local variable array.
+&nbsp; * &lt;/p&gt;
+&nbsp; * &lt;p&gt;
+&nbsp; * &lt;b&gt;Important&lt;/b&gt;: It is not always possible to apply this method visitor if it is applied to a class file compiled
+&nbsp; * for Java 5 or earlier, or if frames are computed by ASM and not passed to this visitor, if a method also contains
+&nbsp; * {@link Opcodes#GOTO} instructions. In the latter case, the stack is assumed empty after the instruction. If this
+&nbsp; * is a problem, stack adjustment can be disabled by setting {@link StackAwareMethodVisitor#UNADJUSTED_PROPERTY} to
+&nbsp; * {@code true}. With this setting, Byte Buddy does no longer attempt draining non-empty stacks and skips this visitor
+&nbsp; * in all cases. This might however lead to verification problems if stacks are left non-empty. As the latter happens
+&nbsp; * more common and since this visitor is applied defensively, using this wrapper is considered the more sensible default.
+&nbsp; * &lt;/p&gt;
+&nbsp; */
+&nbsp;public class StackAwareMethodVisitor extends MethodVisitor {
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A property to disable stack adjustment. Stack adjustment is typically needed when instrumenting other
+&nbsp;     * generated code that leaves excess values on the stack. This is also often the case when byte code
+&nbsp;     * obfuscation is used.
+&nbsp;     */
+&nbsp;    public static final String UNADJUSTED_PROPERTY = &quot;net.bytebuddy.unadjusted&quot;;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@code true} if stack adjustment is disabled.
+&nbsp;     */
+&nbsp;    public static final boolean UNADJUSTED;
+&nbsp;
+&nbsp;    /*
+&nbsp;     * Reads the raw type property.
+&nbsp;     */
+&nbsp;    static {
+&nbsp;        boolean disabled;
+&nbsp;        try {
+<b class="fc">&nbsp;            disabled = Boolean.parseBoolean(doPrivileged(new GetSystemPropertyAction(UNADJUSTED_PROPERTY)));</b>
+<b class="nc">&nbsp;        } catch (Exception ignored) {</b>
+<b class="nc">&nbsp;            disabled = false;</b>
+<b class="fc">&nbsp;        }</b>
+<b class="fc">&nbsp;        UNADJUSTED = disabled;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * An array mapping any opcode to its size impact onto the operand stack. This mapping is taken from
+&nbsp;     * {@link org.objectweb.asm.Frame} with the difference that the {@link Opcodes#JSR} instruction is
+&nbsp;     * mapped to a size of {@code 0} as it does not impact the stack after returning from the instruction.
+&nbsp;     */
+&nbsp;    private static final int[] SIZE_CHANGE;
+&nbsp;
+&nbsp;    /*
+&nbsp;     * Computes a mapping of byte codes to their size impact onto the operand stack.
+&nbsp;     */
+&nbsp;    static {
+<b class="fc">&nbsp;        SIZE_CHANGE = new int[202];</b>
+<b class="fc">&nbsp;        String encoded = &quot;EFFFFFFFFGGFFFGGFFFEEFGFGFEEEEEEEEEEEEEEEEEEEEDEDEDDDDDCD&quot; +</b>
+&nbsp;                &quot;CDEEEEEEEEEEEEEEEEEEEEBABABBBBDCFFFGGGEDCDCDCDCDCDCDCDCDCDCEEEEDDD&quot; +
+&nbsp;                &quot;DDDDCDCDCEFEFDDEEFFDEDEEEBDDBBDDDDDDCCCCCCCCEEEDDDCDCDEEEEEEEEEEFE&quot; +
+&nbsp;                &quot;EEEEEDDEEDDEE&quot;;
+<b class="fc">&nbsp;        for (int index = 0; index &lt; SIZE_CHANGE.length; index++) {</b>
+<b class="fc">&nbsp;            SIZE_CHANGE[index] = encoded.charAt(index) - &#39;E&#39;;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A list of the current elements on the operand stack.
+&nbsp;     */
+&nbsp;    private List&lt;StackSize&gt; current;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A mapping of labels to the operand stack size that is expected at this label. Lists stored in this
+&nbsp;     * map must not be mutated.
+&nbsp;     */
+&nbsp;    private final Map&lt;Label, List&lt;StackSize&gt;&gt; sizes;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The next index of the local variable array that is available.
+&nbsp;     */
+&nbsp;    private int freeIndex;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a new stack aware method visitor.
+&nbsp;     *
+&nbsp;     * @param methodVisitor      The method visitor to delegate operations to.
+&nbsp;     * @param instrumentedMethod The method description for which this method visitor is applied.
+&nbsp;     */
+&nbsp;    protected StackAwareMethodVisitor(MethodVisitor methodVisitor, MethodDescription instrumentedMethod) {
+<b class="fc">&nbsp;        super(OpenedClassReader.ASM_API, methodVisitor);</b>
+<b class="fc">&nbsp;        current = new ArrayList&lt;StackSize&gt;();</b>
+<b class="fc">&nbsp;        sizes = new HashMap&lt;Label, List&lt;StackSize&gt;&gt;();</b>
+<b class="fc">&nbsp;        freeIndex = instrumentedMethod.getStackSize();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Wraps the provided method visitor within a stack aware method visitor.
+&nbsp;     *
+&nbsp;     * @param methodVisitor      The method visitor to delegate operations to.
+&nbsp;     * @param instrumentedMethod The method description for which this method visitor is applied.
+&nbsp;     * @return An appropriate
+&nbsp;     */
+&nbsp;    public static MethodVisitor of(MethodVisitor methodVisitor, MethodDescription instrumentedMethod) {
+<b class="fc">&nbsp;        return UNADJUSTED</b>
+<b class="nc">&nbsp;                ? methodVisitor</b>
+<b class="fc">&nbsp;                : new StackAwareMethodVisitor(methodVisitor, instrumentedMethod);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A proxy for {@code java.security.AccessController#doPrivileged} that is activated if available.
+&nbsp;     *
+&nbsp;     * @param action The action to execute from a privileged context.
+&nbsp;     * @param &lt;T&gt;    The type of the action&#39;s resolved value.
+&nbsp;     * @return The action&#39;s resolved value.
+&nbsp;     */
+&nbsp;    @AccessControllerPlugin.Enhance
+&nbsp;    private static &lt;T&gt; T doPrivileged(PrivilegedAction&lt;T&gt; action) {
+<b class="fc">&nbsp;        return action.run();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Adjusts the current state of the operand stack.
+&nbsp;     *
+&nbsp;     * @param delta The change of the current operation of the operand stack. Must not be larger than {@code 2}.
+&nbsp;     */
+&nbsp;    private void adjustStack(int delta) {
+<b class="fc">&nbsp;        adjustStack(delta, 0);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Adjusts the current state of the operand stack.
+&nbsp;     *
+&nbsp;     * @param delta  The change of the current operation of the operand stack. Must not be larger than {@code 2}.
+&nbsp;     * @param offset The offset of the value within the operand stack. Must be bigger then {@code 0} and smaller than
+&nbsp;     *               the current stack size. Only permitted if the supplied {@code delta} is positive.
+&nbsp;     */
+&nbsp;    private void adjustStack(int delta, int offset) {
+<b class="fc">&nbsp;        if (delta &gt; 2) {</b>
+<b class="nc">&nbsp;            throw new IllegalStateException(&quot;Cannot push multiple values onto the operand stack: &quot; + delta);</b>
+<b class="fc">&nbsp;        } else if (delta &gt; 0) {</b>
+<b class="fc">&nbsp;            int position = current.size();</b>
+&nbsp;            // The operand stack can legally underflow while traversing dead code.
+<b class="fc">&nbsp;            while (offset &gt; 0 &amp;&amp; position &gt; 0) {</b>
+<b class="fc">&nbsp;                offset -= current.get(--position).getSize();</b>
+&nbsp;            }
+<b class="fc">&nbsp;            if (offset &lt; 0) {</b>
+<b class="nc">&nbsp;                throw new IllegalStateException(&quot;Unexpected offset underflow: &quot; + offset);</b>
+&nbsp;            }
+<b class="fc">&nbsp;            current.add(position, StackSize.of(delta));</b>
+<b class="fc">&nbsp;        } else if (offset != 0) {</b>
+<b class="nc">&nbsp;            throw new IllegalStateException(&quot;Cannot specify non-zero offset &quot; + offset + &quot; for non-incrementing value: &quot; + delta);</b>
+&nbsp;        } else {
+<b class="fc">&nbsp;            while (delta &lt; 0) {</b>
+&nbsp;                // The operand stack can legally underflow while traversing dead code.
+<b class="fc">&nbsp;                if (current.isEmpty()) {</b>
+&nbsp;                    return;
+&nbsp;                }
+<b class="fc">&nbsp;                delta += current.remove(current.size() - 1).getSize();</b>
+&nbsp;            }
+<b class="fc">&nbsp;            if (delta == 1) {</b>
+<b class="fc">&nbsp;                current.add(StackSize.SINGLE);</b>
+<b class="fc">&nbsp;            } else if (delta != 0) {</b>
+<b class="nc">&nbsp;                throw new IllegalStateException(&quot;Unexpected remainder on the operand stack: &quot; + delta);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Pops all values currently on the stack.
+&nbsp;     */
+&nbsp;    public void drainStack() {
+<b class="fc">&nbsp;        doDrain(current);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Drains the stack to only contain the top value. For this, the value on top of the stack is temporarily stored
+&nbsp;     * in the local variable array until all values on the stack are popped off. Subsequently, the top value is pushed
+&nbsp;     * back onto the operand stack.
+&nbsp;     *
+&nbsp;     * @param store The opcode used for storing the top value.
+&nbsp;     * @param load  The opcode used for loading the top value.
+&nbsp;     * @param size  The size of the value on top of the operand stack.
+&nbsp;     * @return The minimal size of the local variable array that is required to perform the operation.
+&nbsp;     */
+&nbsp;    public int drainStack(int store, int load, StackSize size) {
+<b class="fc">&nbsp;        if (current.isEmpty()) {</b>
+<b class="fc">&nbsp;            return 0;</b>
+&nbsp;        }
+<b class="fc">&nbsp;        int difference = current.get(current.size() - 1).getSize() - size.getSize();</b>
+<b class="fc">&nbsp;        if (current.size() == 1 &amp;&amp; difference == 0) {</b>
+<b class="fc">&nbsp;            return 0;</b>
+&nbsp;        } else {
+<b class="fc">&nbsp;            super.visitVarInsn(store, freeIndex);</b>
+<b class="fc">&nbsp;            if (difference == 1) {</b>
+<b class="nc">&nbsp;                super.visitInsn(Opcodes.POP);</b>
+<b class="fc">&nbsp;            } else if (difference != 0) {</b>
+<b class="nc">&nbsp;                throw new IllegalStateException(&quot;Unexpected remainder on the operand stack: &quot; + difference);</b>
+&nbsp;            }
+<b class="fc">&nbsp;            doDrain(current.subList(0, current.size() - 1));</b>
+<b class="fc">&nbsp;            super.visitVarInsn(load, freeIndex);</b>
+<b class="fc">&nbsp;            return freeIndex + size.getSize();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Drains all supplied elements of the operand stack.
+&nbsp;     *
+&nbsp;     * @param stackSizes The stack sizes of the elements to drain.
+&nbsp;     */
+&nbsp;    private void doDrain(List&lt;StackSize&gt; stackSizes) {
+<b class="fc">&nbsp;        ListIterator&lt;StackSize&gt; iterator = stackSizes.listIterator(stackSizes.size());</b>
+<b class="fc">&nbsp;        while (iterator.hasPrevious()) {</b>
+<b class="fc">&nbsp;            StackSize current = iterator.previous();</b>
+<b class="fc">&nbsp;            switch (current) {</b>
+&nbsp;                case SINGLE:
+<b class="fc">&nbsp;                    super.visitInsn(Opcodes.POP);</b>
+<b class="fc">&nbsp;                    break;</b>
+&nbsp;                case DOUBLE:
+<b class="fc">&nbsp;                    super.visitInsn(Opcodes.POP2);</b>
+<b class="fc">&nbsp;                    break;</b>
+&nbsp;                default:
+<b class="nc">&nbsp;                    throw new IllegalStateException(&quot;Unexpected stack size: &quot; + current);</b>
+&nbsp;            }
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Explicitly registers a label to define a given stack state.
+&nbsp;     *
+&nbsp;     * @param label      The label to register a stack state for.
+&nbsp;     * @param stackSizes The stack sizes to assume when reaching the supplied label.
+&nbsp;     */
+&nbsp;    public void register(Label label, List&lt;StackSize&gt; stackSizes) {
+<b class="fc">&nbsp;        sizes.put(label, stackSizes);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public void visitInsn(int opcode) {
+<b class="fc">&nbsp;        switch (opcode) {</b>
+&nbsp;            case Opcodes.RETURN:
+&nbsp;            case Opcodes.ARETURN:
+&nbsp;            case Opcodes.IRETURN:
+&nbsp;            case Opcodes.LRETURN:
+&nbsp;            case Opcodes.FRETURN:
+&nbsp;            case Opcodes.DRETURN:
+&nbsp;            case Opcodes.ATHROW:
+<b class="fc">&nbsp;                current.clear();</b>
+<b class="fc">&nbsp;                break;</b>
+&nbsp;            case Opcodes.DUP_X1:
+&nbsp;            case Opcodes.DUP2_X1:
+<b class="fc">&nbsp;                adjustStack(SIZE_CHANGE[opcode], SIZE_CHANGE[opcode] + 1);</b>
+<b class="fc">&nbsp;                break;</b>
+&nbsp;            case Opcodes.DUP_X2:
+&nbsp;            case Opcodes.DUP2_X2:
+<b class="fc">&nbsp;                adjustStack(SIZE_CHANGE[opcode], SIZE_CHANGE[opcode] + 2);</b>
+<b class="fc">&nbsp;                break;</b>
+&nbsp;            case Opcodes.D2I:
+&nbsp;            case Opcodes.D2F:
+&nbsp;            case Opcodes.L2F:
+&nbsp;            case Opcodes.L2I:
+<b class="fc">&nbsp;                adjustStack(-2);</b>
+<b class="fc">&nbsp;                adjustStack(1);</b>
+<b class="fc">&nbsp;                break;</b>
+&nbsp;            case Opcodes.I2D:
+&nbsp;            case Opcodes.I2L:
+&nbsp;            case Opcodes.F2D:
+&nbsp;            case Opcodes.F2L:
+<b class="fc">&nbsp;                adjustStack(-1);</b>
+<b class="fc">&nbsp;                adjustStack(2);</b>
+<b class="fc">&nbsp;                break;</b>
+&nbsp;            case Opcodes.LALOAD:
+&nbsp;            case Opcodes.DALOAD:
+<b class="fc">&nbsp;                adjustStack(-2);</b>
+<b class="fc">&nbsp;                adjustStack(+2);</b>
+<b class="fc">&nbsp;                break;</b>
+&nbsp;            default:
+<b class="fc">&nbsp;                adjustStack(SIZE_CHANGE[opcode]);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        super.visitInsn(opcode);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public void visitIntInsn(int opcode, int operand) {
+<b class="fc">&nbsp;        adjustStack(SIZE_CHANGE[opcode]);</b>
+<b class="fc">&nbsp;        super.visitIntInsn(opcode, operand);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    @SuppressFBWarnings(value = &quot;SF_SWITCH_NO_DEFAULT&quot;, justification = &quot;No action required on default option.&quot;)
+&nbsp;    public void visitVarInsn(int opcode, int variable) {
+<b class="fc">&nbsp;        switch (opcode) {</b>
+&nbsp;            case Opcodes.ASTORE:
+&nbsp;            case Opcodes.ISTORE:
+&nbsp;            case Opcodes.FSTORE:
+<b class="fc">&nbsp;                freeIndex = Math.max(freeIndex, variable + 1);</b>
+<b class="fc">&nbsp;                break;</b>
+&nbsp;            case Opcodes.LSTORE:
+&nbsp;            case Opcodes.DSTORE:
+<b class="fc">&nbsp;                freeIndex = Math.max(freeIndex, variable + 2);</b>
+<b class="fc">&nbsp;                break;</b>
+&nbsp;            case Opcodes.RET:
+<b class="fc">&nbsp;                current.clear();</b>
+&nbsp;                break;
+&nbsp;        }
+<b class="fc">&nbsp;        adjustStack(SIZE_CHANGE[opcode]);</b>
+<b class="fc">&nbsp;        super.visitVarInsn(opcode, variable);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public void visitTypeInsn(int opcode, String type) {
+<b class="fc">&nbsp;        adjustStack(SIZE_CHANGE[opcode]);</b>
+<b class="fc">&nbsp;        super.visitTypeInsn(opcode, type);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public void visitFieldInsn(int opcode, String owner, String name, String descriptor) {
+<b class="fc">&nbsp;        int baseline = Type.getType(descriptor).getSize();</b>
+<b class="fc">&nbsp;        switch (opcode) {</b>
+&nbsp;            case Opcodes.GETFIELD:
+<b class="fc">&nbsp;                adjustStack(-1);</b>
+<b class="fc">&nbsp;                adjustStack(baseline);</b>
+<b class="fc">&nbsp;                break;</b>
+&nbsp;            case Opcodes.GETSTATIC:
+<b class="fc">&nbsp;                adjustStack(baseline);</b>
+<b class="fc">&nbsp;                break;</b>
+&nbsp;            case Opcodes.PUTFIELD:
+<b class="fc">&nbsp;                adjustStack(-baseline - 1);</b>
+<b class="fc">&nbsp;                break;</b>
+&nbsp;            case Opcodes.PUTSTATIC:
+<b class="fc">&nbsp;                adjustStack(-baseline);</b>
+<b class="fc">&nbsp;                break;</b>
+&nbsp;            default:
+<b class="nc">&nbsp;                throw new IllegalStateException(&quot;Unexpected opcode: &quot; + opcode);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        super.visitFieldInsn(opcode, owner, name, descriptor);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public void visitMethodInsn(int opcode, String owner, String name, String descriptor, boolean isInterface) {
+<b class="fc">&nbsp;        int baseline = Type.getArgumentsAndReturnSizes(descriptor);</b>
+<b class="fc">&nbsp;        adjustStack(-(baseline &gt;&gt; 2) + (opcode == Opcodes.INVOKESTATIC ? 1 : 0));</b>
+<b class="fc">&nbsp;        adjustStack(baseline &amp; 0x03);</b>
+<b class="fc">&nbsp;        super.visitMethodInsn(opcode, owner, name, descriptor, isInterface);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public void visitInvokeDynamicInsn(String name, String descriptor, Handle bootstrap, Object... bootstrapArguments) {
+<b class="fc">&nbsp;        int baseline = Type.getArgumentsAndReturnSizes(descriptor);</b>
+<b class="fc">&nbsp;        adjustStack(-(baseline &gt;&gt; 2) + 1);</b>
+<b class="fc">&nbsp;        adjustStack(baseline &amp; 0x03);</b>
+<b class="fc">&nbsp;        super.visitInvokeDynamicInsn(name, descriptor, bootstrap, bootstrapArguments);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public void visitLdcInsn(Object value) {
+<b class="fc">&nbsp;        adjustStack((value instanceof Long || value instanceof Double) ? 2 : 1);</b>
+<b class="fc">&nbsp;        super.visitLdcInsn(value);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public void visitMultiANewArrayInsn(String descriptor, int dimension) {
+<b class="nc">&nbsp;        adjustStack(1 - dimension);</b>
+<b class="nc">&nbsp;        super.visitMultiANewArrayInsn(descriptor, dimension);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public void visitJumpInsn(int opcode, Label label) {
+<b class="fc">&nbsp;        adjustStack(SIZE_CHANGE[opcode]);</b>
+<b class="fc">&nbsp;        sizes.put(label, new ArrayList&lt;StackSize&gt;(opcode == Opcodes.JSR</b>
+<b class="fc">&nbsp;                ? CompoundList.of(current, StackSize.SINGLE)</b>
+<b class="fc">&nbsp;                : current));</b>
+<b class="fc">&nbsp;        if (opcode == Opcodes.GOTO) {</b>
+<b class="fc">&nbsp;            current.clear();</b>
+&nbsp;        }
+<b class="fc">&nbsp;        super.visitJumpInsn(opcode, label);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public void visitLabel(Label label) {
+<b class="fc">&nbsp;        List&lt;StackSize&gt; current = sizes.get(label);</b>
+<b class="fc">&nbsp;        if (current != null) {</b>
+<b class="fc">&nbsp;            this.current = new ArrayList&lt;StackSize&gt;(current);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        super.visitLabel(label);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public void visitLineNumber(int line, Label start) {
+<b class="fc">&nbsp;        super.visitLineNumber(line, start);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public void visitTableSwitchInsn(int minimum, int maximum, Label defaultOption, Label... option) {
+<b class="nc">&nbsp;        adjustStack(-1);</b>
+<b class="nc">&nbsp;        List&lt;StackSize&gt; current = new ArrayList&lt;StackSize&gt;(this.current);</b>
+<b class="nc">&nbsp;        sizes.put(defaultOption, current);</b>
+<b class="nc">&nbsp;        for (Label label : option) {</b>
+<b class="nc">&nbsp;            sizes.put(label, current);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        super.visitTableSwitchInsn(minimum, maximum, defaultOption, option);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public void visitLookupSwitchInsn(Label defaultOption, int[] key, Label[] option) {
+<b class="nc">&nbsp;        adjustStack(-1);</b>
+<b class="nc">&nbsp;        List&lt;StackSize&gt; current = new ArrayList&lt;StackSize&gt;(this.current);</b>
+<b class="nc">&nbsp;        sizes.put(defaultOption, current);</b>
+<b class="nc">&nbsp;        for (Label label : option) {</b>
+<b class="nc">&nbsp;            sizes.put(label, current);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        super.visitLookupSwitchInsn(defaultOption, key, option);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public void visitTryCatchBlock(Label start, Label end, Label handler, @MaybeNull String type) {
+<b class="fc">&nbsp;        sizes.put(handler, Collections.singletonList(StackSize.SINGLE));</b>
+<b class="fc">&nbsp;        super.visitTryCatchBlock(start, end, handler, type);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    @SuppressFBWarnings(value = &quot;RC_REF_COMPARISON_BAD_PRACTICE&quot;, justification = &quot;ASM models frames by reference identity.&quot;)
+&nbsp;    public void visitFrame(int type, int localVariableLength, @MaybeNull Object[] localVariable, int stackSize, @MaybeNull Object[] stack) {
+<b class="fc">&nbsp;        switch (type) {</b>
+&nbsp;            case Opcodes.F_SAME:
+&nbsp;            case Opcodes.F_CHOP:
+&nbsp;            case Opcodes.F_APPEND:
+<b class="fc">&nbsp;                current.clear();</b>
+<b class="fc">&nbsp;                break;</b>
+&nbsp;            case Opcodes.F_SAME1:
+<b class="fc">&nbsp;                current.clear();</b>
+<b class="fc">&nbsp;                if (stack[0] == Opcodes.LONG || stack[0] == Opcodes.DOUBLE) {</b>
+<b class="fc">&nbsp;                    current.add(StackSize.DOUBLE);</b>
+&nbsp;                } else {
+<b class="fc">&nbsp;                    current.add(StackSize.SINGLE);</b>
+&nbsp;                }
+<b class="fc">&nbsp;                break;</b>
+&nbsp;            case Opcodes.F_NEW:
+&nbsp;            case Opcodes.F_FULL:
+<b class="fc">&nbsp;                current.clear();</b>
+<b class="fc">&nbsp;                for (int index = 0; index &lt; stackSize; index++) {</b>
+<b class="fc">&nbsp;                    if (stack[index] == Opcodes.LONG || stack[index] == Opcodes.DOUBLE) {</b>
+<b class="fc">&nbsp;                        current.add(StackSize.DOUBLE);</b>
+&nbsp;                    } else {
+<b class="fc">&nbsp;                        current.add(StackSize.SINGLE);</b>
+&nbsp;                    }
+&nbsp;                }
+<b class="fc">&nbsp;                break;</b>
+&nbsp;            default:
+<b class="nc">&nbsp;                throw new IllegalStateException(&quot;Unknown frame type: &quot; + type);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        super.visitFrame(type, localVariableLength, localVariable, stackSize, stack);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-03 11:00</div>
+</div>
+</body>
+</html>

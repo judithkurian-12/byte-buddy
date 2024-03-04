@@ -1,0 +1,394 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > FileSystem</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">net.bytebuddy.utility</a>
+</div>
+
+<h1>Coverage Summary for Class: FileSystem (net.bytebuddy.utility)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">FileSystem</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/6)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">FileSystem$ForLegacyVm</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/21)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">FileSystem$ForNio2CapableVm</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/10)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">FileSystem$ForNio2CapableVm$Dispatcher</td>
+  </tr>
+  <tr>
+    <td class="name">FileSystem$ForNio2CapableVm$Files</td>
+  </tr>
+  <tr>
+    <td class="name">FileSystem$ForNio2CapableVm$StandardCopyOption</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/37)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Copyright 2014 - Present Rafael Winterhalter
+&nbsp; *
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;package net.bytebuddy.utility;
+&nbsp;
+&nbsp;import net.bytebuddy.build.AccessControllerPlugin;
+&nbsp;import net.bytebuddy.build.CachedReturnPlugin;
+&nbsp;import net.bytebuddy.build.HashCodeAndEqualsPlugin;
+&nbsp;import net.bytebuddy.dynamic.loading.ClassLoadingStrategy;
+&nbsp;import net.bytebuddy.utility.dispatcher.JavaDispatcher;
+&nbsp;
+&nbsp;import java.io.*;
+&nbsp;import java.security.PrivilegedAction;
+&nbsp;
+&nbsp;/**
+&nbsp; * A dispatcher to interact with the file system. If NIO2 is available, the API is used. Otherwise, byte streams are used.
+&nbsp; */
+<b class="nc">&nbsp;public abstract class FileSystem {</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns the {@link FileSystem} instance to use.
+&nbsp;     *
+&nbsp;     * @return The {@link FileSystem} instance to use.
+&nbsp;     */
+&nbsp;    @CachedReturnPlugin.Enhance(&quot;INSTANCE&quot;)
+&nbsp;    public static FileSystem getInstance() {
+&nbsp;        try {
+<b class="nc">&nbsp;            Class.forName(&quot;java.nio.file.Files&quot;, false, ClassLoadingStrategy.BOOTSTRAP_LOADER);</b>
+<b class="nc">&nbsp;            return new ForNio2CapableVm();</b>
+<b class="nc">&nbsp;        } catch (ClassNotFoundException ignored) {</b>
+<b class="nc">&nbsp;            return new ForLegacyVm();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A proxy for {@code java.security.AccessController#doPrivileged} that is activated if available.
+&nbsp;     *
+&nbsp;     * @param action The action to execute from a privileged context.
+&nbsp;     * @param &lt;T&gt;    The type of the action&#39;s resolved value.
+&nbsp;     * @return The action&#39;s resolved value.
+&nbsp;     */
+&nbsp;    @AccessControllerPlugin.Enhance
+&nbsp;    private static &lt;T&gt; T doPrivileged(PrivilegedAction&lt;T&gt; action) {
+<b class="nc">&nbsp;        return action.run();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Copies a file.
+&nbsp;     *
+&nbsp;     * @param source The source file.
+&nbsp;     * @param target The target file.
+&nbsp;     * @throws IOException If an I/O exception occurs.
+&nbsp;     */
+&nbsp;    public abstract void copy(File source, File target) throws IOException;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Moves a file.
+&nbsp;     *
+&nbsp;     * @param source The source file.
+&nbsp;     * @param target The target file.
+&nbsp;     * @throws IOException If an I/O exception occurs.
+&nbsp;     */
+&nbsp;    public abstract void move(File source, File target) throws IOException;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A file system representation for a VM that does not support NIO2.
+&nbsp;     */
+&nbsp;    @HashCodeAndEqualsPlugin.Enhance
+<b class="nc">&nbsp;    protected static class ForLegacyVm extends FileSystem {</b>
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public void copy(File source, File target) throws IOException {
+<b class="nc">&nbsp;            InputStream inputStream = new FileInputStream(source);</b>
+&nbsp;            try {
+<b class="nc">&nbsp;                OutputStream outputStream = new FileOutputStream(target);</b>
+&nbsp;                try {
+<b class="nc">&nbsp;                    byte[] buffer = new byte[1024];</b>
+&nbsp;                    int length;
+<b class="nc">&nbsp;                    while ((length = inputStream.read(buffer)) != -1) {</b>
+<b class="nc">&nbsp;                        outputStream.write(buffer, 0, length);</b>
+&nbsp;                    }
+&nbsp;                } finally {
+<b class="nc">&nbsp;                    outputStream.close();</b>
+<b class="nc">&nbsp;                }</b>
+&nbsp;            } finally {
+<b class="nc">&nbsp;                inputStream.close();</b>
+<b class="nc">&nbsp;            }</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public void move(File source, File target) throws IOException {
+<b class="nc">&nbsp;            InputStream inputStream = new FileInputStream(source);</b>
+&nbsp;            try {
+<b class="nc">&nbsp;                OutputStream outputStream = new FileOutputStream(target);</b>
+&nbsp;                try {
+<b class="nc">&nbsp;                    byte[] buffer = new byte[1024];</b>
+&nbsp;                    int length;
+<b class="nc">&nbsp;                    while ((length = inputStream.read(buffer)) != -1) {</b>
+<b class="nc">&nbsp;                        outputStream.write(buffer, 0, length);</b>
+&nbsp;                    }
+&nbsp;                } finally {
+<b class="nc">&nbsp;                    outputStream.close();</b>
+<b class="nc">&nbsp;                }</b>
+&nbsp;            } finally {
+<b class="nc">&nbsp;                inputStream.close();</b>
+<b class="nc">&nbsp;            }</b>
+<b class="nc">&nbsp;            if (!source.delete()) {</b>
+<b class="nc">&nbsp;                source.deleteOnExit();</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A file system representation for a VM that does support NIO2.
+&nbsp;     */
+&nbsp;    @HashCodeAndEqualsPlugin.Enhance
+<b class="nc">&nbsp;    protected static class ForNio2CapableVm extends FileSystem {</b>
+&nbsp;
+&nbsp;        /**
+&nbsp;         * A dispatcher to resolve a {@link File} to a {@code java.nio.file.Path}.
+&nbsp;         */
+<b class="nc">&nbsp;        private static final Dispatcher DISPATCHER = doPrivileged(JavaDispatcher.of(Dispatcher.class));</b>
+&nbsp;
+&nbsp;        /**
+&nbsp;         * A dispatcher to resolve a dispatcher for {@code java.nio.file.Files}.
+&nbsp;         */
+<b class="nc">&nbsp;        private static final Files FILES = doPrivileged(JavaDispatcher.of(Files.class));</b>
+&nbsp;
+&nbsp;        /**
+&nbsp;         * A dispatcher to interact with {@code java.nio.file.StandardCopyOption}.
+&nbsp;         */
+<b class="nc">&nbsp;        private static final StandardCopyOption STANDARD_COPY_OPTION = doPrivileged(JavaDispatcher.of(StandardCopyOption.class));</b>
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public void copy(File source, File target) throws IOException {
+<b class="nc">&nbsp;            Object[] option = STANDARD_COPY_OPTION.toArray(1);</b>
+<b class="nc">&nbsp;            option[0] = STANDARD_COPY_OPTION.valueOf(&quot;REPLACE_EXISTING&quot;);</b>
+<b class="nc">&nbsp;            FILES.copy(DISPATCHER.toPath(source), DISPATCHER.toPath(target), option);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public void move(File source, File target) throws IOException {
+<b class="nc">&nbsp;            Object[] option = STANDARD_COPY_OPTION.toArray(1);</b>
+<b class="nc">&nbsp;            option[0] = STANDARD_COPY_OPTION.valueOf(&quot;REPLACE_EXISTING&quot;);</b>
+<b class="nc">&nbsp;            FILES.move(DISPATCHER.toPath(source), DISPATCHER.toPath(target), option);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * A dispatcher to resolve a {@link File} to a {@code java.nio.file.Path}.
+&nbsp;         */
+&nbsp;        @JavaDispatcher.Proxied(&quot;java.io.File&quot;)
+&nbsp;        protected interface Dispatcher {
+&nbsp;
+&nbsp;            /**
+&nbsp;             * Resolves a {@link File} to a {@code java.nio.file.Path}.
+&nbsp;             *
+&nbsp;             * @param value The file to convert.
+&nbsp;             * @return The transformed {@code java.nio.file.Path}.
+&nbsp;             * @throws IOException If an I/O exception occurs.
+&nbsp;             */
+&nbsp;            Object toPath(File value) throws IOException;
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * A dispatcher to access the {@code java.nio.file.Files} API.
+&nbsp;         */
+&nbsp;        @JavaDispatcher.Proxied(&quot;java.nio.file.Files&quot;)
+&nbsp;        protected interface Files {
+&nbsp;
+&nbsp;            /**
+&nbsp;             * Copies a file.
+&nbsp;             *
+&nbsp;             * @param source The source {@code java.nio.file.Path}.
+&nbsp;             * @param target The target {@code java.nio.file.Path}.
+&nbsp;             * @param option An array of copy options.
+&nbsp;             * @return The copied file.
+&nbsp;             * @throws IOException If an I/O exception occurs.
+&nbsp;             */
+&nbsp;            @JavaDispatcher.IsStatic
+&nbsp;            Object copy(@JavaDispatcher.Proxied(&quot;java.nio.file.Path&quot;) Object source,
+&nbsp;                        @JavaDispatcher.Proxied(&quot;java.nio.file.Path&quot;) Object target,
+&nbsp;                        @JavaDispatcher.Proxied(&quot;java.nio.file.CopyOption&quot;) Object[] option) throws IOException;
+&nbsp;
+&nbsp;            /**
+&nbsp;             * Moves a file.
+&nbsp;             *
+&nbsp;             * @param source The source {@code java.nio.file.Path}.
+&nbsp;             * @param target The target {@code java.nio.file.Path}.
+&nbsp;             * @param option An array of copy options.
+&nbsp;             * @return The moved file.
+&nbsp;             * @throws IOException If an I/O exception occurs.
+&nbsp;             */
+&nbsp;            @JavaDispatcher.IsStatic
+&nbsp;            Object move(@JavaDispatcher.Proxied(&quot;java.nio.file.Path&quot;) Object source,
+&nbsp;                        @JavaDispatcher.Proxied(&quot;java.nio.file.Path&quot;) Object target,
+&nbsp;                        @JavaDispatcher.Proxied(&quot;java.nio.file.CopyOption&quot;) Object[] option) throws IOException;
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * A dispatcher to interact with {@code java.nio.file.StandardCopyOption}.
+&nbsp;         */
+&nbsp;        @JavaDispatcher.Proxied(&quot;java.nio.file.StandardCopyOption&quot;)
+&nbsp;        protected interface StandardCopyOption {
+&nbsp;
+&nbsp;            /**
+&nbsp;             * Creates an array of type {@code java.nio.file.StandardCopyOption}.
+&nbsp;             *
+&nbsp;             * @param size The array&#39;s size.
+&nbsp;             * @return An array of type {@code java.nio.file.StandardCopyOption}.
+&nbsp;             */
+&nbsp;            @JavaDispatcher.Container
+&nbsp;            Object[] toArray(int size);
+&nbsp;
+&nbsp;            /**
+&nbsp;             * Resolve an enumeration for {@code java.nio.file.StandardCopyOption}.
+&nbsp;             *
+&nbsp;             * @param name The enumeration name.
+&nbsp;             * @return The enumeration value.
+&nbsp;             */
+&nbsp;            @JavaDispatcher.IsStatic
+&nbsp;            Object valueOf(String name);
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-03 10:47</div>
+</div>
+</body>
+</html>

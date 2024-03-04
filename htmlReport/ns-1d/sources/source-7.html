@@ -1,0 +1,249 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > JavaConstantValue</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">net.bytebuddy.implementation.bytecode.constant</a>
+</div>
+
+<h1>Coverage Summary for Class: JavaConstantValue (net.bytebuddy.implementation.bytecode.constant)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">JavaConstantValue</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/4)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">JavaConstantValue$Visitor</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (20/20)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (9/9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (24/24)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Copyright 2014 - Present Rafael Winterhalter
+&nbsp; *
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;package net.bytebuddy.implementation.bytecode.constant;
+&nbsp;
+&nbsp;import net.bytebuddy.build.HashCodeAndEqualsPlugin;
+&nbsp;import net.bytebuddy.description.type.TypeDescription;
+&nbsp;import net.bytebuddy.implementation.Implementation;
+&nbsp;import net.bytebuddy.implementation.bytecode.StackManipulation;
+&nbsp;import net.bytebuddy.utility.ConstantValue;
+&nbsp;import net.bytebuddy.utility.JavaConstant;
+&nbsp;import org.objectweb.asm.ConstantDynamic;
+&nbsp;import org.objectweb.asm.Handle;
+&nbsp;import org.objectweb.asm.MethodVisitor;
+&nbsp;import org.objectweb.asm.Type;
+&nbsp;
+&nbsp;/**
+&nbsp; * A constant representing a {@link JavaConstant}. By using this stack manipulation, a value is always
+&nbsp; * represented as a constant pool value and no attempt is made to load the value via a specialized byte
+&nbsp; * code instruction, in contrast to using {@link ConstantValue#toStackManipulation()}.
+&nbsp; */
+&nbsp;@HashCodeAndEqualsPlugin.Enhance
+&nbsp;public class JavaConstantValue extends StackManipulation.AbstractBase {
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The instance to load onto the operand stack.
+&nbsp;     */
+&nbsp;    private final JavaConstant constant;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a constant pool value representing a {@link JavaConstant}.
+&nbsp;     *
+&nbsp;     * @param constant The instance to load onto the operand stack.
+&nbsp;     */
+<b class="fc">&nbsp;    public JavaConstantValue(JavaConstant constant) {</b>
+<b class="fc">&nbsp;        this.constant = constant;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public Size apply(MethodVisitor methodVisitor, Implementation.Context implementationContext) {
+<b class="fc">&nbsp;        methodVisitor.visitLdcInsn(constant.accept(Visitor.INSTANCE));</b>
+<b class="fc">&nbsp;        return constant.getTypeDescription().getStackSize().toIncreasingSize();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A visitor to resolve a {@link JavaConstant} to a ASM constant pool representation.
+&nbsp;     */
+<b class="fc">&nbsp;    public enum Visitor implements JavaConstant.Visitor&lt;Object&gt; {</b>
+&nbsp;
+&nbsp;        /**
+&nbsp;         * The singleton instance.
+&nbsp;         */
+<b class="fc">&nbsp;        INSTANCE;</b>
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public Object onValue(JavaConstant.Simple&lt;?&gt; constant) {
+<b class="fc">&nbsp;            return constant.getValue();</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public Type onType(JavaConstant.Simple&lt;TypeDescription&gt; constant) {
+<b class="fc">&nbsp;            return Type.getType(constant.getValue().getDescriptor());</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public Type onMethodType(JavaConstant.MethodType constant) {
+<b class="fc">&nbsp;            StringBuilder stringBuilder = new StringBuilder().append(&#39;(&#39;);</b>
+<b class="fc">&nbsp;            for (TypeDescription parameterType : constant.getParameterTypes()) {</b>
+<b class="fc">&nbsp;                stringBuilder.append(parameterType.getDescriptor());</b>
+<b class="fc">&nbsp;            }</b>
+<b class="fc">&nbsp;            return Type.getMethodType(stringBuilder.append(&#39;)&#39;).append(constant.getReturnType().getDescriptor()).toString());</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public Handle onMethodHandle(JavaConstant.MethodHandle constant) {
+<b class="fc">&nbsp;            return new Handle(constant.getHandleType().getIdentifier(),</b>
+<b class="fc">&nbsp;                    constant.getOwnerType().getInternalName(),</b>
+<b class="fc">&nbsp;                    constant.getName(),</b>
+<b class="fc">&nbsp;                    constant.getDescriptor(),</b>
+<b class="fc">&nbsp;                    constant.getOwnerType().isInterface());</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public ConstantDynamic onDynamic(JavaConstant.Dynamic constant) {
+<b class="fc">&nbsp;            Object[] argument = new Object[constant.getArguments().size()];</b>
+<b class="fc">&nbsp;            for (int index = 0; index &lt; argument.length; index++) {</b>
+<b class="fc">&nbsp;                argument[index] = constant.getArguments().get(index).accept(this);</b>
+&nbsp;            }
+<b class="fc">&nbsp;            return new ConstantDynamic(constant.getName(),</b>
+<b class="fc">&nbsp;                    constant.getTypeDescription().getDescriptor(),</b>
+<b class="fc">&nbsp;                    onMethodHandle(constant.getBootstrap()),</b>
+&nbsp;                    argument);
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-02 16:00</div>
+</div>
+</body>
+</html>

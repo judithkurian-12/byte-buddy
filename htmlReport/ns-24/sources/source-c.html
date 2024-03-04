@@ -1,0 +1,233 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > QueueFactory</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">net.bytebuddy.utility</a>
+</div>
+
+<h1>Coverage Summary for Class: QueueFactory (net.bytebuddy.utility)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">QueueFactory</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/12)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">QueueFactory$Dispatcher</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/12)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Copyright 2014 - Present Rafael Winterhalter
+&nbsp; *
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;package net.bytebuddy.utility;
+&nbsp;
+&nbsp;import net.bytebuddy.build.AccessControllerPlugin;
+&nbsp;import net.bytebuddy.build.HashCodeAndEqualsPlugin;
+&nbsp;import net.bytebuddy.utility.dispatcher.JavaDispatcher;
+&nbsp;import net.bytebuddy.utility.nullability.MaybeNull;
+&nbsp;
+&nbsp;import java.security.PrivilegedAction;
+&nbsp;import java.util.Collection;
+&nbsp;import java.util.LinkedList;
+&nbsp;import java.util.Queue;
+&nbsp;
+&nbsp;/**
+&nbsp; * A factory for creating a {@link Queue}. For Java 5, a {@link LinkedList} is created whereas a
+&nbsp; * {@code java.util.ArrayDeque} is used for any future JVM version.
+&nbsp; */
+&nbsp;@HashCodeAndEqualsPlugin.Enhance
+&nbsp;public class QueueFactory {
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The singleton instance.
+&nbsp;     */
+<b class="nc">&nbsp;    private static final QueueFactory INSTANCE = new QueueFactory();</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The dispatcher to use.
+&nbsp;     */
+&nbsp;    private final Dispatcher dispatcher;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a new queue factory.
+&nbsp;     */
+<b class="nc">&nbsp;    private QueueFactory() {</b>
+<b class="nc">&nbsp;        dispatcher = doPrivileged(JavaDispatcher.of(Dispatcher.class));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a new queue.
+&nbsp;     *
+&nbsp;     * @param &lt;T&gt; The type of the queue elements.
+&nbsp;     * @return An appropriate queue.
+&nbsp;     */
+&nbsp;    public static &lt;T&gt; Queue&lt;T&gt; make() {
+<b class="nc">&nbsp;        Queue&lt;T&gt; queue = INSTANCE.dispatcher.arrayDeque();</b>
+<b class="nc">&nbsp;        return queue == null</b>
+<b class="nc">&nbsp;                ? new LinkedList&lt;T&gt;()</b>
+<b class="nc">&nbsp;                : queue;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a new queue.
+&nbsp;     *
+&nbsp;     * @param &lt;T&gt;      The type of the queue elements.
+&nbsp;     * @param elements The elements to provide to the queue constructor.
+&nbsp;     * @return An appropriate queue.
+&nbsp;     */
+&nbsp;    public static &lt;T&gt; Queue&lt;T&gt; make(Collection&lt;? extends T&gt; elements) {
+<b class="nc">&nbsp;        Queue&lt;T&gt; queue = INSTANCE.dispatcher.arrayDeque(elements);</b>
+<b class="nc">&nbsp;        return queue == null</b>
+<b class="nc">&nbsp;                ? new LinkedList&lt;T&gt;(elements)</b>
+<b class="nc">&nbsp;                : queue;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A proxy for {@code java.security.AccessController#doPrivileged} that is activated if available.
+&nbsp;     *
+&nbsp;     * @param action The action to execute from a privileged context.
+&nbsp;     * @param &lt;T&gt;    The type of the action&#39;s resolved value.
+&nbsp;     * @return The action&#39;s resolved value.
+&nbsp;     */
+&nbsp;    @AccessControllerPlugin.Enhance
+&nbsp;    private static &lt;T&gt; T doPrivileged(PrivilegedAction&lt;T&gt; action) {
+<b class="nc">&nbsp;        return action.run();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A dispatcher for creating an {@code java.util.ArrayDeque}.
+&nbsp;     */
+&nbsp;    @JavaDispatcher.Defaults
+&nbsp;    @JavaDispatcher.Proxied(&quot;java.util.ArrayDeque&quot;)
+&nbsp;    protected interface Dispatcher {
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Creates a new array deque.
+&nbsp;         *
+&nbsp;         * @param &lt;T&gt; The type of the action&#39;s resolved value.
+&nbsp;         * @return An array deque or {@code null} if this class is not supplied by the current VM.
+&nbsp;         */
+&nbsp;        @MaybeNull
+&nbsp;        @JavaDispatcher.IsConstructor
+&nbsp;        &lt;T&gt; Queue&lt;T&gt; arrayDeque();
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Creates a new array deque.
+&nbsp;         *
+&nbsp;         * @param &lt;T&gt;      The type of the action&#39;s resolved value.
+&nbsp;         * @param elements The elements to provide to the queue constructor.
+&nbsp;         * @return An array deque or {@code null} if this class is not supplied by the current VM.
+&nbsp;         */
+&nbsp;        @MaybeNull
+&nbsp;        @JavaDispatcher.IsConstructor
+&nbsp;        &lt;T&gt; Queue&lt;T&gt; arrayDeque(Collection&lt;? extends T&gt; elements);
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-03 10:47</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,282 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > Discovery</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">net.bytebuddy.build.maven</a>
+</div>
+
+<h1>Coverage Summary for Class: Discovery (net.bytebuddy.build.maven)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Discovery</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/8)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">Discovery$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">Discovery$2</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">Discovery$3</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">Discovery$4</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/16)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Copyright 2014 - Present Rafael Winterhalter
+&nbsp; *
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;package net.bytebuddy.build.maven;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;/**
+&nbsp; * Determines how and if plugins are discovered.
+&nbsp; */
+<b class="nc">&nbsp;public enum Discovery {</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Attempts discovery of plugins even if they are explicitly registered.
+&nbsp;     */
+<b class="nc">&nbsp;    ALL(false) {</b>
+&nbsp;        @Override
+&nbsp;        protected boolean isDiscover(List&lt;ByteBuddyMojo.Transformer&gt; transformers) {
+<b class="nc">&nbsp;            return true;</b>
+&nbsp;        }
+&nbsp;    },
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Attempts discovery of plugins but does not discover plugins that are explicitly registered.
+&nbsp;     */
+<b class="nc">&nbsp;    UNIQUE(true) {</b>
+&nbsp;        @Override
+&nbsp;        protected boolean isDiscover(List&lt;ByteBuddyMojo.Transformer&gt; transformers) {
+<b class="nc">&nbsp;            return true;</b>
+&nbsp;        }
+&nbsp;    },
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Only discovers plugins if no plugin was explicitly registered. This is the default configuration.
+&nbsp;     */
+<b class="nc">&nbsp;    EMPTY(true) {</b>
+&nbsp;        @Override
+&nbsp;        protected boolean isDiscover(List&lt;ByteBuddyMojo.Transformer&gt; transformers) {
+<b class="nc">&nbsp;            return transformers.isEmpty();</b>
+&nbsp;        }
+&nbsp;    },
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Does never discover plugins.
+&nbsp;     */
+<b class="nc">&nbsp;    NONE(true) {</b>
+&nbsp;        @Override
+&nbsp;        protected boolean isDiscover(List&lt;ByteBuddyMojo.Transformer&gt; transformers) {
+<b class="nc">&nbsp;            return false;</b>
+&nbsp;        }
+&nbsp;    };
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@code true} if explicit configurations should be recorded.
+&nbsp;     */
+&nbsp;    private final boolean recordConfiguration;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a new discovery configuration.
+&nbsp;     *
+&nbsp;     * @param recordConfiguration {@code true} if explicit configurations should be recorded.
+&nbsp;     */
+<b class="nc">&nbsp;    Discovery(boolean recordConfiguration) {</b>
+<b class="nc">&nbsp;        this.recordConfiguration = recordConfiguration;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns {@code true} if explicit configurations should be recorded.
+&nbsp;     *
+&nbsp;     * @return {@code true} if explicit configurations should be recorded.
+&nbsp;     */
+&nbsp;    protected boolean isRecordConfiguration() {
+<b class="nc">&nbsp;        return recordConfiguration;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Determines if plugins should be discovered from the class path.
+&nbsp;     *
+&nbsp;     * @param transformers The configured transformers.
+&nbsp;     * @return {@code true} if plugins should be discovered from the class path.
+&nbsp;     */
+&nbsp;    protected abstract boolean isDiscover(List&lt;ByteBuddyMojo.Transformer&gt; transformers);
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-03 11:00</div>
+</div>
+</body>
+</html>

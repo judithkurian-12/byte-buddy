@@ -1,0 +1,478 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > RenamingPlugin</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">net.bytebuddy.build</a>
+</div>
+
+<h1>Coverage Summary for Class: RenamingPlugin (net.bytebuddy.build)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">RenamingPlugin</td>
+<td class="coverageStat">
+  <span class="percent">
+    62.5%
+  </span>
+  <span class="absValue">
+    (5/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    70%
+  </span>
+  <span class="absValue">
+    (7/10)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">RenamingPlugin$Renaming</td>
+  </tr>
+  <tr>
+    <td class="name">RenamingPlugin$Renaming$Compound</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/13)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">RenamingPlugin$Renaming$ForPattern</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (10/10)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">RenamingPlugin$Renaming$NoOp</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">RenamingPlugin$RenamingRemapper</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (9/9)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (9/18)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    57.8%
+  </span>
+  <span class="absValue">
+    (26/45)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Copyright 2014 - Present Rafael Winterhalter
+&nbsp; *
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;package net.bytebuddy.build;
+&nbsp;
+&nbsp;import net.bytebuddy.asm.AsmVisitorWrapper;
+&nbsp;import net.bytebuddy.description.field.FieldDescription;
+&nbsp;import net.bytebuddy.description.field.FieldList;
+&nbsp;import net.bytebuddy.description.method.MethodList;
+&nbsp;import net.bytebuddy.description.type.TypeDescription;
+&nbsp;import net.bytebuddy.dynamic.ClassFileLocator;
+&nbsp;import net.bytebuddy.dynamic.DynamicType;
+&nbsp;import net.bytebuddy.implementation.Implementation;
+&nbsp;import net.bytebuddy.matcher.ElementMatcher;
+&nbsp;import net.bytebuddy.pool.TypePool;
+&nbsp;import org.objectweb.asm.ClassVisitor;
+&nbsp;import org.objectweb.asm.commons.ClassRemapper;
+&nbsp;import org.objectweb.asm.commons.Remapper;
+&nbsp;
+&nbsp;import java.util.*;
+&nbsp;import java.util.regex.Matcher;
+&nbsp;import java.util.regex.Pattern;
+&nbsp;
+&nbsp;import static net.bytebuddy.matcher.ElementMatchers.any;
+&nbsp;import static net.bytebuddy.matcher.ElementMatchers.nameStartsWith;
+&nbsp;
+&nbsp;/**
+&nbsp; * A plugin that replaces names that are discovered in class files.
+&nbsp; */
+&nbsp;@HashCodeAndEqualsPlugin.Enhance
+&nbsp;public class RenamingPlugin extends AsmVisitorWrapper.AbstractBase implements Plugin {
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The renaming to apply.
+&nbsp;     */
+&nbsp;    private final Renaming renaming;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A matcher that determines what types to consider for renaming.
+&nbsp;     */
+&nbsp;    private final ElementMatcher&lt;? super TypeDescription&gt; matcher;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a renaming plugin for a given regular expression and replacement that applies to all types.
+&nbsp;     *
+&nbsp;     * @param pattern     The pattern to consider.
+&nbsp;     * @param replacement The replacement to apply if the supplied pattern is matched.
+&nbsp;     */
+&nbsp;    public RenamingPlugin(String pattern, String replacement) {
+<b class="fc">&nbsp;        this(new Renaming.ForPattern(Pattern.compile(pattern), replacement));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a renaming plugin for a given regular expression and replacement that applies to all types that start with a given prefix.
+&nbsp;     *
+&nbsp;     * @param pattern     The pattern to consider.
+&nbsp;     * @param replacement The replacement to apply if the supplied pattern is matched.
+&nbsp;     * @param prefix      The prefix for types to consider for renaming.
+&nbsp;     */
+&nbsp;    public RenamingPlugin(String pattern, String replacement, String prefix) {
+<b class="nc">&nbsp;        this(new Renaming.ForPattern(Pattern.compile(pattern), replacement), nameStartsWith(prefix));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a renaming plugin for the given renaming that applies to all types.
+&nbsp;     *
+&nbsp;     * @param renaming The renaming to apply.
+&nbsp;     */
+&nbsp;    public RenamingPlugin(Renaming renaming) {
+<b class="fc">&nbsp;        this(renaming, any());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a renaming plugin for the given renaming and type matcher.
+&nbsp;     *
+&nbsp;     * @param renaming The renaming to apply.
+&nbsp;     * @param matcher  A matcher that determines what types to consider for renaming.
+&nbsp;     */
+<b class="fc">&nbsp;    public RenamingPlugin(Renaming renaming, ElementMatcher&lt;? super TypeDescription&gt; matcher) {</b>
+<b class="fc">&nbsp;        this.renaming = renaming;</b>
+<b class="fc">&nbsp;        this.matcher = matcher;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public DynamicType.Builder&lt;?&gt; apply(DynamicType.Builder&lt;?&gt; builder, TypeDescription typeDescription, ClassFileLocator classFileLocator) {
+<b class="fc">&nbsp;        return builder.visit(this);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public boolean matches(TypeDescription target) {
+<b class="nc">&nbsp;        return matcher.matches(target);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public void close() {
+&nbsp;        /* do nothing */
+<b class="nc">&nbsp;    }</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public ClassVisitor wrap(TypeDescription instrumentedType,
+&nbsp;                             ClassVisitor classVisitor,
+&nbsp;                             Implementation.Context implementationContext,
+&nbsp;                             TypePool typePool,
+&nbsp;                             FieldList&lt;FieldDescription.InDefinedShape&gt; fields,
+&nbsp;                             MethodList&lt;?&gt; methods,
+&nbsp;                             int writerFlags,
+&nbsp;                             int readerFlags) {
+<b class="fc">&nbsp;        return new ClassRemapper(classVisitor, new RenamingRemapper(renaming));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A renaming function tho transform a type&#39;s binary name.
+&nbsp;     */
+&nbsp;    public interface Renaming {
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Applies a renaming.
+&nbsp;         *
+&nbsp;         * @param name The previous name.
+&nbsp;         * @return The former name.
+&nbsp;         */
+&nbsp;        String apply(String name);
+&nbsp;
+&nbsp;        /**
+&nbsp;         * A non-operational renaming.
+&nbsp;         */
+<b class="nc">&nbsp;        enum NoOp implements Renaming {</b>
+&nbsp;
+&nbsp;            /**
+&nbsp;             * The singleton instance.
+&nbsp;             */
+<b class="nc">&nbsp;            INSTANCE;</b>
+&nbsp;
+&nbsp;            /**
+&nbsp;             * {@inheritDoc}
+&nbsp;             */
+&nbsp;            public String apply(String name) {
+<b class="nc">&nbsp;                return name;</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * A renaming that renames types by a given regular expression.
+&nbsp;         */
+&nbsp;        @HashCodeAndEqualsPlugin.Enhance
+&nbsp;        class ForPattern implements Renaming {
+&nbsp;
+&nbsp;            /**
+&nbsp;             * The regular expression to use.
+&nbsp;             */
+&nbsp;            private final Pattern pattern;
+&nbsp;
+&nbsp;            /**
+&nbsp;             * The replacement to apply.
+&nbsp;             */
+&nbsp;            private final String replacement;
+&nbsp;
+&nbsp;            /**
+&nbsp;             * Creates a new renaming for a regular expression.
+&nbsp;             *
+&nbsp;             * @param pattern     The regular expression to use.
+&nbsp;             * @param replacement The replacement to apply.
+&nbsp;             */
+<b class="fc">&nbsp;            public ForPattern(Pattern pattern, String replacement) {</b>
+<b class="fc">&nbsp;                this.pattern = pattern;</b>
+<b class="fc">&nbsp;                this.replacement = replacement;</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            /**
+&nbsp;             * {@inheritDoc}
+&nbsp;             */
+&nbsp;            public String apply(String name) {
+<b class="fc">&nbsp;                Matcher matcher = pattern.matcher(name);</b>
+<b class="fc">&nbsp;                if (matcher.find()) {</b>
+<b class="fc">&nbsp;                    StringBuffer buffer = new StringBuffer();</b>
+&nbsp;                    do {
+<b class="fc">&nbsp;                        matcher.appendReplacement(buffer, replacement);</b>
+<b class="fc">&nbsp;                    } while (matcher.find());</b>
+<b class="fc">&nbsp;                    return matcher.appendTail(buffer).toString();</b>
+&nbsp;                } else {
+<b class="fc">&nbsp;                    return name;</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * A compound renaming.
+&nbsp;         */
+&nbsp;        @HashCodeAndEqualsPlugin.Enhance
+&nbsp;        class Compound implements Renaming {
+&nbsp;
+&nbsp;            /**
+&nbsp;             * The renamings to apply.
+&nbsp;             */
+&nbsp;            private final List&lt;Renaming&gt; renamings;
+&nbsp;
+&nbsp;            /**
+&nbsp;             * Creates a new compound renaming.
+&nbsp;             *
+&nbsp;             * @param renaming The renaming to apply.
+&nbsp;             */
+&nbsp;            public Compound(Renaming... renaming) {
+<b class="nc">&nbsp;                this(Arrays.asList(renaming));</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            /**
+&nbsp;             * Creates a new compound renaming.
+&nbsp;             *
+&nbsp;             * @param renamings The renamings to apply.
+&nbsp;             */
+<b class="nc">&nbsp;            public Compound(List&lt;? extends Renaming&gt; renamings) {</b>
+<b class="nc">&nbsp;                this.renamings = new ArrayList&lt;Renaming&gt;(renamings.size());</b>
+<b class="nc">&nbsp;                for (Renaming remapping : renamings) {</b>
+<b class="nc">&nbsp;                    if (remapping instanceof Compound) {</b>
+<b class="nc">&nbsp;                        this.renamings.addAll(((Compound) remapping).renamings);</b>
+<b class="nc">&nbsp;                    } else if (!(remapping instanceof NoOp)) {</b>
+<b class="nc">&nbsp;                        this.renamings.add(remapping);</b>
+&nbsp;                    }
+<b class="nc">&nbsp;                }</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            /**
+&nbsp;             * {@inheritDoc}
+&nbsp;             */
+&nbsp;            public String apply(String name) {
+<b class="nc">&nbsp;                for (Renaming remapping : renamings) {</b>
+<b class="nc">&nbsp;                    name = remapping.apply(name);</b>
+<b class="nc">&nbsp;                }</b>
+<b class="nc">&nbsp;                return name;</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * An ASM {@link Remapper} to apply renamings.
+&nbsp;     */
+&nbsp;    protected static class RenamingRemapper extends Remapper {
+&nbsp;
+&nbsp;        /**
+&nbsp;         * The renaming to apply.
+&nbsp;         */
+&nbsp;        private final Renaming renaming;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * A cache of previously applied renamings.
+&nbsp;         */
+<b class="fc">&nbsp;        private final Map&lt;String, String&gt; cache = new HashMap&lt;String, String&gt;();</b>
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Creates a new renaming remapper.
+&nbsp;         * @param renaming The renaming to apply.
+&nbsp;         */
+<b class="fc">&nbsp;        protected RenamingRemapper(Renaming renaming) {</b>
+<b class="fc">&nbsp;            this.renaming = renaming;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public String map(String internalName) {
+<b class="fc">&nbsp;            String renamed = cache.get(internalName);</b>
+<b class="fc">&nbsp;            if (renamed != null) {</b>
+<b class="fc">&nbsp;                return renamed;</b>
+&nbsp;            }
+<b class="fc">&nbsp;            renamed = renaming.apply(internalName.replace(&#39;/&#39;, &#39;.&#39;)).replace(&#39;.&#39;, &#39;/&#39;);</b>
+<b class="fc">&nbsp;            cache.put(internalName, renamed);</b>
+<b class="fc">&nbsp;            return renamed;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-02 16:00</div>
+</div>
+</body>
+</html>

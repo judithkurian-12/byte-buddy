@@ -1,0 +1,689 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > GenericTypeAwareAssigner</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">net.bytebuddy.implementation.bytecode.assign.reference</a>
+</div>
+
+<h1>Coverage Summary for Class: GenericTypeAwareAssigner (net.bytebuddy.implementation.bytecode.assign.reference)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">GenericTypeAwareAssigner</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (13/13)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">GenericTypeAwareAssigner$IsAssignableToVisitor</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    91.3%
+  </span>
+  <span class="absValue">
+    (21/23)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">GenericTypeAwareAssigner$IsAssignableToVisitor$OfGenericArray</td>
+<td class="coverageStat">
+  <span class="percent">
+    75%
+  </span>
+  <span class="absValue">
+    (3/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    60%
+  </span>
+  <span class="absValue">
+    (6/10)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">GenericTypeAwareAssigner$IsAssignableToVisitor$OfManifestType</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    93.3%
+  </span>
+  <span class="absValue">
+    (14/15)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">GenericTypeAwareAssigner$IsAssignableToVisitor$OfNonGenericType</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (1/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    25%
+  </span>
+  <span class="absValue">
+    (1/4)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">GenericTypeAwareAssigner$IsAssignableToVisitor$OfParameterizedType</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">GenericTypeAwareAssigner$IsAssignableToVisitor$OfSimpleType</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    86.2%
+  </span>
+  <span class="absValue">
+    (25/29)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">GenericTypeAwareAssigner$IsAssignableToVisitor$OfWildcard</td>
+<td class="coverageStat">
+  <span class="percent">
+    33.3%
+  </span>
+  <span class="absValue">
+    (2/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    85.2%
+  </span>
+  <span class="absValue">
+    (23/27)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    80%
+  </span>
+  <span class="absValue">
+    (24/30)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    85.4%
+  </span>
+  <span class="absValue">
+    (105/123)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Copyright 2014 - Present Rafael Winterhalter
+&nbsp; *
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;package net.bytebuddy.implementation.bytecode.assign.reference;
+&nbsp;
+&nbsp;import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+&nbsp;import net.bytebuddy.build.HashCodeAndEqualsPlugin;
+&nbsp;import net.bytebuddy.description.type.TypeDescription;
+&nbsp;import net.bytebuddy.description.type.TypeList;
+&nbsp;import net.bytebuddy.implementation.bytecode.StackManipulation;
+&nbsp;import net.bytebuddy.implementation.bytecode.assign.Assigner;
+&nbsp;import net.bytebuddy.implementation.bytecode.assign.TypeCasting;
+&nbsp;import net.bytebuddy.utility.QueueFactory;
+&nbsp;
+&nbsp;import java.util.*;
+&nbsp;
+&nbsp;/**
+&nbsp; * &lt;p&gt;
+&nbsp; * An assigner implementation that considers generic type assignability.
+&nbsp; * &lt;/p&gt;
+&nbsp; * &lt;p&gt;
+&nbsp; * &lt;b&gt;Important&lt;/b&gt;: This implementation does not currently support method variables and their type inference.
+&nbsp; * &lt;/p&gt;
+&nbsp; */
+<b class="fc">&nbsp;public enum GenericTypeAwareAssigner implements Assigner {</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The singleton instance.
+&nbsp;     */
+<b class="fc">&nbsp;    INSTANCE;</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public StackManipulation assign(TypeDescription.Generic source, TypeDescription.Generic target, Typing typing) {
+<b class="fc">&nbsp;        if (source.isPrimitive() || target.isPrimitive()) {</b>
+<b class="fc">&nbsp;            return source.equals(target)</b>
+<b class="fc">&nbsp;                    ? StackManipulation.Trivial.INSTANCE</b>
+<b class="fc">&nbsp;                    : StackManipulation.Illegal.INSTANCE;</b>
+<b class="fc">&nbsp;        } else if (source.accept(new IsAssignableToVisitor(target))) {</b>
+<b class="fc">&nbsp;            return StackManipulation.Trivial.INSTANCE;</b>
+<b class="fc">&nbsp;        } else if (typing.isDynamic()) {</b>
+<b class="fc">&nbsp;            return source.asErasure().isAssignableTo(target.asErasure())</b>
+<b class="fc">&nbsp;                    ? StackManipulation.Trivial.INSTANCE</b>
+<b class="fc">&nbsp;                    : TypeCasting.to(target);</b>
+&nbsp;        } else {
+<b class="fc">&nbsp;            return StackManipulation.Illegal.INSTANCE;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A visitor for generic types that determines assignability of such types.
+&nbsp;     */
+&nbsp;    @HashCodeAndEqualsPlugin.Enhance
+&nbsp;    protected static class IsAssignableToVisitor implements TypeDescription.Generic.Visitor&lt;Boolean&gt; {
+&nbsp;
+&nbsp;        /**
+&nbsp;         * The type to which another type is being assigned.
+&nbsp;         */
+&nbsp;        private final TypeDescription.Generic typeDescription;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@code true} if the assignment is polymorphic.
+&nbsp;         */
+&nbsp;        private final boolean polymorphic;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Creates a new visitor to determine assignability of the supplied type.
+&nbsp;         *
+&nbsp;         * @param typeDescription The type to which another type is being assigned.
+&nbsp;         */
+&nbsp;        public IsAssignableToVisitor(TypeDescription.Generic typeDescription) {
+<b class="fc">&nbsp;            this(typeDescription, true);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Creates a new visitor to determine assignability of the supplied type.
+&nbsp;         *
+&nbsp;         * @param typeDescription The type to which another type is being assigned.
+&nbsp;         * @param polymorphic     {@code true} if the assignment is polymorphic.
+&nbsp;         */
+<b class="fc">&nbsp;        protected IsAssignableToVisitor(TypeDescription.Generic typeDescription, boolean polymorphic) {</b>
+<b class="fc">&nbsp;            this.typeDescription = typeDescription;</b>
+<b class="fc">&nbsp;            this.polymorphic = polymorphic;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public Boolean onGenericArray(TypeDescription.Generic genericArray) {
+<b class="fc">&nbsp;            return typeDescription.accept(new OfGenericArray(genericArray, polymorphic));</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public Boolean onWildcard(TypeDescription.Generic wildcard) {
+<b class="fc">&nbsp;            return typeDescription.accept(new OfWildcard(wildcard));</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public Boolean onParameterizedType(TypeDescription.Generic parameterizedType) {
+<b class="fc">&nbsp;            return typeDescription.accept(new OfParameterizedType(parameterizedType, polymorphic));</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public Boolean onTypeVariable(TypeDescription.Generic typeVariable) {
+<b class="fc">&nbsp;            if (typeVariable.getTypeVariableSource().isInferrable()) {</b>
+<b class="nc">&nbsp;                throw new UnsupportedOperationException(&quot;Assignability checks for type variables declared by methods are not currently supported&quot;);</b>
+<b class="fc">&nbsp;            } else if (typeVariable.equals(typeDescription)) {</b>
+<b class="fc">&nbsp;                return true;</b>
+<b class="fc">&nbsp;            } else if (polymorphic) {</b>
+<b class="fc">&nbsp;                Queue&lt;TypeDescription.Generic&gt; candidates = QueueFactory.make(typeVariable.getUpperBounds());</b>
+<b class="fc">&nbsp;                while (!candidates.isEmpty()) {</b>
+<b class="fc">&nbsp;                    TypeDescription.Generic candidate = candidates.remove();</b>
+<b class="fc">&nbsp;                    if (candidate.accept(new IsAssignableToVisitor(typeDescription))) {</b>
+<b class="fc">&nbsp;                        return true;</b>
+<b class="fc">&nbsp;                    } else if (candidate.getSort().isTypeVariable()) {</b>
+<b class="fc">&nbsp;                        candidates.addAll(candidate.getUpperBounds());</b>
+&nbsp;                    }
+<b class="fc">&nbsp;                }</b>
+<b class="fc">&nbsp;                return false;</b>
+&nbsp;            } else {
+<b class="nc">&nbsp;                return false;</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public Boolean onNonGenericType(TypeDescription.Generic typeDescription) {
+<b class="fc">&nbsp;            return this.typeDescription.accept(new OfNonGenericType(typeDescription, polymorphic));</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * An implementation of a assignability visitor that is applicable for any non-wildcard type.
+&nbsp;         */
+&nbsp;        @HashCodeAndEqualsPlugin.Enhance
+&nbsp;        protected abstract static class OfManifestType implements TypeDescription.Generic.Visitor&lt;Boolean&gt; {
+&nbsp;
+&nbsp;            /**
+&nbsp;             * The type being assigned to another type.
+&nbsp;             */
+&nbsp;            protected final TypeDescription.Generic typeDescription;
+&nbsp;
+&nbsp;            /**
+&nbsp;             * {@code true} if the assignment is polymorphic.
+&nbsp;             */
+&nbsp;            protected final boolean polymorphic;
+&nbsp;
+&nbsp;            /**
+&nbsp;             * Creates a new visitor for a manifest type.
+&nbsp;             *
+&nbsp;             * @param typeDescription The type being assigned to another type.
+&nbsp;             * @param polymorphic     {@code true} if the assignment is polymorphic.
+&nbsp;             */
+<b class="fc">&nbsp;            protected OfManifestType(TypeDescription.Generic typeDescription, boolean polymorphic) {</b>
+<b class="fc">&nbsp;                this.typeDescription = typeDescription;</b>
+<b class="fc">&nbsp;                this.polymorphic = polymorphic;</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            /**
+&nbsp;             * {@inheritDoc}
+&nbsp;             */
+&nbsp;            public Boolean onWildcard(TypeDescription.Generic wildcard) {
+<b class="fc">&nbsp;                for (TypeDescription.Generic upperBound : wildcard.getUpperBounds()) {</b>
+<b class="fc">&nbsp;                    if (!typeDescription.accept(new IsAssignableToVisitor(upperBound))) {</b>
+<b class="fc">&nbsp;                        return false;</b>
+&nbsp;                    }
+<b class="fc">&nbsp;                }</b>
+<b class="fc">&nbsp;                for (TypeDescription.Generic lowerBound : wildcard.getLowerBounds()) {</b>
+<b class="fc">&nbsp;                    if (!lowerBound.accept(new IsAssignableToVisitor(typeDescription))) {</b>
+<b class="fc">&nbsp;                        return false;</b>
+&nbsp;                    }
+<b class="fc">&nbsp;                }</b>
+<b class="fc">&nbsp;                return true;</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            /**
+&nbsp;             * {@inheritDoc}
+&nbsp;             */
+&nbsp;            public Boolean onTypeVariable(TypeDescription.Generic typeVariable) {
+<b class="fc">&nbsp;                if (typeVariable.getTypeVariableSource().isInferrable()) {</b>
+<b class="nc">&nbsp;                    throw new UnsupportedOperationException(&quot;Assignability checks for type variables declared by methods arel not currently supported&quot;);</b>
+&nbsp;                } else {
+<b class="fc">&nbsp;                    return false;</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * A visitor for determining assignability of a type in a type hierarchy, i.e. a non-generic or parameterized type.
+&nbsp;         */
+&nbsp;        protected abstract static class OfSimpleType extends OfManifestType {
+&nbsp;
+&nbsp;            /**
+&nbsp;             * Creates a new visitor.
+&nbsp;             *
+&nbsp;             * @param typeDescription The type being assigned to another type.
+&nbsp;             * @param polymorphic     {@code true} if the assignment is polymorphic.
+&nbsp;             */
+&nbsp;            protected OfSimpleType(TypeDescription.Generic typeDescription, boolean polymorphic) {
+<b class="fc">&nbsp;                super(typeDescription, polymorphic);</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            /**
+&nbsp;             * {@inheritDoc}
+&nbsp;             */
+&nbsp;            public Boolean onParameterizedType(TypeDescription.Generic parameterizedType) {
+<b class="fc">&nbsp;                Queue&lt;TypeDescription.Generic&gt; candidates = QueueFactory.make(Collections.singleton(typeDescription));</b>
+<b class="fc">&nbsp;                Set&lt;TypeDescription&gt; previous = new HashSet&lt;TypeDescription&gt;(Collections.singleton(typeDescription.asErasure()));</b>
+&nbsp;                do {
+<b class="fc">&nbsp;                    TypeDescription.Generic candidate = candidates.remove();</b>
+<b class="fc">&nbsp;                    if (candidate.asErasure().equals(parameterizedType.asErasure())) {</b>
+<b class="fc">&nbsp;                        if (candidate.getSort().isNonGeneric()) {</b>
+<b class="fc">&nbsp;                            return true;</b>
+&nbsp;                        } else /* if (candidate.getSort().isParameterized() */ {
+<b class="fc">&nbsp;                            TypeList.Generic source = candidate.getTypeArguments(), target = parameterizedType.getTypeArguments();</b>
+<b class="fc">&nbsp;                            int size = target.size();</b>
+<b class="fc">&nbsp;                            if (source.size() != size) {</b>
+<b class="nc">&nbsp;                                return false;</b>
+&nbsp;                            }
+<b class="fc">&nbsp;                            for (int index = 0; index &lt; size; index++) {</b>
+<b class="fc">&nbsp;                                if (!source.get(index).accept(new IsAssignableToVisitor(target.get(index), false))) {</b>
+<b class="fc">&nbsp;                                    return false;</b>
+&nbsp;                                }
+&nbsp;                            }
+<b class="fc">&nbsp;                            TypeDescription.Generic ownerType = parameterizedType.getOwnerType();</b>
+<b class="fc">&nbsp;                            return ownerType == null || ownerType.accept(new IsAssignableToVisitor(ownerType));</b>
+&nbsp;                        }
+<b class="fc">&nbsp;                    } else if (polymorphic) {</b>
+<b class="fc">&nbsp;                        TypeDescription.Generic superClass = candidate.getSuperClass();</b>
+<b class="fc">&nbsp;                        if (superClass != null &amp;&amp; previous.add(superClass.asErasure())) {</b>
+<b class="fc">&nbsp;                            candidates.add(superClass);</b>
+&nbsp;                        }
+<b class="fc">&nbsp;                        for (TypeDescription.Generic anInterface : candidate.getInterfaces()) {</b>
+<b class="nc">&nbsp;                            if (previous.add(anInterface.asErasure())) {</b>
+<b class="nc">&nbsp;                                candidates.add(anInterface);</b>
+&nbsp;                            }
+<b class="nc">&nbsp;                        }</b>
+&nbsp;                    }
+<b class="fc">&nbsp;                } while (!candidates.isEmpty());</b>
+<b class="fc">&nbsp;                return false;</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            /**
+&nbsp;             * {@inheritDoc}
+&nbsp;             */
+&nbsp;            public Boolean onNonGenericType(TypeDescription.Generic typeDescription) {
+<b class="fc">&nbsp;                return polymorphic</b>
+<b class="fc">&nbsp;                        ? this.typeDescription.asErasure().isAssignableTo(typeDescription.asErasure())</b>
+<b class="fc">&nbsp;                        : this.typeDescription.asErasure().equals(typeDescription.asErasure());</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * A visitor for determining assignability of a generic array type.
+&nbsp;         */
+&nbsp;        protected static class OfGenericArray extends OfManifestType {
+&nbsp;
+&nbsp;            /**
+&nbsp;             * Creates a new visitor.
+&nbsp;             *
+&nbsp;             * @param typeDescription The type being assigned to another type.
+&nbsp;             * @param polymorphic     {@code true} if the assignment is polymorphic.
+&nbsp;             */
+&nbsp;            protected OfGenericArray(TypeDescription.Generic typeDescription, boolean polymorphic) {
+<b class="fc">&nbsp;                super(typeDescription, polymorphic);</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            /**
+&nbsp;             * {@inheritDoc}
+&nbsp;             */
+&nbsp;            @SuppressFBWarnings(value = &quot;NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE&quot;, justification = &quot;Assuming component type for array type.&quot;)
+&nbsp;            public Boolean onGenericArray(TypeDescription.Generic genericArray) {
+<b class="fc">&nbsp;                TypeDescription.Generic source = typeDescription.getComponentType(), target = genericArray.getComponentType();</b>
+<b class="fc">&nbsp;                while (source.getSort().isGenericArray() &amp;&amp; target.getSort().isGenericArray()) {</b>
+<b class="nc">&nbsp;                    source = source.getComponentType();</b>
+<b class="nc">&nbsp;                    target = target.getComponentType();</b>
+&nbsp;                }
+<b class="fc">&nbsp;                return !source.getSort().isGenericArray() &amp;&amp; !target.getSort().isGenericArray() &amp;&amp; source.accept(new IsAssignableToVisitor(target));</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            /**
+&nbsp;             * {@inheritDoc}
+&nbsp;             */
+&nbsp;            public Boolean onParameterizedType(TypeDescription.Generic parameterizedType) {
+<b class="nc">&nbsp;                return false;</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            /**
+&nbsp;             * {@inheritDoc}
+&nbsp;             */
+&nbsp;            public Boolean onNonGenericType(TypeDescription.Generic typeDescription) {
+<b class="fc">&nbsp;                return polymorphic</b>
+<b class="fc">&nbsp;                        ? this.typeDescription.asErasure().isAssignableTo(typeDescription.asErasure())</b>
+<b class="nc">&nbsp;                        : this.typeDescription.asErasure().equals(typeDescription.asErasure());</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * A visitor to determine the assignability of a wildcard type.
+&nbsp;         */
+&nbsp;        @HashCodeAndEqualsPlugin.Enhance
+&nbsp;        protected static class OfWildcard implements TypeDescription.Generic.Visitor&lt;Boolean&gt; {
+&nbsp;
+&nbsp;            /**
+&nbsp;             * The wildcard type being assigned to another type.
+&nbsp;             */
+&nbsp;            private final TypeDescription.Generic wildcard;
+&nbsp;
+&nbsp;            /**
+&nbsp;             * Creates a visitor for a wildcard type assignment.
+&nbsp;             *
+&nbsp;             * @param wildcard The wildcard type being assigned to another type.
+&nbsp;             */
+<b class="fc">&nbsp;            protected OfWildcard(TypeDescription.Generic wildcard) {</b>
+<b class="fc">&nbsp;                this.wildcard = wildcard;</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            /**
+&nbsp;             * {@inheritDoc}
+&nbsp;             */
+&nbsp;            public Boolean onGenericArray(TypeDescription.Generic genericArray) {
+<b class="nc">&nbsp;                return false;</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            /**
+&nbsp;             * {@inheritDoc}
+&nbsp;             */
+&nbsp;            public Boolean onWildcard(TypeDescription.Generic wildcard) {
+<b class="fc">&nbsp;                boolean hasUpperBounds = false, hasLowerBounds = false;</b>
+<b class="fc">&nbsp;                for (TypeDescription.Generic target : wildcard.getUpperBounds()) {</b>
+<b class="fc">&nbsp;                    for (TypeDescription.Generic source : this.wildcard.getUpperBounds()) {</b>
+<b class="fc">&nbsp;                        if (!source.accept(new IsAssignableToVisitor(target))) {</b>
+<b class="fc">&nbsp;                            return false;</b>
+&nbsp;                        }
+<b class="fc">&nbsp;                    }</b>
+<b class="fc">&nbsp;                    hasUpperBounds = hasUpperBounds || !target.represents(Object.class);</b>
+<b class="fc">&nbsp;                }</b>
+<b class="fc">&nbsp;                for (TypeDescription.Generic target : wildcard.getLowerBounds()) {</b>
+<b class="fc">&nbsp;                    for (TypeDescription.Generic source : this.wildcard.getLowerBounds()) {</b>
+<b class="fc">&nbsp;                        if (!target.accept(new IsAssignableToVisitor(source))) {</b>
+<b class="fc">&nbsp;                            return false;</b>
+&nbsp;                        }
+<b class="fc">&nbsp;                    }</b>
+<b class="fc">&nbsp;                    hasLowerBounds = true;</b>
+<b class="fc">&nbsp;                }</b>
+<b class="fc">&nbsp;                if (hasUpperBounds) {</b>
+<b class="fc">&nbsp;                    return this.wildcard.getLowerBounds().isEmpty();</b>
+<b class="fc">&nbsp;                } else if (hasLowerBounds) {</b>
+<b class="fc">&nbsp;                    TypeList.Generic upperBounds = this.wildcard.getUpperBounds();</b>
+<b class="fc">&nbsp;                    return upperBounds.size() == 0 || upperBounds.size() == 1 &amp;&amp; upperBounds.getOnly().represents(Object.class);</b>
+&nbsp;                } else {
+<b class="fc">&nbsp;                    return true;</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;
+&nbsp;            /**
+&nbsp;             * {@inheritDoc}
+&nbsp;             */
+&nbsp;            public Boolean onParameterizedType(TypeDescription.Generic parameterizedType) {
+<b class="nc">&nbsp;                return false;</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            /**
+&nbsp;             * {@inheritDoc}
+&nbsp;             */
+&nbsp;            public Boolean onTypeVariable(TypeDescription.Generic typeVariable) {
+<b class="nc">&nbsp;                return false;</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            /**
+&nbsp;             * {@inheritDoc}
+&nbsp;             */
+&nbsp;            public Boolean onNonGenericType(TypeDescription.Generic typeDescription) {
+<b class="nc">&nbsp;                return false;</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * A visitor for determining the assignability of a parameterized type.
+&nbsp;         */
+&nbsp;        protected static class OfParameterizedType extends OfSimpleType {
+&nbsp;
+&nbsp;            /**
+&nbsp;             * Creates a new visitor.
+&nbsp;             *
+&nbsp;             * @param typeDescription The type being assigned to another type.
+&nbsp;             * @param polymorphic     {@code true} if the assignment is polymorphic.
+&nbsp;             */
+&nbsp;            protected OfParameterizedType(TypeDescription.Generic typeDescription, boolean polymorphic) {
+<b class="fc">&nbsp;                super(typeDescription, polymorphic);</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            /**
+&nbsp;             * {@inheritDoc}
+&nbsp;             */
+&nbsp;            public Boolean onGenericArray(TypeDescription.Generic genericArray) {
+<b class="fc">&nbsp;                return false;</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * A visitor for determining assignability of a non-generic type.
+&nbsp;         */
+&nbsp;        protected static class OfNonGenericType extends OfSimpleType {
+&nbsp;
+&nbsp;            /**
+&nbsp;             * Creates a new visitor.
+&nbsp;             *
+&nbsp;             * @param typeDescription The type being assigned to another type.
+&nbsp;             * @param polymorphic     {@code true} if the assignment is polymorphic.
+&nbsp;             */
+&nbsp;            protected OfNonGenericType(TypeDescription.Generic typeDescription, boolean polymorphic) {
+<b class="fc">&nbsp;                super(typeDescription, polymorphic);</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            /**
+&nbsp;             * {@inheritDoc}
+&nbsp;             */
+&nbsp;            public Boolean onGenericArray(TypeDescription.Generic genericArray) {
+<b class="nc">&nbsp;                return polymorphic</b>
+<b class="nc">&nbsp;                        ? typeDescription.asErasure().isAssignableTo(genericArray.asErasure())</b>
+<b class="nc">&nbsp;                        : typeDescription.asErasure().equals(genericArray.asErasure());</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-03 11:00</div>
+</div>
+</body>
+</html>

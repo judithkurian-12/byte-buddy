@@ -1,0 +1,285 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > PrivilegedMemberLookupAction</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">net.bytebuddy.implementation.auxiliary</a>
+</div>
+
+<h1>Coverage Summary for Class: PrivilegedMemberLookupAction (net.bytebuddy.implementation.auxiliary)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">PrivilegedMemberLookupAction</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    90.7%
+  </span>
+  <span class="absValue">
+    (49/54)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Copyright 2014 - Present Rafael Winterhalter
+&nbsp; *
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;package net.bytebuddy.implementation.auxiliary;
+&nbsp;
+&nbsp;import net.bytebuddy.ByteBuddy;
+&nbsp;import net.bytebuddy.ClassFileVersion;
+&nbsp;import net.bytebuddy.description.method.MethodDescription;
+&nbsp;import net.bytebuddy.description.modifier.Visibility;
+&nbsp;import net.bytebuddy.description.type.TypeDescription;
+&nbsp;import net.bytebuddy.dynamic.DynamicType;
+&nbsp;import net.bytebuddy.dynamic.scaffold.TypeValidation;
+&nbsp;import net.bytebuddy.dynamic.scaffold.subclass.ConstructorStrategy;
+&nbsp;import net.bytebuddy.implementation.FieldAccessor;
+&nbsp;import net.bytebuddy.implementation.Implementation;
+&nbsp;import net.bytebuddy.implementation.MethodAccessorFactory;
+&nbsp;import net.bytebuddy.implementation.MethodCall;
+&nbsp;import net.bytebuddy.utility.CompoundList;
+&nbsp;import net.bytebuddy.utility.RandomString;
+&nbsp;
+&nbsp;import java.security.PrivilegedExceptionAction;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.Collections;
+&nbsp;import java.util.LinkedHashMap;
+&nbsp;import java.util.Map;
+&nbsp;
+&nbsp;import static net.bytebuddy.matcher.ElementMatchers.isConstructor;
+&nbsp;import static net.bytebuddy.matcher.ElementMatchers.named;
+&nbsp;
+&nbsp;/**
+&nbsp; * A {@link PrivilegedExceptionAction} to lookup a method constant using an {@code java.security.AccessController}.
+&nbsp; */
+<b class="fc">&nbsp;public enum PrivilegedMemberLookupAction implements AuxiliaryType {</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Looks up a method using {@link Class#getDeclaredMethod(String, Class[])}.
+&nbsp;     */
+<b class="fc">&nbsp;    FOR_PUBLIC_METHOD(&quot;getMethod&quot;, &quot;name&quot;, String.class, &quot;parameters&quot;, Class[].class),</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Looks up a method using {@link Class#getDeclaredMethod(String, Class[])}.
+&nbsp;     */
+<b class="fc">&nbsp;    FOR_DECLARED_METHOD(&quot;getDeclaredMethod&quot;, &quot;name&quot;, String.class, &quot;parameters&quot;, Class[].class),</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Looks up a method using {@link Class#getConstructor(Class[])}.
+&nbsp;     */
+<b class="fc">&nbsp;    FOR_PUBLIC_CONSTRUCTOR(&quot;getConstructor&quot;, &quot;parameters&quot;, Class[].class),</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Looks up a method using {@link Class#getDeclaredConstructor(Class[])}.
+&nbsp;     */
+<b class="fc">&nbsp;    FOR_DECLARED_CONSTRUCTOR(&quot;getDeclaredConstructor&quot;, &quot;parameters&quot;, Class[].class);</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The name of the field that holds the type instance to look the method up from.
+&nbsp;     */
+&nbsp;    private static final String TYPE_FIELD = &quot;type&quot;;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The default constructor of the {@link Object} class.
+&nbsp;     */
+<b class="fc">&nbsp;    private static final MethodDescription.InDefinedShape DEFAULT_CONSTRUCTOR = TypeDescription.ForLoadedType.of(Object.class).getDeclaredMethods()</b>
+<b class="fc">&nbsp;            .filter(isConstructor())</b>
+<b class="fc">&nbsp;            .getOnly();</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The method to invoke from the action.
+&nbsp;     */
+&nbsp;    private final MethodDescription.InDefinedShape methodDescription;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A mapping of field names to their types in a fixed iteration order.
+&nbsp;     */
+&nbsp;    private final Map&lt;String, Class&lt;?&gt;&gt; fields;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a privileged method constant action with one argument.
+&nbsp;     *
+&nbsp;     * @param name  The name of the method.
+&nbsp;     * @param field The name of a field to define.
+&nbsp;     * @param type  The type of the field to define.
+&nbsp;     */
+<b class="fc">&nbsp;    PrivilegedMemberLookupAction(String name, String field, Class&lt;?&gt; type) {</b>
+&nbsp;        try {
+<b class="fc">&nbsp;            methodDescription = new MethodDescription.ForLoadedMethod(Class.class.getMethod(name, type));</b>
+<b class="nc">&nbsp;        } catch (NoSuchMethodException exception) {</b>
+<b class="nc">&nbsp;            throw new IllegalStateException(&quot;Could not locate method: &quot; + name, exception);</b>
+<b class="fc">&nbsp;        }</b>
+<b class="fc">&nbsp;        fields = Collections.&lt;String, Class&lt;?&gt;&gt;singletonMap(field, type);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a privileged method constant action with one argument.
+&nbsp;     *
+&nbsp;     * @param name        The name of the method.
+&nbsp;     * @param firstField  The name of the first field to define.
+&nbsp;     * @param firstType   The type of the first field to define.
+&nbsp;     * @param secondField The name of the second field to define.
+&nbsp;     * @param secondType  The type of the second field to define.
+&nbsp;     */
+<b class="fc">&nbsp;    PrivilegedMemberLookupAction(String name, String firstField, Class&lt;?&gt; firstType, String secondField, Class&lt;?&gt; secondType) {</b>
+&nbsp;        try {
+<b class="fc">&nbsp;            methodDescription = new MethodDescription.ForLoadedMethod(Class.class.getMethod(name, firstType, secondType));</b>
+<b class="nc">&nbsp;        } catch (NoSuchMethodException exception) {</b>
+<b class="nc">&nbsp;            throw new IllegalStateException(&quot;Could not locate method: &quot; + name, exception);</b>
+<b class="fc">&nbsp;        }</b>
+<b class="fc">&nbsp;        fields = new LinkedHashMap&lt;String, Class&lt;?&gt;&gt;();</b>
+<b class="fc">&nbsp;        fields.put(firstField, firstType);</b>
+<b class="fc">&nbsp;        fields.put(secondField, secondType);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns an auxiliary type for loading the supplied method description as a constant.
+&nbsp;     *
+&nbsp;     * @param methodDescription The method description to represent as a constant.
+&nbsp;     * @return An appropriate auxiliary type.
+&nbsp;     */
+&nbsp;    public static AuxiliaryType of(MethodDescription methodDescription) {
+<b class="fc">&nbsp;        if (methodDescription.isConstructor()) {</b>
+<b class="fc">&nbsp;            return methodDescription.isPublic()</b>
+<b class="fc">&nbsp;                    ? FOR_PUBLIC_CONSTRUCTOR</b>
+<b class="fc">&nbsp;                    : FOR_DECLARED_CONSTRUCTOR;</b>
+<b class="fc">&nbsp;        } else if (methodDescription.isMethod()) {</b>
+<b class="fc">&nbsp;            return methodDescription.isPublic()</b>
+<b class="fc">&nbsp;                    ? FOR_PUBLIC_METHOD</b>
+<b class="fc">&nbsp;                    : FOR_DECLARED_METHOD;</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            throw new IllegalStateException(&quot;Cannot load constant for type initializer: &quot; + methodDescription);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public String getSuffix() {
+<b class="fc">&nbsp;        return RandomString.hashOf(name().hashCode());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    public DynamicType make(String auxiliaryTypeName,
+&nbsp;                            ClassFileVersion classFileVersion,
+&nbsp;                            MethodAccessorFactory methodAccessorFactory) {
+<b class="fc">&nbsp;        Implementation.Composable constructor = MethodCall.invoke(DEFAULT_CONSTRUCTOR).andThen(FieldAccessor.ofField(TYPE_FIELD).setsArgumentAt(0));</b>
+<b class="fc">&nbsp;        int index = 1;</b>
+<b class="fc">&nbsp;        for (String field : fields.keySet()) {</b>
+<b class="fc">&nbsp;            constructor = constructor.andThen(FieldAccessor.ofField(field).setsArgumentAt(index++));</b>
+<b class="fc">&nbsp;        }</b>
+<b class="fc">&nbsp;        DynamicType.Builder&lt;?&gt; builder = new ByteBuddy(classFileVersion)</b>
+<b class="fc">&nbsp;                .with(TypeValidation.DISABLED)</b>
+<b class="fc">&nbsp;                .subclass(PrivilegedExceptionAction.class, ConstructorStrategy.Default.NO_CONSTRUCTORS)</b>
+<b class="fc">&nbsp;                .name(auxiliaryTypeName)</b>
+<b class="fc">&nbsp;                .modifiers(DEFAULT_TYPE_MODIFIER)</b>
+<b class="fc">&nbsp;                .defineConstructor(Visibility.PUBLIC)</b>
+<b class="fc">&nbsp;                .withParameters(CompoundList.of(Class.class, new ArrayList&lt;Class&lt;?&gt;&gt;(fields.values())))</b>
+<b class="fc">&nbsp;                .intercept(constructor)</b>
+<b class="fc">&nbsp;                .method(named(&quot;run&quot;))</b>
+<b class="fc">&nbsp;                .intercept(MethodCall.invoke(methodDescription)</b>
+<b class="fc">&nbsp;                        .onField(TYPE_FIELD)</b>
+<b class="fc">&nbsp;                        .withField(fields.keySet().toArray(new String[0])))</b>
+<b class="fc">&nbsp;                .defineField(TYPE_FIELD, Class.class, Visibility.PRIVATE);</b>
+<b class="fc">&nbsp;        for (Map.Entry&lt;String, Class&lt;?&gt;&gt; entry : fields.entrySet()) {</b>
+<b class="fc">&nbsp;            builder = builder.defineField(entry.getKey(), entry.getValue(), Visibility.PRIVATE);</b>
+<b class="fc">&nbsp;        }</b>
+<b class="fc">&nbsp;        return builder.make();</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-03 11:00</div>
+</div>
+</body>
+</html>

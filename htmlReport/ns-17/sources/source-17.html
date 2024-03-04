@@ -1,0 +1,353 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > SuperMethod</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">net.bytebuddy.implementation.bind.annotation</a>
+</div>
+
+<h1>Coverage Summary for Class: SuperMethod (net.bytebuddy.implementation.bind.annotation)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+  <tr>
+    <td class="name">SuperMethod$Binder</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (24/24)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">SuperMethod$Binder$DelegationMethod</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (11/11)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">SuperMethod$MockitoMock$1162181937</td>
+  </tr>
+  <tr>
+    <td class="name">SuperMethod$MockitoMock$1162181937$auxiliary$CFw5S3oB</td>
+  </tr>
+  <tr>
+    <td class="name">SuperMethod$MockitoMock$1162181937$auxiliary$eMDygczM</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (35/35)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Copyright 2014 - Present Rafael Winterhalter
+&nbsp; *
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;package net.bytebuddy.implementation.bind.annotation;
+&nbsp;
+&nbsp;import net.bytebuddy.build.HashCodeAndEqualsPlugin;
+&nbsp;import net.bytebuddy.description.annotation.AnnotationDescription;
+&nbsp;import net.bytebuddy.description.method.MethodDescription;
+&nbsp;import net.bytebuddy.description.method.MethodList;
+&nbsp;import net.bytebuddy.description.method.ParameterDescription;
+&nbsp;import net.bytebuddy.description.type.TypeDescription;
+&nbsp;import net.bytebuddy.implementation.Implementation;
+&nbsp;import net.bytebuddy.implementation.MethodAccessorFactory;
+&nbsp;import net.bytebuddy.implementation.bind.MethodDelegationBinder;
+&nbsp;import net.bytebuddy.implementation.bytecode.StackManipulation;
+&nbsp;import net.bytebuddy.implementation.bytecode.assign.Assigner;
+&nbsp;import net.bytebuddy.implementation.bytecode.constant.MethodConstant;
+&nbsp;import net.bytebuddy.implementation.bytecode.constant.NullConstant;
+&nbsp;import net.bytebuddy.implementation.bytecode.member.FieldAccess;
+&nbsp;import org.objectweb.asm.MethodVisitor;
+&nbsp;
+&nbsp;import java.lang.annotation.*;
+&nbsp;import java.lang.reflect.Method;
+&nbsp;
+&nbsp;import static net.bytebuddy.matcher.ElementMatchers.named;
+&nbsp;
+&nbsp;/**
+&nbsp; * A parameter with this annotation is assigned an instance of {@link Method} which invokes the super implementation of this method.
+&nbsp; * If such a method is not available, this annotation causes that this delegation target cannot be bound unless {@link SuperMethod#nullIfImpossible()}
+&nbsp; * is set to {@code true}. The method is declared as {@code public} and is invokable unless the instrumented type itself is not visible. Note that
+&nbsp; * requesting such a method exposes the super method to reflection.
+&nbsp; *
+&nbsp; * @see net.bytebuddy.implementation.MethodDelegation
+&nbsp; * @see net.bytebuddy.implementation.bind.annotation.TargetMethodAnnotationDrivenBinder
+&nbsp; */
+&nbsp;@Documented
+&nbsp;@Retention(RetentionPolicy.RUNTIME)
+&nbsp;@Target(ElementType.PARAMETER)
+&nbsp;public @interface SuperMethod {
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Indicates if the instance assigned to this parameter should be stored in a static field for reuse.
+&nbsp;     *
+&nbsp;     * @return {@code true} if this method instance should be cached.
+&nbsp;     */
+&nbsp;    boolean cached() default true;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Indicates if the instance assigned to this parameter should be looked up using an {@code java.security.AccessController}.
+&nbsp;     *
+&nbsp;     * @return {@code true} if this method should be looked up using an {@code java.security.AccessController}.
+&nbsp;     */
+&nbsp;    boolean privileged() default false;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Indicates that the assigned method should attempt the invocation of an unambiguous default method if no super method is available.
+&nbsp;     *
+&nbsp;     * @return {@code true} if a default method should be invoked if it is not ambiguous and no super class method is available.
+&nbsp;     */
+&nbsp;    boolean fallbackToDefault() default true;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Indicates that {@code null} should be assigned to this parameter if no super method is invokable.
+&nbsp;     *
+&nbsp;     * @return {@code true} if {@code null} should be assigned if no valid method can be assigned.
+&nbsp;     */
+&nbsp;    boolean nullIfImpossible() default false;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A binder for the {@link SuperMethod} annotation.
+&nbsp;     */
+<b class="fc">&nbsp;    enum Binder implements TargetMethodAnnotationDrivenBinder.ParameterBinder&lt;SuperMethod&gt; {</b>
+&nbsp;
+&nbsp;        /**
+&nbsp;         * The singleton instance.
+&nbsp;         */
+<b class="fc">&nbsp;        INSTANCE;</b>
+&nbsp;
+&nbsp;        /**
+&nbsp;         * A description of the {@link SuperMethod#cached()} method.
+&nbsp;         */
+&nbsp;        private static final MethodDescription.InDefinedShape CACHED;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * A description of the {@link SuperMethod#privileged()} method.
+&nbsp;         */
+&nbsp;        private static final MethodDescription.InDefinedShape PRIVILEGED;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * A description of the {@link SuperMethod#fallbackToDefault()} method.
+&nbsp;         */
+&nbsp;        private static final MethodDescription.InDefinedShape FALLBACK_TO_DEFAULT;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * A description of the {@link SuperMethod#nullIfImpossible()} method.
+&nbsp;         */
+&nbsp;        private static final MethodDescription.InDefinedShape NULL_IF_IMPOSSIBLE;
+&nbsp;
+&nbsp;        /*
+&nbsp;         * Resolves annotation properties.
+&nbsp;         */
+&nbsp;        static {
+<b class="fc">&nbsp;            MethodList&lt;MethodDescription.InDefinedShape&gt; methods = TypeDescription.ForLoadedType.of(SuperMethod.class).getDeclaredMethods();</b>
+<b class="fc">&nbsp;            CACHED = methods.filter(named(&quot;cached&quot;)).getOnly();</b>
+<b class="fc">&nbsp;            PRIVILEGED = methods.filter(named(&quot;privileged&quot;)).getOnly();</b>
+<b class="fc">&nbsp;            FALLBACK_TO_DEFAULT = methods.filter(named(&quot;fallbackToDefault&quot;)).getOnly();</b>
+<b class="fc">&nbsp;            NULL_IF_IMPOSSIBLE = methods.filter(named(&quot;nullIfImpossible&quot;)).getOnly();</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public Class&lt;SuperMethod&gt; getHandledType() {
+<b class="fc">&nbsp;            return SuperMethod.class;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * {@inheritDoc}
+&nbsp;         */
+&nbsp;        public MethodDelegationBinder.ParameterBinding&lt;?&gt; bind(AnnotationDescription.Loadable&lt;SuperMethod&gt; annotation,
+&nbsp;                                                               MethodDescription source,
+&nbsp;                                                               ParameterDescription target,
+&nbsp;                                                               Implementation.Target implementationTarget,
+&nbsp;                                                               Assigner assigner,
+&nbsp;                                                               Assigner.Typing typing) {
+<b class="fc">&nbsp;            if (!target.getType().asErasure().isAssignableFrom(Method.class)) {</b>
+<b class="fc">&nbsp;                throw new IllegalStateException(&quot;Cannot assign Method type to &quot; + target);</b>
+<b class="fc">&nbsp;            } else if (source.isMethod()) {</b>
+<b class="fc">&nbsp;                Implementation.SpecialMethodInvocation specialMethodInvocation = (annotation.getValue(FALLBACK_TO_DEFAULT).resolve(Boolean.class)</b>
+<b class="fc">&nbsp;                        ? implementationTarget.invokeDominant(source.asSignatureToken())</b>
+<b class="fc">&nbsp;                        : implementationTarget.invokeSuper(source.asSignatureToken())).withCheckedCompatibilityTo(source.asTypeToken());</b>
+<b class="fc">&nbsp;                if (specialMethodInvocation.isValid()) {</b>
+<b class="fc">&nbsp;                    return new MethodDelegationBinder.ParameterBinding.Anonymous(new DelegationMethod(specialMethodInvocation,</b>
+<b class="fc">&nbsp;                            annotation.getValue(CACHED).resolve(Boolean.class),</b>
+<b class="fc">&nbsp;                            annotation.getValue(PRIVILEGED).resolve(Boolean.class)));</b>
+<b class="fc">&nbsp;                } else if (annotation.getValue(NULL_IF_IMPOSSIBLE).resolve(Boolean.class)) {</b>
+<b class="fc">&nbsp;                    return new MethodDelegationBinder.ParameterBinding.Anonymous(NullConstant.INSTANCE);</b>
+&nbsp;                } else {
+<b class="fc">&nbsp;                    return MethodDelegationBinder.ParameterBinding.Illegal.INSTANCE;</b>
+&nbsp;                }
+<b class="fc">&nbsp;            } else if (annotation.getValue(NULL_IF_IMPOSSIBLE).resolve(Boolean.class)) {</b>
+<b class="fc">&nbsp;                return new MethodDelegationBinder.ParameterBinding.Anonymous(NullConstant.INSTANCE);</b>
+&nbsp;            } else {
+<b class="fc">&nbsp;                return MethodDelegationBinder.ParameterBinding.Illegal.INSTANCE;</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Loads the delegation method constant onto the stack.
+&nbsp;         */
+&nbsp;        @HashCodeAndEqualsPlugin.Enhance
+&nbsp;        protected static class DelegationMethod implements StackManipulation {
+&nbsp;
+&nbsp;            /**
+&nbsp;             * The special method invocation that represents the super method call.
+&nbsp;             */
+&nbsp;            private final Implementation.SpecialMethodInvocation specialMethodInvocation;
+&nbsp;
+&nbsp;            /**
+&nbsp;             * {@code true} if the method constant should be cached.
+&nbsp;             */
+&nbsp;            private final boolean cached;
+&nbsp;
+&nbsp;            /**
+&nbsp;             * {@code true} if this method should be looked up using an {@code java.security.AccessController}.
+&nbsp;             */
+&nbsp;            private final boolean privileged;
+&nbsp;
+&nbsp;            /**
+&nbsp;             * Creates a new delegation method.
+&nbsp;             *
+&nbsp;             * @param specialMethodInvocation The special method invocation that represents the super method call.
+&nbsp;             * @param cached                  {@code true} if the method constant should be cached.
+&nbsp;             * @param privileged              {@code true} if this method should be looked up using an {@code java.security.AccessController}.
+&nbsp;             */
+<b class="fc">&nbsp;            protected DelegationMethod(Implementation.SpecialMethodInvocation specialMethodInvocation, boolean cached, boolean privileged) {</b>
+<b class="fc">&nbsp;                this.specialMethodInvocation = specialMethodInvocation;</b>
+<b class="fc">&nbsp;                this.cached = cached;</b>
+<b class="fc">&nbsp;                this.privileged = privileged;</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            /**
+&nbsp;             * {@inheritDoc}
+&nbsp;             */
+&nbsp;            public boolean isValid() {
+<b class="fc">&nbsp;                return specialMethodInvocation.isValid();</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            /**
+&nbsp;             * {@inheritDoc}
+&nbsp;             */
+&nbsp;            public Size apply(MethodVisitor methodVisitor, Implementation.Context implementationContext) {
+<b class="fc">&nbsp;                StackManipulation methodConstant = privileged</b>
+<b class="fc">&nbsp;                        ? MethodConstant.ofPrivileged(implementationContext.registerAccessorFor(specialMethodInvocation, MethodAccessorFactory.AccessType.PUBLIC))</b>
+<b class="fc">&nbsp;                        : MethodConstant.of(implementationContext.registerAccessorFor(specialMethodInvocation, MethodAccessorFactory.AccessType.PUBLIC));</b>
+<b class="fc">&nbsp;                return (cached</b>
+<b class="fc">&nbsp;                        ? FieldAccess.forField(implementationContext.cache(methodConstant, TypeDescription.ForLoadedType.of(Method.class))).read()</b>
+<b class="fc">&nbsp;                        : methodConstant).apply(methodVisitor, implementationContext);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-02 16:00</div>
+</div>
+</body>
+</html>

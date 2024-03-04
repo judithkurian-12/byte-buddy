@@ -1,0 +1,451 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > JavaType</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">net.bytebuddy.utility</a>
+</div>
+
+<h1>Coverage Summary for Class: JavaType (net.bytebuddy.utility)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">JavaType</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/11)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/59)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">JavaType$LatentTypeWithSimpleName</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/4)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/13)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/63)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Copyright 2014 - Present Rafael Winterhalter
+&nbsp; *
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;package net.bytebuddy.utility;
+&nbsp;
+&nbsp;import net.bytebuddy.build.CachedReturnPlugin;
+&nbsp;import net.bytebuddy.description.type.TypeDefinition;
+&nbsp;import net.bytebuddy.description.type.TypeDescription;
+&nbsp;import net.bytebuddy.description.type.TypeList;
+&nbsp;import net.bytebuddy.dynamic.loading.ClassLoadingStrategy;
+&nbsp;import net.bytebuddy.utility.nullability.MaybeNull;
+&nbsp;import org.objectweb.asm.Opcodes;
+&nbsp;
+&nbsp;import java.io.Serializable;
+&nbsp;import java.lang.reflect.*;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;/**
+&nbsp; * Representations of Java types that do not exist in Java 6 but that have a special meaning to the JVM.
+&nbsp; */
+<b class="nc">&nbsp;public enum JavaType {</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The Java 12 {@code java.lang.constant.Constable} type.
+&nbsp;     */
+<b class="nc">&nbsp;    CONSTABLE(&quot;java.lang.constant.Constable&quot;, Opcodes.ACC_PUBLIC | Opcodes.ACC_ABSTRACT | Opcodes.ACC_INTERFACE, TypeDescription.UNDEFINED),</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The Java 12 {@code java.lang.invoke.TypeDescriptor} type.
+&nbsp;     */
+<b class="nc">&nbsp;    TYPE_DESCRIPTOR(&quot;java.lang.invoke.TypeDescriptor&quot;, Opcodes.ACC_PUBLIC | Opcodes.ACC_ABSTRACT | Opcodes.ACC_INTERFACE, TypeDescription.UNDEFINED),</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The Java 12 {@code java.lang.invoke.TypeDescriptor$OfMethod} type.
+&nbsp;     */
+<b class="nc">&nbsp;    TYPE_DESCRIPTOR_OF_FIELD(&quot;java.lang.invoke.TypeDescriptor$OfField&quot;,</b>
+&nbsp;            Opcodes.ACC_PUBLIC | Opcodes.ACC_ABSTRACT | Opcodes.ACC_INTERFACE,
+&nbsp;            TypeDescription.UNDEFINED,
+<b class="nc">&nbsp;            TYPE_DESCRIPTOR.getTypeStub()),</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The Java 12 {@code java.lang.invoke.TypeDescriptor$OfMethod} type.
+&nbsp;     */
+<b class="nc">&nbsp;    TYPE_DESCRIPTOR_OF_METHOD(&quot;java.lang.invoke.TypeDescriptor$OfMethod&quot;,</b>
+&nbsp;            Opcodes.ACC_PUBLIC | Opcodes.ACC_ABSTRACT | Opcodes.ACC_INTERFACE,
+&nbsp;            TypeDescription.UNDEFINED,
+<b class="nc">&nbsp;            TYPE_DESCRIPTOR.getTypeStub()),</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The Java 12 {@code java.lang.constant.ConstableDesc} type.
+&nbsp;     */
+<b class="nc">&nbsp;    CONSTANT_DESCRIPTION(&quot;java.lang.constant.ConstantDesc&quot;, Opcodes.ACC_PUBLIC | Opcodes.ACC_ABSTRACT | Opcodes.ACC_INTERFACE, TypeDescription.UNDEFINED),</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The Java 12 {@code java.lang.constant.DynamicConstantDesc} type.
+&nbsp;     */
+<b class="nc">&nbsp;    DYNAMIC_CONSTANT_DESCRIPTION(&quot;java.lang.constant.DynamicConstantDesc&quot;,</b>
+&nbsp;            Opcodes.ACC_PUBLIC | Opcodes.ACC_ABSTRACT,
+<b class="nc">&nbsp;            TypeDescription.ForLoadedType.of(Object.class),</b>
+<b class="nc">&nbsp;            CONSTANT_DESCRIPTION.getTypeStub()),</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The Java 12 {@code java.lang.constant.ClassDesc} type.
+&nbsp;     */
+<b class="nc">&nbsp;    CLASS_DESCRIPTION(&quot;java.lang.constant.ClassDesc&quot;,</b>
+&nbsp;            Opcodes.ACC_PUBLIC | Opcodes.ACC_ABSTRACT | Opcodes.ACC_INTERFACE,
+&nbsp;            TypeDescription.UNDEFINED,
+<b class="nc">&nbsp;            CONSTANT_DESCRIPTION.getTypeStub(),</b>
+<b class="nc">&nbsp;            TYPE_DESCRIPTOR_OF_FIELD.getTypeStub()),</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The Java 12 {@code java.lang.constant.MethodTypeDesc} type.
+&nbsp;     */
+<b class="nc">&nbsp;    METHOD_TYPE_DESCRIPTION(&quot;java.lang.constant.MethodTypeDesc&quot;,</b>
+&nbsp;            Opcodes.ACC_PUBLIC | Opcodes.ACC_ABSTRACT | Opcodes.ACC_INTERFACE,
+&nbsp;            TypeDescription.UNDEFINED,
+<b class="nc">&nbsp;            CONSTANT_DESCRIPTION.getTypeStub(),</b>
+<b class="nc">&nbsp;            TYPE_DESCRIPTOR_OF_METHOD.getTypeStub()),</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The Java 12 {@code java.lang.constant.MethodHandleDesc} type.
+&nbsp;     */
+<b class="nc">&nbsp;    METHOD_HANDLE_DESCRIPTION(&quot;java.lang.constant.MethodHandleDesc&quot;,</b>
+&nbsp;            Opcodes.ACC_PUBLIC | Opcodes.ACC_ABSTRACT | Opcodes.ACC_INTERFACE,
+&nbsp;            TypeDescription.UNDEFINED,
+<b class="nc">&nbsp;            CONSTANT_DESCRIPTION.getTypeStub()),</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The Java 12 {@code java.lang.constant.DirectMethodHandleDesc} type.
+&nbsp;     */
+<b class="nc">&nbsp;    DIRECT_METHOD_HANDLE_DESCRIPTION(&quot;java.lang.constant.DirectMethodHandleDesc&quot;,</b>
+&nbsp;            Opcodes.ACC_PUBLIC | Opcodes.ACC_ABSTRACT | Opcodes.ACC_INTERFACE,
+&nbsp;            TypeDescription.UNDEFINED,
+<b class="nc">&nbsp;            METHOD_HANDLE_DESCRIPTION.getTypeStub()),</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The Java 7 {@code java.lang.invoke.MethodHandle} type.
+&nbsp;     */
+<b class="nc">&nbsp;    METHOD_HANDLE(&quot;java.lang.invoke.MethodHandle&quot;, Opcodes.ACC_PUBLIC | Opcodes.ACC_ABSTRACT, TypeDescription.ForLoadedType.of(Object.class), CONSTABLE.getTypeStub()),</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The Java 7 {@code java.lang.invoke.MethodHandles} type.
+&nbsp;     */
+<b class="nc">&nbsp;    METHOD_HANDLES(&quot;java.lang.invoke.MethodHandles&quot;, Opcodes.ACC_PUBLIC, Object.class),</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The Java 7 {@code java.lang.invoke.MethodType} type.
+&nbsp;     */
+<b class="nc">&nbsp;    METHOD_TYPE(&quot;java.lang.invoke.MethodType&quot;,</b>
+&nbsp;            Opcodes.ACC_PUBLIC | Opcodes.ACC_FINAL,
+<b class="nc">&nbsp;            TypeDescription.ForLoadedType.of(Object.class),</b>
+<b class="nc">&nbsp;            CONSTABLE.getTypeStub(),</b>
+<b class="nc">&nbsp;            TYPE_DESCRIPTOR_OF_METHOD.getTypeStub(),</b>
+<b class="nc">&nbsp;            TypeDescription.ForLoadedType.of(Serializable.class)),</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The Java 7 {@code java.lang.invoke.MethodTypes.Lookup} type.
+&nbsp;     */
+<b class="nc">&nbsp;    METHOD_HANDLES_LOOKUP(&quot;java.lang.invoke.MethodHandles$Lookup&quot;, Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC | Opcodes.ACC_FINAL, Object.class),</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The Java 7 {@code java.lang.invoke.CallSite} type.
+&nbsp;     */
+<b class="nc">&nbsp;    CALL_SITE(&quot;java.lang.invoke.CallSite&quot;, Opcodes.ACC_PUBLIC | Opcodes.ACC_ABSTRACT, Object.class),</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The Java 9 {@code java.lang.invoke.VarHandle} type.
+&nbsp;     */
+<b class="nc">&nbsp;    VAR_HANDLE(&quot;java.lang.invoke.VarHandle&quot;, Opcodes.ACC_PUBLIC | Opcodes.ACC_ABSTRACT, TypeDescription.Generic.OfNonGenericType.ForLoadedType.of(Object.class), CONSTABLE.getTypeStub()),</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The Java 8 {@code java.lang.reflect.Parameter} type.
+&nbsp;     */
+<b class="nc">&nbsp;    PARAMETER(&quot;java.lang.reflect.Parameter&quot;, Opcodes.ACC_PUBLIC | Opcodes.ACC_FINAL, Object.class, AnnotatedElement.class),</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The Java 7 {@code java.lang.reflect.Executable} type.
+&nbsp;     */
+<b class="nc">&nbsp;    EXECUTABLE(&quot;java.lang.reflect.Executable&quot;, Opcodes.ACC_PUBLIC | Opcodes.ACC_ABSTRACT, AccessibleObject.class, Member.class, GenericDeclaration.class),</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The Java 9 {@code java.lang.Module} type.
+&nbsp;     */
+<b class="nc">&nbsp;    MODULE(&quot;java.lang.Module&quot;, Opcodes.ACC_PUBLIC | Opcodes.ACC_FINAL, Object.class, AnnotatedElement.class),</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The Java 12 {@code java.lang.invoke.ConstantBootstraps} type.
+&nbsp;     */
+<b class="nc">&nbsp;    CONSTANT_BOOTSTRAPS(&quot;java.lang.invoke.ConstantBootstraps&quot;, Opcodes.ACC_PUBLIC | Opcodes.ACC_FINAL, Object.class),</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The Java 14 {@code java.lang.Record} type.
+&nbsp;     */
+<b class="nc">&nbsp;    RECORD(&quot;java.lang.Record&quot;, Opcodes.ACC_PUBLIC | Opcodes.ACC_ABSTRACT, Object.class),</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The Java 14 {@code java.lang.runtime.ObjectMethods} type.
+&nbsp;     */
+<b class="nc">&nbsp;    OBJECT_METHODS(&quot;java.lang.runtime.ObjectMethods&quot;, Opcodes.ACC_PUBLIC, Object.class),</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The {@code java.security.AccessControlContext} type which is deprecated for removal beginning in Java 17.
+&nbsp;     */
+<b class="nc">&nbsp;    ACCESS_CONTROL_CONTEXT(&quot;java.security.AccessControlContext&quot;, Opcodes.ACC_PUBLIC | Opcodes.ACC_FINAL, TypeDescription.UNDEFINED);</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The type description to represent this type which is either a loaded type or a stub.
+&nbsp;     */
+&nbsp;    private final TypeDescription typeDescription;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a new java type representation.
+&nbsp;     *
+&nbsp;     * @param typeName    The binary name of this type.
+&nbsp;     * @param modifiers   The modifiers of this type when creating a stub.
+&nbsp;     * @param superClass  The super class of this type when creating a stub or {@code null} if no super class is defined.
+&nbsp;     * @param anInterface The interfaces of this type when creating a stub.
+&nbsp;     */
+&nbsp;    JavaType(String typeName, int modifiers, @MaybeNull Type superClass, Type... anInterface) {
+<b class="nc">&nbsp;        this(typeName, modifiers, superClass == null</b>
+<b class="nc">&nbsp;                ? TypeDescription.Generic.UNDEFINED</b>
+<b class="nc">&nbsp;                : TypeDescription.Generic.Sort.describe(superClass), new TypeList.Generic.ForLoadedTypes(anInterface));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a new java type representation.
+&nbsp;     *
+&nbsp;     * @param typeName    The binary name of this type.
+&nbsp;     * @param modifiers   The modifiers of this type when creating a stub.
+&nbsp;     * @param superClass  The super class of this type when creating a stub or {@code null} if no super class is defined.
+&nbsp;     * @param anInterface The interfaces of this type when creating a stub.
+&nbsp;     */
+&nbsp;    JavaType(String typeName, int modifiers, @MaybeNull TypeDefinition superClass, TypeDefinition... anInterface) {
+<b class="nc">&nbsp;        this(typeName, modifiers, superClass == null</b>
+<b class="nc">&nbsp;                ? TypeDescription.Generic.UNDEFINED</b>
+<b class="nc">&nbsp;                : superClass.asGenericType(), new TypeList.Generic.Explicit(anInterface));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a new java type representation.
+&nbsp;     *
+&nbsp;     * @param typeName   The binary name of this type.
+&nbsp;     * @param modifiers  The modifiers of this type when creating a stub.
+&nbsp;     * @param superClass The super class of this type when creating a stub or {@code null} if no super class is defined.
+&nbsp;     * @param interfaces The interfaces of this type when creating a stub.
+&nbsp;     */
+<b class="nc">&nbsp;    JavaType(String typeName, int modifiers, @MaybeNull TypeDescription.Generic superClass, TypeList.Generic interfaces) {</b>
+<b class="nc">&nbsp;        typeDescription = new LatentTypeWithSimpleName(typeName, modifiers, superClass, interfaces);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns at least a stub representing this type where the stub does not define any methods or fields. If a type exists for
+&nbsp;     * the current runtime, a loaded type representation is returned.
+&nbsp;     *
+&nbsp;     * @return A type description for this Java type.
+&nbsp;     */
+&nbsp;    public TypeDescription getTypeStub() {
+<b class="nc">&nbsp;        return typeDescription;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Loads the class that is represented by this Java type.
+&nbsp;     *
+&nbsp;     * @return A loaded type of this Java type.
+&nbsp;     * @throws ClassNotFoundException If the represented type cannot be loaded.
+&nbsp;     */
+&nbsp;    @CachedReturnPlugin.Enhance(&quot;loaded&quot;)
+&nbsp;    public Class&lt;?&gt; load() throws ClassNotFoundException {
+<b class="nc">&nbsp;        return Class.forName(typeDescription.getName(), false, ClassLoadingStrategy.BOOTSTRAP_LOADER);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Loads the class that is represented by this Java type and represents it as a {@link TypeDescription}.
+&nbsp;     *
+&nbsp;     * @return A loaded type of this Java type.
+&nbsp;     * @throws ClassNotFoundException If the represented type cannot be loaded.
+&nbsp;     */
+&nbsp;    public TypeDescription loadAsDescription() throws ClassNotFoundException {
+<b class="nc">&nbsp;        return TypeDescription.ForLoadedType.of(load());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns {@code true} if this type is available on the current JVM.
+&nbsp;     *
+&nbsp;     * @return {@code true} if this type is available on the current JVM.
+&nbsp;     */
+&nbsp;    public boolean isAvailable() {
+<b class="nc">&nbsp;        return doIsAvailable();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns {@code true} if this type is available on the current VM. By boxing the result,
+&nbsp;     * the result can be cached efficiently what is not possible when using a primitive type.
+&nbsp;     *
+&nbsp;     * @return {@code true} if this type is available on the current JVM.
+&nbsp;     */
+&nbsp;    @CachedReturnPlugin.Enhance(&quot;available&quot;)
+&nbsp;    private Boolean doIsAvailable() {
+&nbsp;        try {
+<b class="nc">&nbsp;            load();</b>
+<b class="nc">&nbsp;            return true;</b>
+<b class="nc">&nbsp;        } catch (ClassNotFoundException ignored) {</b>
+<b class="nc">&nbsp;            return false;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Checks if the supplied object is an instance of this type.
+&nbsp;     *
+&nbsp;     * @param instance The instance to check.
+&nbsp;     * @return {@code true} if the supplied object is an instance of this type.
+&nbsp;     */
+&nbsp;    public boolean isInstance(Object instance) {
+<b class="nc">&nbsp;        if (!isAvailable()) {</b>
+<b class="nc">&nbsp;            return false;</b>
+&nbsp;        }
+&nbsp;        try {
+<b class="nc">&nbsp;            return load().isInstance(instance);</b>
+<b class="nc">&nbsp;        } catch (ClassNotFoundException ignored) {</b>
+<b class="nc">&nbsp;            return false;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A latent type that resolves the simple name without considering the declaring type which is not normally available. This
+&nbsp;     * is required since the {@link JavaConstant} replication of Java&#39;s string representation uses the simple name.
+&nbsp;     */
+&nbsp;    protected static class LatentTypeWithSimpleName extends TypeDescription.Latent {
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Creates a new latent type with a simple name.
+&nbsp;         *
+&nbsp;         * @param name       The name of the type.
+&nbsp;         * @param modifiers  The modifiers of the type.
+&nbsp;         * @param superClass The super type or {@code null} if no such type exists.
+&nbsp;         * @param interfaces The interfaces that this type implements.
+&nbsp;         */
+&nbsp;        protected LatentTypeWithSimpleName(String name, int modifiers, @MaybeNull Generic superClass, List&lt;? extends Generic&gt; interfaces) {
+<b class="nc">&nbsp;            super(name, modifiers, superClass, interfaces);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public String getSimpleName() {
+<b class="nc">&nbsp;            String name = getName();</b>
+<b class="nc">&nbsp;            int index = Math.max(name.lastIndexOf(&#39;$&#39;), name.lastIndexOf(&#39;.&#39;));</b>
+<b class="nc">&nbsp;            return index == -1 ? name : name.substring(index + 1);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-03 10:47</div>
+</div>
+</body>
+</html>

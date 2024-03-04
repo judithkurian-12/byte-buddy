@@ -1,0 +1,859 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > ClassByExtensionBenchmark</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">net.bytebuddy.benchmark</a>
+</div>
+
+<h1>Coverage Summary for Class: ClassByExtensionBenchmark (net.bytebuddy.benchmark)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ClassByExtensionBenchmark</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (20/20)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    94.5%
+  </span>
+  <span class="absValue">
+    (155/164)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">ClassByExtensionBenchmark$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/4)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">ClassByExtensionBenchmark$1$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">ClassByExtensionBenchmark$2</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">ClassByExtensionBenchmark$3</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">ClassByExtensionBenchmark$4</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">ClassByExtensionBenchmark$ByteBuddyAccessInterceptor</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">ClassByExtensionBenchmark$ByteBuddyPrefixInterceptor</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">ClassByExtensionBenchmark$ByteBuddyProxyInterceptor</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    87.9%
+  </span>
+  <span class="absValue">
+    (29/33)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    91.6%
+  </span>
+  <span class="absValue">
+    (164/179)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * Copyright 2014 - Present Rafael Winterhalter
+&nbsp; *
+&nbsp; * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+&nbsp; * you may not use this file except in compliance with the License.
+&nbsp; * You may obtain a copy of the License at
+&nbsp; *
+&nbsp; *     http://www.apache.org/licenses/LICENSE-2.0
+&nbsp; *
+&nbsp; * Unless required by applicable law or agreed to in writing, software
+&nbsp; * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+&nbsp; * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+&nbsp; * See the License for the specific language governing permissions and
+&nbsp; * limitations under the License.
+&nbsp; */
+&nbsp;package net.bytebuddy.benchmark;
+&nbsp;
+&nbsp;import javassist.util.proxy.MethodFilter;
+&nbsp;import javassist.util.proxy.MethodHandler;
+&nbsp;import javassist.util.proxy.ProxyFactory;
+&nbsp;import net.bytebuddy.ByteBuddy;
+&nbsp;import net.bytebuddy.benchmark.specimen.ExampleClass;
+&nbsp;import net.bytebuddy.description.type.TypeDescription;
+&nbsp;import net.bytebuddy.dynamic.loading.ClassLoadingStrategy;
+&nbsp;import net.bytebuddy.dynamic.scaffold.TypeValidation;
+&nbsp;import net.bytebuddy.implementation.Implementation;
+&nbsp;import net.bytebuddy.implementation.MethodDelegation;
+&nbsp;import net.bytebuddy.implementation.SuperMethodCall;
+&nbsp;import net.bytebuddy.implementation.bind.annotation.*;
+&nbsp;import net.bytebuddy.pool.TypePool;
+&nbsp;import net.bytebuddy.utility.nullability.MaybeNull;
+&nbsp;import net.sf.cglib.proxy.*;
+&nbsp;import org.openjdk.jmh.annotations.*;
+&nbsp;
+&nbsp;import java.lang.reflect.Method;
+&nbsp;import java.net.URL;
+&nbsp;import java.net.URLClassLoader;
+&nbsp;import java.util.concurrent.Callable;
+&nbsp;import java.util.concurrent.TimeUnit;
+&nbsp;
+&nbsp;import static net.bytebuddy.matcher.ElementMatchers.isDeclaredBy;
+&nbsp;import static net.bytebuddy.matcher.ElementMatchers.none;
+&nbsp;
+&nbsp;/**
+&nbsp; * &lt;p&gt;
+&nbsp; * This benchmark dynamically creates a subclass of {@link ExampleClass} which overrides all methods to invoke the
+&nbsp; * direct super class&#39;s implementation. The benchmark furthermore creates an instance of this class since some
+&nbsp; * code generation frameworks rely on this property. Because this benchmark requires the creation of a subclass,
+&nbsp; * the JDK proxy is not included in this benchmark.
+&nbsp; * &lt;/p&gt;
+&nbsp; * &lt;p&gt;
+&nbsp; * Note that this class defines all values that are accessed by benchmark methods as instance fields. This way, the JIT
+&nbsp; * compiler&#39;s capability of constant folding is limited in order to produce more comparable test results.
+&nbsp; * &lt;/p&gt;
+&nbsp; */
+&nbsp;@State(Scope.Thread)
+&nbsp;@BenchmarkMode(Mode.AverageTime)
+&nbsp;@OutputTimeUnit(TimeUnit.MICROSECONDS)
+<b class="fc">&nbsp;public class ClassByExtensionBenchmark {</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The base class to be subclassed in all benchmarks.
+&nbsp;     */
+<b class="fc">&nbsp;    public static final Class&lt;? extends ExampleClass&gt; BASE_CLASS = ExampleClass.class;</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The base class to be subclassed in all benchmarks.
+&nbsp;     */
+<b class="fc">&nbsp;    private Class&lt;? extends ExampleClass&gt; baseClass = BASE_CLASS;</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The zero-length of the class loader&#39;s URL.
+&nbsp;     */
+<b class="fc">&nbsp;    private int urlLength = 0;</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a new class loader. By using a fresh class loader for each creation, we avoid name space issues.
+&nbsp;     * A class loader&#39;s creation is part of the benchmark but since any test creates a class loader exactly once,
+&nbsp;     * the benchmark remains valid.
+&nbsp;     *
+&nbsp;     * @return A new class loader.
+&nbsp;     */
+&nbsp;    private ClassLoader newClassLoader() {
+<b class="fc">&nbsp;        return new URLClassLoader(new URL[urlLength]);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * An implementation to be used by {@link ClassByExtensionBenchmark#benchmarkByteBuddyWithProxyAndReusedDelegator()}.
+&nbsp;     */
+&nbsp;    @MaybeNull
+&nbsp;    private Implementation proxyInterceptor;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * An implementation to be used by {@link ClassByExtensionBenchmark#benchmarkByteBuddyWithAccessorAndReusedDelegator()}.
+&nbsp;     */
+&nbsp;    @MaybeNull
+&nbsp;    private Implementation accessInterceptor;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * An implementation to be used by {@link ClassByExtensionBenchmark#benchmarkByteBuddyWithPrefixAndReusedDelegator()}.
+&nbsp;     */
+&nbsp;    @MaybeNull
+&nbsp;    private Implementation.Composable prefixInterceptor;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A description of {@link ClassByExtensionBenchmark#baseClass}.
+&nbsp;     */
+&nbsp;    @MaybeNull
+&nbsp;    private TypeDescription baseClassDescription;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A description of {@link ByteBuddyProxyInterceptor}.
+&nbsp;     */
+&nbsp;    @MaybeNull
+&nbsp;    private TypeDescription proxyClassDescription;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A description of {@link ByteBuddyAccessInterceptor}.
+&nbsp;     */
+&nbsp;    @MaybeNull
+&nbsp;    private TypeDescription accessClassDescription;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A description of {@link ByteBuddyPrefixInterceptor}.
+&nbsp;     */
+&nbsp;    @MaybeNull
+&nbsp;    private TypeDescription prefixClassDescription;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A method delegation to {@link ByteBuddyProxyInterceptor}.
+&nbsp;     */
+&nbsp;    @MaybeNull
+&nbsp;    private Implementation proxyInterceptorDescription;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A method delegation to {@link ByteBuddyAccessInterceptor}.
+&nbsp;     */
+&nbsp;    @MaybeNull
+&nbsp;    private Implementation accessInterceptorDescription;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A method delegation to {@link ByteBuddyPrefixInterceptor}.
+&nbsp;     */
+&nbsp;    @MaybeNull
+&nbsp;    private Implementation.Composable prefixInterceptorDescription;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A setup method to create precomputed delegator.
+&nbsp;     */
+&nbsp;    @Setup
+&nbsp;    public void setup() {
+<b class="fc">&nbsp;        proxyInterceptor = MethodDelegation.to(ByteBuddyProxyInterceptor.class);</b>
+<b class="fc">&nbsp;        accessInterceptor = MethodDelegation.to(ByteBuddyAccessInterceptor.class);</b>
+<b class="fc">&nbsp;        prefixInterceptor = MethodDelegation.to(ByteBuddyPrefixInterceptor.class);</b>
+<b class="fc">&nbsp;        baseClassDescription = TypePool.Default.ofSystemLoader().describe(baseClass.getName()).resolve();</b>
+<b class="fc">&nbsp;        proxyClassDescription = TypePool.Default.ofSystemLoader().describe(ByteBuddyProxyInterceptor.class.getName()).resolve();</b>
+<b class="fc">&nbsp;        accessClassDescription = TypePool.Default.ofSystemLoader().describe(ByteBuddyAccessInterceptor.class.getName()).resolve();</b>
+<b class="fc">&nbsp;        prefixClassDescription = TypePool.Default.ofSystemLoader().describe(ByteBuddyPrefixInterceptor.class.getName()).resolve();</b>
+<b class="fc">&nbsp;        proxyInterceptorDescription = MethodDelegation.to(proxyClassDescription);</b>
+<b class="fc">&nbsp;        accessInterceptorDescription = MethodDelegation.to(accessClassDescription);</b>
+<b class="fc">&nbsp;        prefixInterceptorDescription = MethodDelegation.to(prefixClassDescription);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a baseline for the benchmark.
+&nbsp;     *
+&nbsp;     * @return A simple object that is not transformed.
+&nbsp;     */
+&nbsp;    @Benchmark
+&nbsp;    public ExampleClass baseline() {
+<b class="fc">&nbsp;        return new ExampleClass();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Performs a benchmark of a class extension using Byte Buddy. This benchmark creates proxy classes for the invocation
+&nbsp;     * of super methods which requires the creation of auxiliary classes.
+&nbsp;     *
+&nbsp;     * @return The created instance, in order to avoid JIT removal.
+&nbsp;     * @throws java.lang.Exception If the invocation causes an exception.
+&nbsp;     */
+&nbsp;    @Benchmark
+&nbsp;    public ExampleClass benchmarkByteBuddyWithProxy() throws Exception {
+<b class="fc">&nbsp;        return new ByteBuddy()</b>
+<b class="fc">&nbsp;                .with(TypeValidation.DISABLED)</b>
+<b class="fc">&nbsp;                .ignore(none())</b>
+<b class="fc">&nbsp;                .subclass(baseClass)</b>
+<b class="fc">&nbsp;                .method(isDeclaredBy(baseClass)).intercept(MethodDelegation.to(ByteBuddyProxyInterceptor.class))</b>
+<b class="fc">&nbsp;                .make()</b>
+<b class="fc">&nbsp;                .load(newClassLoader(), ClassLoadingStrategy.Default.INJECTION)</b>
+<b class="fc">&nbsp;                .getLoaded()</b>
+<b class="fc">&nbsp;                .getDeclaredConstructor()</b>
+<b class="fc">&nbsp;                .newInstance();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Performs a benchmark of a class extension using Byte Buddy. This benchmark also uses the annotation-based approach
+&nbsp;     * but creates delegation methods which do not require the creation of additional classes. This benchmark reuses a
+&nbsp;     * precomputed delegator.
+&nbsp;     *
+&nbsp;     * @return The created instance, in order to avoid JIT removal.
+&nbsp;     * @throws Exception If the invocation causes an exception.
+&nbsp;     */
+&nbsp;    @Benchmark
+&nbsp;    public ExampleClass benchmarkByteBuddyWithProxyAndReusedDelegator() throws Exception {
+<b class="fc">&nbsp;        return new ByteBuddy()</b>
+<b class="fc">&nbsp;                .with(TypeValidation.DISABLED)</b>
+<b class="fc">&nbsp;                .ignore(none())</b>
+<b class="fc">&nbsp;                .subclass(baseClass)</b>
+<b class="fc">&nbsp;                .method(isDeclaredBy(baseClass)).intercept(proxyInterceptor)</b>
+<b class="fc">&nbsp;                .make()</b>
+<b class="fc">&nbsp;                .load(newClassLoader(), ClassLoadingStrategy.Default.INJECTION)</b>
+<b class="fc">&nbsp;                .getLoaded()</b>
+<b class="fc">&nbsp;                .getDeclaredConstructor()</b>
+<b class="fc">&nbsp;                .newInstance();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Performs a benchmark of a class extension using Byte Buddy. This benchmark creates proxy classes for the invocation
+&nbsp;     * of super methods which requires the creation of auxiliary classes. This benchmark uses a type pool to compare against
+&nbsp;     * usage of the reflection API.
+&nbsp;     *
+&nbsp;     * @return The created instance, in order to avoid JIT removal.
+&nbsp;     * @throws java.lang.Exception If the invocation causes an exception.
+&nbsp;     */
+&nbsp;    @Benchmark
+&nbsp;    public ExampleClass benchmarkByteBuddyWithProxyWithTypePool() throws Exception {
+<b class="fc">&nbsp;        return (ExampleClass) new ByteBuddy()</b>
+<b class="fc">&nbsp;                .with(TypeValidation.DISABLED)</b>
+<b class="fc">&nbsp;                .ignore(none())</b>
+<b class="fc">&nbsp;                .subclass(baseClassDescription)</b>
+<b class="fc">&nbsp;                .method(isDeclaredBy(baseClassDescription)).intercept(MethodDelegation.to(proxyClassDescription))</b>
+<b class="fc">&nbsp;                .make()</b>
+<b class="fc">&nbsp;                .load(newClassLoader(), ClassLoadingStrategy.Default.INJECTION)</b>
+<b class="fc">&nbsp;                .getLoaded()</b>
+<b class="fc">&nbsp;                .getDeclaredConstructor()</b>
+<b class="fc">&nbsp;                .newInstance();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Performs a benchmark of a class extension using Byte Buddy. This benchmark also uses the annotation-based approach
+&nbsp;     * but creates delegation methods which do not require the creation of additional classes. This benchmark reuses a
+&nbsp;     * precomputed delegator. This benchmark uses a type pool to compare against usage of the reflection API.
+&nbsp;     *
+&nbsp;     * @return The created instance, in order to avoid JIT removal.
+&nbsp;     * @throws Exception If the invocation causes an exception.
+&nbsp;     */
+&nbsp;    @Benchmark
+&nbsp;    public ExampleClass benchmarkByteBuddyWithProxyAndReusedDelegatorWithTypePool() throws Exception {
+<b class="fc">&nbsp;        return (ExampleClass) new ByteBuddy()</b>
+<b class="fc">&nbsp;                .with(TypeValidation.DISABLED)</b>
+<b class="fc">&nbsp;                .ignore(none())</b>
+<b class="fc">&nbsp;                .subclass(baseClassDescription)</b>
+<b class="fc">&nbsp;                .method(isDeclaredBy(baseClassDescription)).intercept(proxyInterceptorDescription)</b>
+<b class="fc">&nbsp;                .make()</b>
+<b class="fc">&nbsp;                .load(newClassLoader(), ClassLoadingStrategy.Default.INJECTION)</b>
+<b class="fc">&nbsp;                .getLoaded()</b>
+<b class="fc">&nbsp;                .getDeclaredConstructor()</b>
+<b class="fc">&nbsp;                .newInstance();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Performs a benchmark of a class extension using Byte Buddy. This benchmark also uses the annotation-based approach
+&nbsp;     * but creates delegation methods which do not require the creation of additional classes.
+&nbsp;     *
+&nbsp;     * @return The created instance, in order to avoid JIT removal.
+&nbsp;     * @throws Exception If the invocation causes an exception.
+&nbsp;     */
+&nbsp;    @Benchmark
+&nbsp;    public ExampleClass benchmarkByteBuddyWithAccessor() throws Exception {
+<b class="fc">&nbsp;        return new ByteBuddy()</b>
+<b class="fc">&nbsp;                .with(TypeValidation.DISABLED)</b>
+<b class="fc">&nbsp;                .ignore(none())</b>
+<b class="fc">&nbsp;                .subclass(baseClass)</b>
+<b class="fc">&nbsp;                .method(isDeclaredBy(baseClass)).intercept(MethodDelegation.to(ByteBuddyAccessInterceptor.class))</b>
+<b class="fc">&nbsp;                .make()</b>
+<b class="fc">&nbsp;                .load(newClassLoader(), ClassLoadingStrategy.Default.INJECTION)</b>
+<b class="fc">&nbsp;                .getLoaded()</b>
+<b class="fc">&nbsp;                .getDeclaredConstructor()</b>
+<b class="fc">&nbsp;                .newInstance();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Performs a benchmark of a class extension using Byte Buddy. This benchmark also uses the annotation-based approach
+&nbsp;     * but creates delegation methods which do not require the creation of additional classes. This benchmark reuses a
+&nbsp;     * precomputed delegator.
+&nbsp;     *
+&nbsp;     * @return The created instance, in order to avoid JIT removal.
+&nbsp;     * @throws Exception If the invocation causes an exception.
+&nbsp;     */
+&nbsp;    @Benchmark
+&nbsp;    public ExampleClass benchmarkByteBuddyWithAccessorAndReusedDelegator() throws Exception {
+<b class="fc">&nbsp;        return new ByteBuddy()</b>
+<b class="fc">&nbsp;                .with(TypeValidation.DISABLED)</b>
+<b class="fc">&nbsp;                .ignore(none())</b>
+<b class="fc">&nbsp;                .subclass(baseClass)</b>
+<b class="fc">&nbsp;                .method(isDeclaredBy(baseClass)).intercept(accessInterceptor)</b>
+<b class="fc">&nbsp;                .make()</b>
+<b class="fc">&nbsp;                .load(newClassLoader(), ClassLoadingStrategy.Default.INJECTION)</b>
+<b class="fc">&nbsp;                .getLoaded()</b>
+<b class="fc">&nbsp;                .getDeclaredConstructor()</b>
+<b class="fc">&nbsp;                .newInstance();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Performs a benchmark of a class extension using Byte Buddy. This benchmark also uses the annotation-based approach
+&nbsp;     * but creates delegation methods which do not require the creation of additional classes. This benchmark uses a type
+&nbsp;     * pool to compare against usage of the reflection API.
+&nbsp;     *
+&nbsp;     * @return The created instance, in order to avoid JIT removal.
+&nbsp;     * @throws Exception If the invocation causes an exception.
+&nbsp;     */
+&nbsp;    @Benchmark
+&nbsp;    public ExampleClass benchmarkByteBuddyWithAccessorWithTypePool() throws Exception {
+<b class="fc">&nbsp;        return (ExampleClass) new ByteBuddy()</b>
+<b class="fc">&nbsp;                .with(TypeValidation.DISABLED)</b>
+<b class="fc">&nbsp;                .ignore(none())</b>
+<b class="fc">&nbsp;                .subclass(baseClassDescription)</b>
+<b class="fc">&nbsp;                .method(isDeclaredBy(baseClassDescription)).intercept(MethodDelegation.to(accessClassDescription))</b>
+<b class="fc">&nbsp;                .make()</b>
+<b class="fc">&nbsp;                .load(newClassLoader(), ClassLoadingStrategy.Default.INJECTION)</b>
+<b class="fc">&nbsp;                .getLoaded()</b>
+<b class="fc">&nbsp;                .getDeclaredConstructor()</b>
+<b class="fc">&nbsp;                .newInstance();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Performs a benchmark of a class extension using Byte Buddy. This benchmark also uses the annotation-based approach
+&nbsp;     * but creates delegation methods which do not require the creation of additional classes. This benchmark reuses a
+&nbsp;     * precomputed delegator. This benchmark uses a type pool to compare against usage of the reflection API.
+&nbsp;     *
+&nbsp;     * @return The created instance, in order to avoid JIT removal.
+&nbsp;     * @throws Exception If the invocation causes an exception.
+&nbsp;     */
+&nbsp;    @Benchmark
+&nbsp;    public ExampleClass benchmarkByteBuddyWithAccessorAndReusedDelegatorWithTypePool() throws Exception {
+<b class="fc">&nbsp;        return (ExampleClass) new ByteBuddy()</b>
+<b class="fc">&nbsp;                .with(TypeValidation.DISABLED)</b>
+<b class="fc">&nbsp;                .ignore(none())</b>
+<b class="fc">&nbsp;                .subclass(baseClassDescription)</b>
+<b class="fc">&nbsp;                .method(isDeclaredBy(baseClassDescription)).intercept(accessInterceptorDescription)</b>
+<b class="fc">&nbsp;                .make()</b>
+<b class="fc">&nbsp;                .load(newClassLoader(), ClassLoadingStrategy.Default.INJECTION)</b>
+<b class="fc">&nbsp;                .getLoaded()</b>
+<b class="fc">&nbsp;                .getDeclaredConstructor()</b>
+<b class="fc">&nbsp;                .newInstance();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Performs a benchmark of a class extension using Byte Buddy. This benchmark uses delegation but completes with a
+&nbsp;     * hard-coded super method call.
+&nbsp;     *
+&nbsp;     * @return The created instance, in order to avoid JIT removal.
+&nbsp;     * @throws Exception If the invocation causes an exception.
+&nbsp;     */
+&nbsp;    @Benchmark
+&nbsp;    public ExampleClass benchmarkByteBuddyWithPrefix() throws Exception {
+<b class="fc">&nbsp;        return new ByteBuddy()</b>
+<b class="fc">&nbsp;                .with(TypeValidation.DISABLED)</b>
+<b class="fc">&nbsp;                .ignore(none())</b>
+<b class="fc">&nbsp;                .subclass(baseClass)</b>
+<b class="fc">&nbsp;                .method(isDeclaredBy(baseClass)).intercept(MethodDelegation.to(ByteBuddyPrefixInterceptor.class).andThen(SuperMethodCall.INSTANCE))</b>
+<b class="fc">&nbsp;                .make()</b>
+<b class="fc">&nbsp;                .load(newClassLoader(), ClassLoadingStrategy.Default.INJECTION)</b>
+<b class="fc">&nbsp;                .getLoaded()</b>
+<b class="fc">&nbsp;                .getDeclaredConstructor()</b>
+<b class="fc">&nbsp;                .newInstance();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Performs a benchmark of a class extension using Byte Buddy. This benchmark uses delegation but completes with a
+&nbsp;     * hard-coded super method call. This benchmark reuses a precomputed delegator.
+&nbsp;     *
+&nbsp;     * @return The created instance, in order to avoid JIT removal.
+&nbsp;     * @throws Exception If the invocation causes an exception.
+&nbsp;     */
+&nbsp;    @Benchmark
+&nbsp;    public ExampleClass benchmarkByteBuddyWithPrefixAndReusedDelegator() throws Exception {
+<b class="fc">&nbsp;        return new ByteBuddy()</b>
+<b class="fc">&nbsp;                .with(TypeValidation.DISABLED)</b>
+<b class="fc">&nbsp;                .ignore(none())</b>
+<b class="fc">&nbsp;                .subclass(baseClass)</b>
+<b class="fc">&nbsp;                .method(isDeclaredBy(baseClass)).intercept(prefixInterceptor.andThen(SuperMethodCall.INSTANCE))</b>
+<b class="fc">&nbsp;                .make()</b>
+<b class="fc">&nbsp;                .load(newClassLoader(), ClassLoadingStrategy.Default.INJECTION)</b>
+<b class="fc">&nbsp;                .getLoaded()</b>
+<b class="fc">&nbsp;                .getDeclaredConstructor()</b>
+<b class="fc">&nbsp;                .newInstance();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Performs a benchmark of a class extension using Byte Buddy. This benchmark uses delegation but completes with a
+&nbsp;     * hard-coded super method call. This benchmark uses a type pool to compare against usage of the reflection API.
+&nbsp;     *
+&nbsp;     * @return The created instance, in order to avoid JIT removal.
+&nbsp;     * @throws Exception If the invocation causes an exception.
+&nbsp;     */
+&nbsp;    @Benchmark
+&nbsp;    public ExampleClass benchmarkByteBuddyWithPrefixWithTypePool() throws Exception {
+<b class="fc">&nbsp;        return (ExampleClass) new ByteBuddy()</b>
+<b class="fc">&nbsp;                .with(TypeValidation.DISABLED)</b>
+<b class="fc">&nbsp;                .ignore(none())</b>
+<b class="fc">&nbsp;                .subclass(baseClassDescription)</b>
+<b class="fc">&nbsp;                .method(isDeclaredBy(baseClassDescription)).intercept(MethodDelegation.to(prefixClassDescription).andThen(SuperMethodCall.INSTANCE))</b>
+<b class="fc">&nbsp;                .make()</b>
+<b class="fc">&nbsp;                .load(newClassLoader(), ClassLoadingStrategy.Default.INJECTION)</b>
+<b class="fc">&nbsp;                .getLoaded()</b>
+<b class="fc">&nbsp;                .getDeclaredConstructor()</b>
+<b class="fc">&nbsp;                .newInstance();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Performs a benchmark of a class extension using Byte Buddy. This benchmark uses delegation but completes with a
+&nbsp;     * hard-coded super method call. This benchmark reuses a precomputed delegator. This benchmark uses a type pool to
+&nbsp;     * compare against usage of the reflection API.
+&nbsp;     *
+&nbsp;     * @return The created instance, in order to avoid JIT removal.
+&nbsp;     * @throws Exception If the invocation causes an exception.
+&nbsp;     */
+&nbsp;    @Benchmark
+&nbsp;    public ExampleClass benchmarkByteBuddyWithPrefixAndReusedDelegatorWithTypePool() throws Exception {
+<b class="fc">&nbsp;        return (ExampleClass) new ByteBuddy()</b>
+<b class="fc">&nbsp;                .with(TypeValidation.DISABLED)</b>
+<b class="fc">&nbsp;                .ignore(none())</b>
+<b class="fc">&nbsp;                .subclass(baseClassDescription)</b>
+<b class="fc">&nbsp;                .method(isDeclaredBy(baseClassDescription)).intercept(prefixInterceptorDescription.andThen(SuperMethodCall.INSTANCE))</b>
+<b class="fc">&nbsp;                .make()</b>
+<b class="fc">&nbsp;                .load(newClassLoader(), ClassLoadingStrategy.Default.INJECTION)</b>
+<b class="fc">&nbsp;                .getLoaded()</b>
+<b class="fc">&nbsp;                .getDeclaredConstructor()</b>
+<b class="fc">&nbsp;                .newInstance();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Performs a benchmark of a class extension using Byte Buddy. This benchmark uses a specialized interception
+&nbsp;     * strategy which is easier to inline by the compiler.
+&nbsp;     *
+&nbsp;     * @return The created instance, in order to avoid JIT removal.
+&nbsp;     * @throws java.lang.Exception If the invocation causes an exception.
+&nbsp;     */
+&nbsp;    @Benchmark
+&nbsp;    public ExampleClass benchmarkByteBuddySpecialized() throws Exception {
+<b class="fc">&nbsp;        return new ByteBuddy()</b>
+<b class="fc">&nbsp;                .with(TypeValidation.DISABLED)</b>
+<b class="fc">&nbsp;                .ignore(none())</b>
+<b class="fc">&nbsp;                .subclass(baseClass)</b>
+<b class="fc">&nbsp;                .method(isDeclaredBy(baseClass)).intercept(SuperMethodCall.INSTANCE)</b>
+<b class="fc">&nbsp;                .make()</b>
+<b class="fc">&nbsp;                .load(newClassLoader(), ClassLoadingStrategy.Default.INJECTION)</b>
+<b class="fc">&nbsp;                .getLoaded()</b>
+<b class="fc">&nbsp;                .getDeclaredConstructor()</b>
+<b class="fc">&nbsp;                .newInstance();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Performs a benchmark of a class extension using cglib.
+&nbsp;     *
+&nbsp;     * @return The created instance, in order to avoid JIT removal.
+&nbsp;     */
+&nbsp;    @Benchmark
+&nbsp;    public ExampleClass benchmarkCglib() {
+<b class="fc">&nbsp;        Enhancer enhancer = new Enhancer();</b>
+<b class="nc">&nbsp;        enhancer.setUseCache(false);</b>
+<b class="nc">&nbsp;        enhancer.setUseFactory(false);</b>
+<b class="nc">&nbsp;        enhancer.setInterceptDuringConstruction(true);</b>
+<b class="nc">&nbsp;        enhancer.setClassLoader(newClassLoader());</b>
+<b class="nc">&nbsp;        enhancer.setSuperclass(baseClass);</b>
+<b class="nc">&nbsp;        CallbackHelper callbackHelper = new CallbackHelper(baseClass, new Class&lt;?&gt;[0]) {</b>
+&nbsp;            protected Object getCallback(Method method) {
+<b class="nc">&nbsp;                if (method.getDeclaringClass() == baseClass) {</b>
+<b class="nc">&nbsp;                    return new MethodInterceptor() {</b>
+&nbsp;                        public Object intercept(Object object,
+&nbsp;                                                Method method,
+&nbsp;                                                Object[] arguments,
+&nbsp;                                                MethodProxy methodProxy) throws Throwable {
+<b class="nc">&nbsp;                            return methodProxy.invokeSuper(object, arguments);</b>
+&nbsp;                        }
+&nbsp;                    };
+&nbsp;                } else {
+<b class="nc">&nbsp;                    return NoOp.INSTANCE;</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;        };
+<b class="nc">&nbsp;        enhancer.setCallbackFilter(callbackHelper);</b>
+<b class="nc">&nbsp;        enhancer.setCallbacks(callbackHelper.getCallbacks());</b>
+<b class="nc">&nbsp;        return (ExampleClass) enhancer.create();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Performs a benchmark of a class extension using javassist proxies.
+&nbsp;     *
+&nbsp;     * @return The created instance, in order to avoid JIT removal.
+&nbsp;     * @throws java.lang.Exception If the invocation causes an exception.
+&nbsp;     */
+&nbsp;    @Benchmark
+&nbsp;    public ExampleClass benchmarkJavassist() throws Exception {
+<b class="fc">&nbsp;        ProxyFactory proxyFactory = new ProxyFactory() {</b>
+&nbsp;            protected ClassLoader getClassLoader() {
+<b class="fc">&nbsp;                return newClassLoader();</b>
+&nbsp;            }
+&nbsp;        };
+<b class="fc">&nbsp;        proxyFactory.setUseCache(false);</b>
+<b class="fc">&nbsp;        proxyFactory.setUseWriteReplace(false);</b>
+<b class="fc">&nbsp;        proxyFactory.setSuperclass(baseClass);</b>
+<b class="fc">&nbsp;        proxyFactory.setFilter(new MethodFilter() {</b>
+&nbsp;            public boolean isHandled(Method method) {
+<b class="fc">&nbsp;                return method.getDeclaringClass() == baseClass;</b>
+&nbsp;            }
+&nbsp;        });
+&nbsp;        @SuppressWarnings(&quot;unchecked&quot;)
+<b class="fc">&nbsp;        Object instance = proxyFactory.createClass().getDeclaredConstructor().newInstance();</b>
+<b class="fc">&nbsp;        ((javassist.util.proxy.Proxy) instance).setHandler(new MethodHandler() {</b>
+&nbsp;            public Object invoke(Object self,
+&nbsp;                                 Method thisMethod,
+&nbsp;                                 Method proceed,
+&nbsp;                                 Object[] argument) throws Throwable {
+<b class="fc">&nbsp;                return proceed.invoke(self, argument);</b>
+&nbsp;            }
+&nbsp;        });
+<b class="fc">&nbsp;        return (ExampleClass) instance;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Instead of using the {@link net.bytebuddy.implementation.SuperMethodCall} implementation, we are using
+&nbsp;     * a delegate in order to emulate the interception approach of other instrumentation libraries. Otherwise,
+&nbsp;     * this benchmark would be biased in favor of Byte Buddy.
+&nbsp;     */
+&nbsp;    public static class ByteBuddyProxyInterceptor {
+&nbsp;
+&nbsp;        /**
+&nbsp;         * The interceptor&#39;s constructor is not supposed to be invoked.
+&nbsp;         */
+&nbsp;        private ByteBuddyProxyInterceptor() {
+&nbsp;            throw new UnsupportedOperationException();
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Call the super method.
+&nbsp;         *
+&nbsp;         * @param zuper A proxy for invoking the super method.
+&nbsp;         * @return The return value of the super method invocation.
+&nbsp;         * @throws Exception As declared by {@link java.util.concurrent.Callable}&#39;s contract.
+&nbsp;         */
+&nbsp;        @RuntimeType
+&nbsp;        public static Object intercept(@SuperCall Callable&lt;?&gt; zuper) throws Exception {
+<b class="fc">&nbsp;            return zuper.call();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Instead of using the {@link net.bytebuddy.implementation.SuperMethodCall} implementation, we are creating
+&nbsp;     * delegate methods that allow the invocation of the original code.
+&nbsp;     */
+&nbsp;    public static class ByteBuddyAccessInterceptor {
+&nbsp;
+&nbsp;        /**
+&nbsp;         * The interceptor&#39;s constructor is not supposed to be invoked.
+&nbsp;         */
+&nbsp;        private ByteBuddyAccessInterceptor() {
+&nbsp;            throw new UnsupportedOperationException();
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Calls the super method.
+&nbsp;         *
+&nbsp;         * @param target    The target instance.
+&nbsp;         * @param arguments The arguments to the method.
+&nbsp;         * @param method    A method for invoking the original code.
+&nbsp;         * @return The return value of the method.
+&nbsp;         * @throws Exception If the super method call yields an exception.
+&nbsp;         */
+&nbsp;        @RuntimeType
+&nbsp;        public static Object intercept(@This Object target, @AllArguments Object[] arguments, @SuperMethod(privileged = false) Method method) throws Exception {
+<b class="fc">&nbsp;            return method.invoke(target, arguments);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * An interceptor that is invoked prior to a super method call.
+&nbsp;     */
+&nbsp;    public static class ByteBuddyPrefixInterceptor {
+&nbsp;
+&nbsp;        /**
+&nbsp;         * The interceptor&#39;s constructor is not supposed to be invoked.
+&nbsp;         */
+&nbsp;        private ByteBuddyPrefixInterceptor() {
+&nbsp;            throw new UnsupportedOperationException();
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Invoked prior to a method call.
+&nbsp;         */
+&nbsp;        public static void intercept() {
+&nbsp;            /* do nothing */
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-03 11:00</div>
+</div>
+</body>
+</html>
